@@ -159,3 +159,7 @@ Next.js에 대해 알아보려면, 아래 링크를 클릭하세요.
 - Dependabot, 코드/시크릿 스캔 등 GitHub 보안 기능 활성화
 - 배포 전 lint, format, test 통과 필수
 -->
+
+## 확장프로그램
+
+-   [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
