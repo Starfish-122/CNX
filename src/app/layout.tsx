@@ -1,18 +1,9 @@
 import type { Metadata } from 'next';
 import { Noto_Sans_KR } from 'next/font/google';
-// import { Geist, Geist_Mono, Noto_Sans_KR } from 'next/font/google';
+import Header from '@/components/templates/Header';
+import Footer from '@/components/templates/Footer';
 
-import './globals.css';
-
-// const geistSans = Geist({
-//     variable: '--font-geist-sans',
-//     subsets: ['latin'],
-// });
-
-// const geistMono = Geist_Mono({
-//     variable: '--font-geist-mono',
-//     subsets: ['latin'],
-// });
+import '@/styles/globals.css';
 
 const notoSansKR = Noto_Sans_KR({
     subsets: ['latin'],
@@ -37,7 +28,11 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="ko">
-            <body className={`${notoSansKR.className} antialiased`}>{children}</body>
+            <body className={`${notoSansKR.className} antialiased flex flex-col min-h-screen`}>
+                <Header />
+                <main className="flex-grow">{children}</main>
+                <Footer />
+            </body>
         </html>
     );
 }
