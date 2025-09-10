@@ -13,28 +13,35 @@
 **개발 서버 실행**
 
 ```bash
+# turbopack
 npm run dev
-npm run dev:turbo
+# dev
+npm run dev:old
 ```
 
 브라우저에서 [http://localhost:3000](http://localhost:3000) 접속
 
 ## 2. 프로젝트 구조
 
-| 폴더명/파일명   | 설명                                                  |
-| --------------- | ----------------------------------------------------- |
-| **app/**        | Next.js 앱 라우터 폴더 (루트)                         |
-| ├─ (pages)/     | 각 페이지 관련(라우팅 구조, URL에는 미표출)           |
-| ├─ layout.js    | 전체 레이아웃 컴포넌트                                |
-| └─ page.js      | 메인 페이지 컴포넌트                                  |
-|                 |                                                       |
-| **components/** | UI 컴포넌트                                           |
-| ├─ **base/**    | 기본 UI 컴포넌트(더이상 쪼갤 수 없는 컴포넌트, atoms) |
-| ├─ **common/**  | base를 조합한 공통 컴포넌트(molecules)                |
-| └─ **modules/** | common/base를 조합한 큰 UI 블록(organisms)            |
-|                 |                                                       |
-| **styles/**     | 스타일                                                |
-|                 |                                                       |
+| 폴더명/파일명               | 설명                                                  |
+| --------------------------- | ----------------------------------------------------- |
+| **app/**                    | Next.js 앱 라우터 폴더 (루트)                         |
+| ├─ (pages)/                 | 각 페이지 관련(라우팅 구조, URL에는 미표출)           |
+| ├─ layout.tsx               | 전체 레이아웃 컴포넌트                                |
+| └─ page.tsx                 | 메인 페이지 컴포넌트                                  |
+|                             |                                                       |
+| **components/**             | UI 컴포넌트                                           |
+| ├─ **base/**                | 기본 UI 컴포넌트(더이상 쪼갤 수 없는 컴포넌트, atoms) |
+| ├─ **common/**              | base를 조합한 공통 컴포넌트(molecules)                |
+| └─ **templates/**           | common/base를 조합한 큰 UI 블록(organisms)            |
+|                             |                                                       |
+| **styles/**                 | 스타일                                                |
+| ├─ **theme-colors.css**     | 색상 테마 변수 (@theme static/inline)                 |
+| ├─ **theme-typography.css** | 타이포그래피 테마 변수                                |
+| ├─ **theme-spacing.css**    | 간격 테마 변수                                        |
+| ├─ **theme-effects.css**    | 그림자, 애니메이션 테마 변수                          |
+| └─ **custom-utilities.css** | 커스텀 유틸리티 정의 (@utility)                       |
+|                             |                                                       |
 
 ## 3. 개발 규칙
 
@@ -42,14 +49,15 @@ npm run dev:turbo
 
 -   각 컴포넌트는 폴더 단위로 관리(TS, index.js)
 -   컴포넌트 전용 스타일은 해당 컴포넌트 폴더에 작성
-<!-- -   전역 스타일은 main.scss에서 import -->
 
 ### 3.2. 클라이언트/서버 컴포넌트
 
 -   useState, useEffect 등 클라이언트 훅 사용 시 파일 최상단에 "use client" 선언
 -   서버 컴포넌트(기본값)는 데이터 패칭, SEO 등 서버 전용 로직에 사용
+-   하이드레이션 오류 방지를 위해 Header, Footer 등 공통 컴포넌트는 클라이언트 컴포넌트로 구현
+-   서버/클라이언트 컴포넌트 혼합 시 props 전달에 주의 (서버→클라이언트 O, 클라이언트→서버 X)
 
-## 3.3. 코드 스타일
+### 3.3. 코드 스타일
 
 -   Prettier, ESLint 설정 준수
 -   함수형 컴포넌트만 사용
@@ -63,13 +71,73 @@ npm run dev:turbo
     }
     ```
 
-## 3.4. 네이밍 컨벤션
+### 3.4. 네이밍 컨벤션
 
 -   폴더/파일/컴포넌트명 : camelCase 사용 (예: searchBar)
 -   변수/함수명 : camelCase
-<!-- -   SCSS 클래스명 : BEM 방식 권장 -->
+-   CSS 클래스명 : Tailwind 유틸리티 클래스 우선 사용
 
-## 3.5. 기타
+### 3.5. 스타일 가이드
+
+#### 3.5.1. Tailwind CSS 사용 원칙
+
+-   유틸리티 클래스 우선 사용 (utility-first)
+-   복잡한 스타일은 컴포넌트 추출 또는 커스텀 유틸리티로 정의
+-   반응형 디자인은 접두사 활용 (sm:, md:, lg:)
+-   다크 모드는 dark: 접두사 활용
+
+#### 3.5.2. 테마 변수 관리
+
+-   테마 변수는 styles/ 폴더 내 파일에서 관리
+-   정적 테마 변수는 `@theme static`으로 정의 (빌드 타임에 결정되는 값)
+    ```css
+    /* theme-colors.css */
+    @theme static {
+        --color-primary: #3b82f6;
+        --color-secondary: #64748b;
+    }
+    ```
+-   동적 테마 변수는 `@theme inline`으로 정의 (런타임에 변경 가능한 값)
+    ```css
+    /* globals.css */
+    @theme inline {
+        --color-background: var(--background);
+        --color-foreground: var(--foreground);
+    }
+    ```
+
+#### 3.5.3. 커스텀 유틸리티 정의
+
+-   재사용 가능한 스타일 패턴은 `@utility`로 정의
+    ```css
+    /* custom-utilities.css */
+    @utility card {
+        border-radius: 0.5rem;
+        box-shadow: var(--shadow-md);
+    }
+    ```
+
+#### 3.5.4. 컴포넌트 스타일링
+
+-   컴포넌트 스타일은 해당 컴포넌트 폴더에 CSS 파일로 작성
+-   테마 변수 참조 시 `@reference`로 중복 방지
+
+    ```css
+    /* Button.css */
+    @reference "../../styles/theme-colors.css";
+
+    .custom-button {
+        background-color: var(--color-primary);
+    }
+    ```
+
+#### 3.5.5. 파일 의존성 관리
+
+-   메인 CSS 파일에서는 `@import` 사용
+-   컴포넌트 CSS 파일에서는 `@reference` 사용
+-   Vue/React 컴포넌트 내 스타일에서는 `@reference` 사용
+
+### 3.6. 기타
 
 -   README, 주석 등 문서화 신경쓰기
 -   불필요한 전역 스타일 import 지양, 필요한 곳에서만 import
@@ -107,6 +175,10 @@ npm run dev:turbo
 ### 5.3 주의사항
 
 -   `robots.ts`, `next.config.mjs`로 검색 엔진 크롤링 방지(배포시 수정/삭제 필요)
+-   하이드레이션 오류 발생 시 확인사항:
+    -   클라이언트/서버 컴포넌트 구분 명확히 (`'use client'` 지시문 확인)
+    -   폰트 및 CSS 변수 참조 오류 확인
+    -   서버와 클라이언트 간 렌더링 차이가 없는지 확인
 
 ## 6. 배포하기
 
@@ -114,10 +186,11 @@ npm run dev:turbo
 
 ## 7. 참고자료
 
-Next.js에 대해 알아보려면, 아래 링크를 클릭하세요.
+Next.js와 Tailwind CSS에 대해 알아보려면, 아래 링크를 클릭하세요.
 
 -   [Next.js Documentation](https://nextjs.org/docs) - Next.js 기능과 API.
 -   [Learn Next.js](https://nextjs.org/learn) - Next.js 튜토리얼.
+-   [Tailwind CSS Documentation](https://tailwindcss.com/docs) - Tailwind CSS v4 문서
 
 <!--
 ## PR(Pull Request) 규칙
