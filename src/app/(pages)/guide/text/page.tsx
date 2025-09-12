@@ -31,10 +31,10 @@ export default function TitleGuide() {
         <ExampleCard
           demo={
             <div>
-              <Text className="bg-blue-200" element="span">span 태그 1</Text>
-              <Text className="bg-red-200" element="span">span 태그 2</Text>
-              <Text className="bg-yellow-200" element="div">div 태그</Text>
-              <Text className="bg-green-200">p 태그 (기본)</Text>
+              <Text className="bg-blue-200 dark:bg-blue-800" element="span">span 태그 1</Text>
+              <Text className="bg-red-200 dark:bg-red-800" element="span">span 태그 2</Text>
+              <Text className="bg-yellow-200 dark:bg-yellow-800" element="div">div 태그</Text>
+              <Text className="bg-green-200 dark:bg-green-800">p 태그 (기본)</Text>
               <small className="block w-full text-gray-500 text-right">* 텍스트 배경은 참고용</small>
             </div>
           }
@@ -48,12 +48,12 @@ export default function TitleGuide() {
         <ExampleCard
           demo={
             <div className="space-y-4">
-              <Text className="text-blue-600">텍스트 색상 변경</Text>
-              <Text className="bg-blue-100">텍스트 배경 색상 추가</Text>
+              <Text className="text-blue-600 dark:text-blue-400">텍스트 색상 변경</Text>
+              <Text className="bg-blue-100 dark:bg-blue-800">텍스트 배경 색상 추가</Text>
             </div>
           }
-          code={`<Text className="text-blue-600">색상 변경된 텍스트</Text>
-<Text className="bg-blue-100">텍스트 배경 색상 추가</Text>`}
+          code={`<Text className="text-blue-600 dark:text-blue-400">색상 변경된 텍스트</Text>
+<Text className="bg-blue-100 dark:bg-blue-800">텍스트 배경 색상 추가</Text>`}
         />
       </GuideSection>
 
