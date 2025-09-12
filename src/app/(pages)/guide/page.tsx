@@ -4,19 +4,24 @@ import Text from '@/components/base/Text';
 
 const components = [
   {
-    name: 'Title',
+    name: '📑 Title',
     description: '페이지/섹션에 사용되는 타이틀 컴포넌트',
     link: '/guide/title',
   },
 	{
-		name: 'Text',
+		name: '📑 Text',
 		description: '기본 텍스트 컴포넌트',
 		link: '/guide/text',
 	},
 	{
-		name: 'StarRating',
+		name: '⭐ StarRating',
 		description: '별점 컴포넌트',
 		link: '/guide/star-rating',
+	},
+	{
+		name: '🏷️ Tag & TagList',
+		description: '태그 컴포넌트',
+		link: '/guide/tag',
 	},
   // 필요 시 더 추가
 ];
