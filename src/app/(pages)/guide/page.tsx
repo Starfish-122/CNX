@@ -13,6 +13,11 @@ const components = [
 		description: '기본 텍스트 컴포넌트',
 		link: '/guide/text',
 	},
+	{
+		name: 'StarRating',
+		description: '별점 컴포넌트',
+		link: '/guide/star-rating',
+	},
   // 필요 시 더 추가
 ];
 
@@ -52,18 +57,9 @@ export default function GuidePage(): React.JSX.Element {
                     className="inline-flex items-center gap-2 rounded-md border border-gray-300 dark:border-gray-600 px-3 py-1.5 text-sm font-medium text-gray-800 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors hover:translate-x-1 transition-transform duration-300"
                   >
                     보기
-                    <svg
-  aria-hidden="true"
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="currentColor"
-  strokeWidth={2}
-  strokeLinecap="round"
-  strokeLinejoin="round"
-  className="h-4 w-4"
->
-  <path d="M9 5l7 7-7 7" />
-</svg>
+                    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+											<path d="M9 5l7 7-7 7" />
+										</svg>
                   </Link>
                 </td>
               </tr>
