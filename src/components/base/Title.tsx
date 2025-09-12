@@ -4,10 +4,15 @@ import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 type TitleProps = {
+  /** 타이틀 태그 */
   element?: React.ElementType;
+  /** 타이틀 내용 */
   children: React.ReactNode;
+  /** 커스텀 클래스 */
   className?: string;
+  /** (a 태그 전용) 링크 속성 */
   href?: string;
+  /** (a 태그 전용) 링크 타겟 */
   target?: React.AnchorHTMLAttributes<HTMLAnchorElement>['target'];
 };
 

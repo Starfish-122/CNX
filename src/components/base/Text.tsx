@@ -5,8 +5,11 @@ import { twMerge } from 'tailwind-merge';
 type TextElement = 'p' | 'span' | 'div';
 
 type TextProps = {
+  /** 텍스트 태그 */
   element?: TextElement;
+  /** 텍스트 내용 */
   children: React.ReactNode;
+  /** 커스텀 클래스 */
   className?: string;
 };
 
