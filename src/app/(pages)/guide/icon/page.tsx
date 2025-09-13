@@ -51,7 +51,7 @@ export default function IconGuidePage() {
       {/* 크기 설정 섹션 */}
       <section className="guide-section">
         <h2 className="guide-section-title">크기 설정</h2>
-        <p className="mb-4">size 속성을 통해 아이콘 크기를 설정할 수 있습니다. ('xs', 'sm', 'md', 'lg', 'xl', 'xxl')</p>
+        <p className="mb-4">size 속성을 통해 아이콘 크기를 설정할 수 있습니다. (&apos;xs&apos;, &apos;sm&apos;, &apos;md&apos;, &apos;lg&apos;, &apos;xl&apos;, &apos;xxl&apos;)</p>
         <div>
           <div className="guide-example-demo">
             <div className="flex items-end gap-4">
@@ -225,8 +225,8 @@ export default function IconGuidePage() {
               </tr>
               <tr>
                 <td className="font-mono">size</td>
-                <td className="font-mono">'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'</td>
-                <td>'md'</td>
+                <td className="font-mono">&apos;xs&apos; | &apos;sm&apos; | &apos;md&apos; | &apos;lg&apos; | &apos;xl&apos; | &apos;xxl&apos;</td>
+                <td>&apos;md&apos;</td>
                 <td>아이콘 크기</td>
               </tr>
               <tr>

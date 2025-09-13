@@ -11,7 +11,7 @@ export interface IconProps {
     showName?: boolean;
     onClick?: (event: React.MouseEvent<HTMLSpanElement>) => void;
     className?: string;
-    [key: string]: any;
+    [key: string]: unknown;
 }
 
 /**

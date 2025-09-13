@@ -30,11 +30,11 @@ export default function RootLayout({
         <html lang="ko">
             <head>
                 <link
-                    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0"
+                    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0&display=optional"
                     rel="stylesheet"
                 />
                 <link 
-                    href="https://fonts.googleapis.com/icon?family=Material+Icons" 
+                    href="https://fonts.googleapis.com/icon?family=Material+Icons&display=optional" 
                     rel="stylesheet"
                 />
             </head>
