@@ -24,32 +24,27 @@ export default function IconGuidePage() {
           <div className="guide-example-demo">
             <div className="flex items-center gap-4">
               <div className="flex flex-col items-center">
-                <Icon name="search" />
-                <p className="mt-2 text-sm">search</p>
+                <Icon name="search" showName />
               </div>
               <div className="flex flex-col items-center">
-                <Icon name="home" />
-                <p className="mt-2 text-sm">home</p>
+                <Icon name="home" showName />
               </div>
               <div className="flex flex-col items-center">
-                <Icon name="favorite" />
-                <p className="mt-2 text-sm">favorite</p>
+                <Icon name="favorite" showName />
               </div>
               <div className="flex flex-col items-center">
-                <Icon name="settings" />
-                <p className="mt-2 text-sm">settings</p>
+                <Icon name="settings" showName />
               </div>
               <div className="flex flex-col items-center">
-                <Icon name="search_off" />
-                <p className="mt-2 text-sm">search_off</p>
+                <Icon name="search_off" showName />
               </div>
             </div>
           </div>
-          <pre className="guide-example-code">{`<Icon name="search" />
-<Icon name="home" />
-<Icon name="favorite" />
-<Icon name="settings" />
-<Icon name="search_off" />`}</pre>
+          <pre className="guide-example-code">{`<Icon name="search" showName />
+<Icon name="home" showName />
+<Icon name="favorite" showName />
+<Icon name="settings" showName />
+<Icon name="search_off" showName />`}</pre>
         </div>
       </section>
 
@@ -62,27 +57,27 @@ export default function IconGuidePage() {
             <div className="flex items-end gap-4">
               <div className="flex flex-col items-center">
                 <Icon name="search" size="xs" />
-                <p className="mt-2 text-sm">xs</p>
+                <p className="mt-2 text-sm text-gray-700">xs</p>
               </div>
               <div className="flex flex-col items-center">
                 <Icon name="search" size="sm" />
-                <p className="mt-2 text-sm">sm</p>
+                <p className="mt-2 text-sm text-gray-700">sm</p>
               </div>
               <div className="flex flex-col items-center">
                 <Icon name="search" size="md" />
-                <p className="mt-2 text-sm">md (기본)</p>
+                <p className="mt-2 text-sm text-gray-700">md (기본)</p>
               </div>
               <div className="flex flex-col items-center">
                 <Icon name="search" size="lg" />
-                <p className="mt-2 text-sm">lg</p>
+                <p className="mt-2 text-sm text-gray-700">lg</p>
               </div>
               <div className="flex flex-col items-center">
                 <Icon name="search" size="xl" />
-                <p className="mt-2 text-sm">xl</p>
+                <p className="mt-2 text-sm text-gray-700">xl</p>
               </div>
               <div className="flex flex-col items-center">
                 <Icon name="search" size="xxl" />
-                <p className="mt-2 text-sm">xxl</p>
+                <p className="mt-2 text-sm text-gray-700">xxl</p>
               </div>
             </div>
           </div>
@@ -103,27 +98,27 @@ export default function IconGuidePage() {
           <div className="guide-example-demo">
             <div className="flex items-center gap-4">
               <div className="flex flex-col items-center">
-                <Icon name="favorite" size="lg" color="#FF0000" />
-                <p className="mt-2 text-sm">빨간색</p>
+                <Icon name="favorite" size="lg" color="text-red-500" />
+                <p className="mt-2 text-sm text-gray-700">빨간색</p>
               </div>
               <div className="flex flex-col items-center">
-                <Icon name="favorite" size="lg" color="#00FF00" />
-                <p className="mt-2 text-sm">초록색</p>
+                <Icon name="favorite" size="lg" color="text-green-500" />
+                <p className="mt-2 text-sm text-gray-700">초록색</p>
               </div>
               <div className="flex flex-col items-center">
-                <Icon name="favorite" size="lg" color="#0000FF" />
-                <p className="mt-2 text-sm">파란색</p>
+                <Icon name="favorite" size="lg" color="text-blue-500" />
+                <p className="mt-2 text-sm text-gray-700">파란색</p>
               </div>
               <div className="flex flex-col items-center">
-                <Icon name="search_off" size="lg" color="white" />
-                <p className="mt-2 text-sm">흰색</p>
+                <Icon name="search_off" size="lg" color="text-white" />
+                <p className="mt-2 text-sm text-gray-700">흰색</p>
               </div>
             </div>
           </div>
-          <pre className="guide-example-code">{`<Icon name="favorite" size="lg" color="#FF0000" />
-<Icon name="favorite" size="lg" color="#00FF00" />
-<Icon name="favorite" size="lg" color="#0000FF" />
-<Icon name="search_off" size="lg" color="white" />`}</pre>
+          <pre className="guide-example-code">{`<Icon name="favorite" size="lg" color="text-red-500" />
+<Icon name="favorite" size="lg" color="text-green-500" />
+<Icon name="favorite" size="lg" color="text-blue-500" />
+<Icon name="search_off" size="lg" color="text-white" />`}</pre>
         </div>
       </section>
 
@@ -136,11 +131,11 @@ export default function IconGuidePage() {
             <div className="flex items-center gap-4">
               <div className="flex flex-col items-center">
                 <Icon name="favorite" size="lg" />
-                <p className="mt-2 text-sm">기본</p>
+                <p className="mt-2 text-sm text-gray-700">기본</p>
               </div>
               <div className="flex flex-col items-center">
                 <Icon name="favorite" size="lg" filled />
-                <p className="mt-2 text-sm">채워짐</p>
+                <p className="mt-2 text-sm text-gray-700">채워짐</p>
               </div>
             </div>
           </div>
@@ -161,9 +156,9 @@ export default function IconGuidePage() {
                   name="thumb_up" 
                   size="lg" 
                   clickable 
-                  onClick={() => alert('좋아요!')} 
+                  onClick={() => alert('좋아요!')}  
                 />
-                <p className="mt-2 text-sm">클릭 해보세요</p>
+                <p className="mt-2 text-sm text-gray-700">클릭 해보세요</p>
               </div>
             </div>
           </div>
@@ -176,10 +171,42 @@ export default function IconGuidePage() {
         </div>
       </section>
 
+      {/* 아이콘 이름 표시 섹션 */}
+      <section className="guide-section">
+        <h2 className="guide-section-title">아이콘 이름 표시</h2>
+        <p className="mb-4">showName 속성을 통해 아이콘 아래에 이름을 표시할 수 있습니다. 색상은 아이콘과 동일하게 적용됩니다.</p>
+        <div>
+          <div className="guide-example-demo">
+            <div className="flex items-center gap-4">
+              <div className="flex flex-col items-center">
+                <Icon name="home" size="lg" />
+                <p className="mt-2 text-sm text-gray-700">기본 (이름 숨김)</p>
+              </div>
+              <div className="flex flex-col items-center">
+                <Icon name="home" size="lg" showName />
+                <p className="mt-2 text-sm text-gray-700">이름 표시</p>
+              </div>
+              <div className="flex flex-col items-center">
+                <Icon name="favorite" size="lg" color="text-red-500" showName />
+                <p className="mt-2 text-sm text-gray-700">색상 적용</p>
+              </div>
+              <div className="flex flex-col items-center">
+                <Icon name="star" size="lg" color="#FFD700" showName />
+                <p className="mt-2 text-sm text-gray-700">CSS 색상값</p>
+              </div>
+            </div>
+          </div>
+          <pre className="guide-example-code">{`<Icon name="home" size="lg" />
+<Icon name="home" size="lg" showName />
+<Icon name="favorite" size="lg" color="text-red-500" showName />
+<Icon name="star" size="lg" color="#FFD700" showName />`}</pre>
+        </div>
+      </section>
+
       {/* Props 섹션 */}
       <section className="guide-section">
         <h2 className="guide-section-title">Props</h2>
-        <div className="guide-props-table">
+        <div className="guide-props-table" style={{containerType: "inline-size"}}>
           <table>
             <thead>
               <tr>
@@ -212,7 +239,13 @@ export default function IconGuidePage() {
                 <td className="font-mono">color</td>
                 <td className="font-mono">string</td>
                 <td>-</td>
-                <td>아이콘 색상 (CSS 색상값)</td>
+                <td>테일윈드 색상 클래스(text-red-500) 또는 CSS 색상값</td>
+              </tr>
+              <tr>
+                <td className="font-mono">showName</td>
+                <td className="font-mono">boolean</td>
+                <td>false</td>
+                <td>아이콘 이름 표시 여부</td>
               </tr>
               <tr>
                 <td className="font-mono">clickable</td>

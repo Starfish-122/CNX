@@ -8,20 +8,11 @@ export interface IconProps {
     filled?: boolean;
     color?: string;
     clickable?: boolean;
+    showName?: boolean;
     onClick?: (event: React.MouseEvent<HTMLSpanElement>) => void;
     className?: string;
     [key: string]: any;
 }
-
-// 크기별 테일윈드 클래스 매핑
-const SIZE_CLASSES = {
-    xs: 'text-xs', // 0.75rem
-    sm: 'text-base', // 1rem
-    md: 'text-2xl', // 1.5rem
-    lg: 'text-3xl', // 2rem
-    xl: 'text-4xl', // 2.5rem
-    xxl: 'text-5xl', // 3rem
-};
 
 /**
  * Icon 컴포넌트
@@ -30,53 +21,75 @@ const SIZE_CLASSES = {
  * @param {string} name - 아이콘 이름
  * @param {string} size - 아이콘 크기 ('xs', 'sm', 'md', 'lg', 'xl', 'xxl')
  * @param {boolean} filled - 채워진 스타일 여부
- * @param {string} color - 아이콘 색상
+ * @param {string} color - 테일윈드 텍스트 색상 클래스 (예: 'text-red-500') 또는 CSS 색상 값
  * @param {boolean} clickable - 클릭 가능 여부
+ * @param {boolean} showName - 아이콘 이름 표시 여부
  * @param {function} onClick - 클릭 이벤트 핸들러
  * @param {string} className - 추가 CSS 클래스
  * @param {object} props - 기타 props
  */
+
+const SIZE_STYLES = {
+    xs: { fontSize: 'var(--font-size-xs)' }, 
+    sm: { fontSize: 'var(--font-size-sm)' }, 
+    base: { fontSize: 'var(--font-size-base)' }, 
+    md: { fontSize: 'var(--font-size-2xl)' }, 
+    lg: { fontSize: 'var(--font-size-3xl)' }, 
+    xl: { fontSize: 'var(--font-size-4xl)' }, 
+    xxl: { fontSize: 'var(--font-size-5xl)' }, 
+};
+
 const Icon = ({
     name,
     size = 'md',
     filled = false,
-    color,
+    color = 'text-gray-700', 
     clickable = false,
+    showName = false,
     onClick,
     className,
     ...props
 }: IconProps) => {
-    const sizeClass = SIZE_CLASSES[size] || SIZE_CLASSES.md;
+    const sizeStyle = SIZE_STYLES[size] || SIZE_STYLES.md;
+    const isColorClass = color && (color.startsWith('text-') || color.startsWith('bg-'));
+    
+    const colorStyle = !isColorClass && color ? { color } : undefined;
     
     return (
-        <span
+        <span 
             className={clsx(
-                'material-symbols-outlined',
-                'font-normal leading-none',
-                'inline-block whitespace-nowrap align-middle',
-                sizeClass,
+                'flex flex-col items-center',
                 clickable && 'cursor-pointer transition-all duration-200 hover:scale-110 hover:opacity-80',
-                !clickable && 'cursor-default',
-                className
+                className,
+                isColorClass ? color : ''
             )}
+            style={colorStyle}
             onClick={onClick}
-            style={{
-                color: color || '#374151', // 기본 색상
-                fontVariationSettings: filled 
-                    ? "'FILL' 1, 'GRAD' 0, 'opsz' 24" 
-                    : "'FILL' 0, 'GRAD' 0, 'opsz' 24",
-                fontFamily: "'Material Symbols Outlined', 'Material Icons', sans-serif",
-                fontFeatureSettings: "'liga'",
-                WebkitFontFeatureSettings: "'liga'",
-                WebkitFontSmoothing: 'antialiased',
-                textTransform: 'none',
-                letterSpacing: 'normal',
-                direction: 'ltr',
-                wordWrap: 'normal'
-            }}
-            {...props}
         >
-            {name}
+            <span 
+                className={clsx(
+                    'material-symbols-outlined font-normal leading-none inline-block whitespace-nowrap',
+                    filled ? 'material-fill-1' : 'material-fill-0'
+                )}
+                style={{
+                    ...sizeStyle,
+                    ...(colorStyle || {})
+                }}
+                {...props}
+            >
+                {name}
+            </span>
+            {showName && (
+                <span 
+                    className={clsx(
+                        "mt-2 text-sm", 
+                        isColorClass ? color : ''
+                    )}
+                    style={colorStyle}
+                >
+                    {name}
+                </span>
+            )}
         </span>
     );
 };
