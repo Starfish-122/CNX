@@ -23,6 +23,11 @@ const components = [
 		description: '태그 컴포넌트',
 		link: '/guide/tag',
 	},
+	{
+		name: '🔣 Icon',
+		description: '아이콘 컴포넌트',
+		link: '/guide/icon',
+	},
   // 필요 시 더 추가
 ];
 
