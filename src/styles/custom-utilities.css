@@ -4,3 +4,67 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
+
+/* 가이드 페이지 유틸리티 클래스 */
+@layer components {
+    /* CodeTag 대체 */
+    .guide-code {
+        @apply bg-gray-100 dark:bg-gray-800 rounded px-1;
+    }
+
+    /* GuideSection 대체 */
+    .guide-section {
+        @apply mb-12;
+    }
+
+    .guide-section-title {
+        @apply text-xl font-semibold mb-3;
+    }
+
+    /* ExampleCard 대체 */
+    .guide-example-demo {
+        @apply border border-gray-200 dark:border-gray-700 rounded-lg p-6 bg-gray-50 dark:bg-gray-900;
+    }
+
+    .guide-example-code {
+        @apply bg-gray-900 text-gray-100 text-sm rounded-md p-4 mt-4 overflow-x-auto;
+    }
+
+    /* GuideLayout 대체 */
+    .guide-layout {
+        @apply px-6 py-10;
+    }
+
+    .guide-layout-title {
+        @apply text-2xl font-bold mb-3;
+    }
+
+    .guide-layout-description {
+        @apply text-gray-600 dark:text-gray-400 mb-10 leading-relaxed;
+    }
+
+    /* PropsTable 대체 */
+    .guide-props-table {
+        @apply overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700;
+    }
+
+    .guide-props-table table {
+        @apply min-w-full text-sm text-left;
+    }
+
+    .guide-props-table thead {
+        @apply bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300;
+    }
+
+    .guide-props-table th {
+        @apply py-3 px-4;
+    }
+
+    .guide-props-table tbody {
+        @apply divide-y divide-gray-200 dark:divide-gray-700;
+    }
+
+    .guide-props-table td {
+        @apply py-2 px-4;
+    }
+}
