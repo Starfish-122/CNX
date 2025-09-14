@@ -53,7 +53,8 @@ export const sidebarCategories: SidebarCategory[] = [
         id: 'interactive',
         name: '인터랙션 컴포넌트',
         items: [
-            { name: 'Button', path: '/button', icon: 'smart_button' },
+            { name: 'Input', path: '/guide/input', icon: 'input' },
+            { name: 'Button', path: '/guide/button', icon: 'buttons_alt' },
         ],
     },
 ];

@@ -28,6 +28,16 @@ const components = [
 		description: '아이콘 컴포넌트',
 		link: '/guide/icon',
 	},
+  {
+    name: '⌨️ Input',
+    description: '입력 필드 컴포넌트',
+    link: '/guide/input',
+  },
+  {
+    name: '🔲 Button',
+    description: '버튼 컴포넌트',
+    link: '/guide/button',
+  }
   // 필요 시 더 추가
 ];
 
