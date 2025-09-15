@@ -6,7 +6,6 @@
 @import './theme-spacing.css';
 @import './theme-effects.css';
 @import './custom-utilities.css';
-/* @import './material-icons.css'; */
 
 :root {
     --background: #ffffff;
@@ -32,13 +31,12 @@ body {
 
 /* Material Icons 스타일 */
 .material-fill-0 {
-    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-  }
-  
-  .material-fill-1 {
-    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-  }
-  
+    font-variation-settings: 'FILL' 0;
+}
+
+.material-fill-1 {
+    font-variation-settings: 'FILL' 1;
+}
 
 /* Tailwind v4에서는 클래스를 직접 정의 */
 .button {
