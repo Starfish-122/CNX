@@ -33,7 +33,9 @@ npm run dev:old
 | **components/**             | UI 컴포넌트                                           |
 | ├─ **base/**                | 기본 UI 컴포넌트(더이상 쪼갤 수 없는 컴포넌트, atoms) |
 | ├─ **common/**              | base를 조합한 공통 컴포넌트(molecules)                |
-| └─ **templates/**           | common/base를 조합한 큰 UI 블록(organisms)            |
+| ├─ **templates/**           | common/base를 조합한 큰 UI 블록(organisms)            |
+| ├─ **guide/**               | 컴포넌트 가이드 페이지용 컴포넌트                     |
+| └─ **utils/**               | 유틸리티 컴포넌트(CodeBlock 등)                       |
 |                             |                                                       |
 | **styles/**                 | 스타일                                                |
 | ├─ **theme-colors.css**     | 색상 테마 변수 (@theme static/inline)                 |
@@ -42,6 +44,7 @@ npm run dev:old
 | ├─ **theme-effects.css**    | 그림자, 애니메이션 테마 변수                          |
 | └─ **custom-utilities.css** | 커스텀 유틸리티 정의 (@utility)                       |
 |                             |                                                       |
+| **hooks/**                  | 커스텀 React 훅                                       |
 
 ## 3. 개발 규칙
 
@@ -70,6 +73,15 @@ npm run dev:old
         "@/styles/*": ["./src/styles/*"]
     }
     ```
+-   Props 인터페이스는 JSDoc 주석으로 설명 추가
+    ```tsx
+    export interface ButtonProps {
+        /** 버튼 내용 */
+        children: React.ReactNode;
+        /** 버튼 타입 */
+        variant?: 'primary' | 'secondary' | 'outline';
+    }
+    ```
 
 ### 3.4. 네이밍 컨벤션
 
@@ -85,6 +97,14 @@ npm run dev:old
 -   복잡한 스타일은 컴포넌트 추출 또는 커스텀 유틸리티로 정의
 -   반응형 디자인은 접두사 활용 (sm:, md:, lg:)
 -   다크 모드는 dark: 접두사 활용
+-   클래스명 충돌 방지를 위해 tailwind-merge 사용
+
+    ```tsx
+    import { twMerge } from 'tailwind-merge';
+
+    // 클래스 병합 (충돌 시 나중에 선언된 값 우선)
+    <div className={twMerge('text-red-500', className)}>{children}</div>;
+    ```
 
 #### 3.5.2. 테마 변수 관리
 
@@ -191,6 +211,11 @@ Next.js와 Tailwind CSS에 대해 알아보려면, 아래 링크를 클릭하세
 -   [Next.js Documentation](https://nextjs.org/docs) - Next.js 기능과 API.
 -   [Learn Next.js](https://nextjs.org/learn) - Next.js 튜토리얼.
 -   [Tailwind CSS Documentation](https://tailwindcss.com/docs) - Tailwind CSS v4 문서
+
+## 8. 확장 프로그램
+
+-   Tailwind documentation
+-   Tailwind CSS IntelliSense
 
 <!--
 ## PR(Pull Request) 규칙
