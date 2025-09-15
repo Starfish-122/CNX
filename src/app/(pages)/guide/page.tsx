@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Title from '@/components/base/Title';
 import Text from '@/components/base/Text';
+import GuideLayout from '@/components/guide/GuideLayout';
 
 const components = [
   {
@@ -43,10 +44,7 @@ const components = [
 
 export default function GuidePage(): React.JSX.Element {
   return (
-    <div className="container mx-auto py-10">
-      <Title>Component Guide</Title>
-      <Text className="mt-5 mb-2">컴포넌트 가이드 페이지입니다.</Text>
-
+    <GuideLayout title="Component Guide" description="컴포넌트 가이드 페이지입니다.">
       <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
         <table className="min-w-full table-fixed text-left text-sm">
           <thead className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
@@ -62,7 +60,7 @@ export default function GuidePage(): React.JSX.Element {
                 key={component.name}
                 className="transition-colors"
               >
-                <td className="px-4 py-3 align-middle">
+                <td className="px-4 py-3 align-middle whitespace-nowrap">
                   <Text className="font-medium">{component.name}</Text>
                 </td>
                 <td className="px-4 py-3 align-middle">
@@ -97,6 +95,6 @@ export default function GuidePage(): React.JSX.Element {
           </tbody>
         </table>
       </div>
-    </div>
+    </GuideLayout>
   );
 }
