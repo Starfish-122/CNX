@@ -39,22 +39,19 @@ export const navLinks: NavLink[] = [
  */
 export const sidebarCategories: SidebarCategory[] = [
     {
-        id: 'base',
+        id: 'atoms',
         name: '기본 컴포넌트',
         items: [
-            { name: 'Icon', path: '/guide/icon', icon: 'format_shapes' },
-            { name: 'Title', path: '/guide/title', icon: 'title' },
-            { name: 'Text', path: '/guide/text', icon: 'text_fields' },
-            { name: 'Tag', path: '/guide/tag', icon: 'label' },
-            { name: 'StarRating', path: '/guide/star-rating', icon: 'star_rate' },
+            { name: 'Icon', path: '/guide/icon' },
+            { name: 'Title', path: '/guide/title' },
+            { name: 'Text', path: '/guide/text' },
+            { name: 'Tag', path: '/guide/tag' },
+            { name: 'Input', path: '/guide/input' },
         ],
     },
     {
-        id: 'interactive',
-        name: '인터랙션 컴포넌트',
-        items: [
-            { name: 'Input', path: '/guide/input', icon: 'input' },
-            { name: 'Button', path: '/guide/button', icon: 'buttons_alt' },
-        ],
+        id: 'molecule',
+        name: '모듈 컴포넌트',
+        items: [{ name: 'StarRating', path: '/guide/star-rating' }],
     },
 ];
