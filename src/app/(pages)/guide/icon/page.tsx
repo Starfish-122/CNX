@@ -1,13 +1,19 @@
 'use client';
 import React from 'react';
 import Icon from '@/components/base/Icon';
-import { GuideLayout, GuideSection, ExampleCard, PropsTable, CodeTag } from '@/components/templates/guide';
+import {
+    GuideLayout,
+    GuideSection,
+    ExampleCard,
+    PropsTable,
+    CodeTag,
+} from '@/components/templates/guide';
 
 export default function IconGuidePage() {
     return (
         <>
             <GuideLayout
-                title="Icon Component"
+                title="🥨 Icon Component"
                 description={
                     <>
                         <CodeTag>Icon</CodeTag> 컴포넌트는 Google Material Icons/Symbols를 사용하여
