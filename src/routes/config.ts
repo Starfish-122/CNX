@@ -47,6 +47,7 @@ export const sidebarCategories: SidebarCategory[] = [
             { name: 'Text', path: '/guide/text' },
             { name: 'Tag', path: '/guide/tag' },
             { name: 'Input', path: '/guide/input' },
+            { name: 'Textarea', path: '/guide/textarea' },
         ],
     },
     {

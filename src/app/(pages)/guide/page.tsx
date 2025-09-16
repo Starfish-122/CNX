@@ -35,15 +35,15 @@ const components = [
         link: '/guide/input',
     },
     {
+        name: '📝 Textarea',
+        description: '텍스트 영역 컴포넌트',
+        link: '/guide/textarea',
+    },
+    {
         name: '🔲 Button',
         description: '버튼 컴포넌트',
         link: '/guide/button',
     },
-    {
-        name: '📝 Textarea',
-        description: '텍스트 영역 컴포넌트',
-        link: '/guide/textarea',
-    }
     // 필요 시 더 추가
 ];
 
