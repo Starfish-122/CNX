@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Title from '@/components/base/Title';
 import Text from '@/components/base/Text';
-import GuideLayout from '@/components/guide/GuideLayout';
+import { GuideLayout } from '@/components/templates/guide';
 
 const components = [
   {
