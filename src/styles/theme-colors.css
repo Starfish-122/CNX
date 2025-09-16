@@ -22,11 +22,8 @@
     /* 인디고 스케일 */
     --color-indigo-900: #2B394E;
 
-    /* 브랜드 색상 */
-    --color-brand-blue: #1d4ed8;
-    --color-brand-green: #059669;
-    --color-brand-purple: #7c3aed;
-    --color-brand-orange: #ea580c;
+    
+    --color-brand-1: #2B394E;
 }
 
 /* 다크 모드 색상 */

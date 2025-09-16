@@ -42,7 +42,7 @@ export default function RootLayout({
                  */}
                 <style dangerouslySetInnerHTML={{ __html: materialIconsCSS }} />
             </head>
-            <body className={`${notoSansKR.className} antialiased flex flex-col min-h-screen`}>
+            <body suppressHydrationWarning className={`${notoSansKR.className} antialiased flex flex-col min-h-screen`}>
                 <Header />
                 <main className="flex-grow">{children}</main>
                 <Footer />
