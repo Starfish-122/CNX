@@ -2,11 +2,8 @@
 
 import React from 'react';
 import Input from '@/components/base/Input';
-import GuideLayout from '@/components/guide/GuideLayout';
-import GuideSection from '@/components/guide/GuideSection';
-import ExampleCard from '@/components/guide/ExampleCard';
-import PropsTable from '@/components/guide/PropsTable';
-import CodeTag from '@/components/guide/CodeTag';
+import { GuideLayout, GuideSection, ExampleCard, PropsTable, CodeTag } from '@/components/templates/guide';
+import Icon from '@/components/base/Icon';
 
 export default function InputGuide() {
   return (
@@ -14,49 +11,96 @@ export default function InputGuide() {
       title="⌨️ Input Component"
       description={
         <>
-          <CodeTag>Text</CodeTag>는 텍스트를 일관된 스타일로 출력하는 컴포넌트입니다. <br />
-          <CodeTag>element</CodeTag> 속성으로 p, span, div 태그를 지정할 수 있으며, <br />
-          <CodeTag>className</CodeTag> 속성으로 추가 커스텀 클래스 또는 tailwind 클래스를 지정할 수 있습니다.
+          <CodeTag>Input</CodeTag>은 폼 입력을 위한 컴포넌트입니다. <br />
+          <CodeTag>label</CodeTag>, <CodeTag>hint</CodeTag>, <CodeTag>error</CodeTag> 메시지를 포함하며, <br />
+          <CodeTag>startAdornment</CodeTag>, <CodeTag>endAdornment</CodeTag>로 아이콘이나 버튼을 추가할 수 있습니다.
         </>
       }
     >
       <GuideSection title="기본 사용">
         <ExampleCard
-          demo={`<Input>텍스트 내용</Input>`}
-          code={`<Text>텍스트 내용</Text>`}
+          demo={<Input />}
+          code={`<Input />`}
         />
       </GuideSection>
 
-      <GuideSection title="다양한 태그 사용">
+      <GuideSection title="사이즈 (size: sm, md, lg, full)">
         <ExampleCard
           demo={
-            <div>
-              
-            </div>
-          }
-          code={`<Text element="span">span 태그1</Text> <Text element="span">span 태그2</Text>
-<Text element="div">div 태그</Text>
-<Text>p 태그 (기본)</Text>`}
+          <div className="flex flex-col gap-4">
+            <Input size="sm" />
+            <Input size="md" />
+            <Input size="lg" />
+            <Input size="full" />
+          </div>
+        }
+          code={`<Input size="sm" />
+<Input size="md" />
+<Input size="lg" />
+<Input size="full" />`}
         />
       </GuideSection>
 
-      <GuideSection title="다양한 예시">
+      <GuideSection title="타입 (type: text, password, email, number, tel)">
         <ExampleCard
           demo={
-            <div className="space-y-4">
+            <div className="flex flex-col gap-4">
+              <div className="w-fit">
+                <Input type="text" label="텍스트" size="lg" placeholder="텍스트 입력" showResetButton />
+              </div>
+              <div className="w-fit">
+                <Input type="password" label="비밀번호" placeholder="비밀번호 입력" showPasswordToggle/>
+              </div>
+              <div className="w-fit">
+                <Input type="email" label="이메일" placeholder="mail@mail.com" />
+              </div>
+              <div className="w-fit">
+                <Input type="number" label="숫자" placeholder="숫자만 입력" />
+              </div>
+              <div className="w-fit">
+                <Input type="tel" label="전화번호" placeholder="010-1234-5678" />
+              </div>
             </div>
           }
-          code={`<Text className="text-blue-600 dark:text-blue-400">색상 변경된 텍스트</Text>
-<Text className="bg-blue-100 dark:bg-blue-800">텍스트 배경 색상 추가</Text>`}
+          code={`<Input type="text" label="텍스트" />
+<Input type="password" label="비밀번호" showPasswordToggle />
+<Input type="email" label="이메일" />
+<Input type="number" label="숫자" />
+<Input type="tel" label="전화번호" />`}
+        />
+      </GuideSection>
+
+      <GuideSection title="상태 (disabled, error, hint, readonly)">
+          <ExampleCard
+          demo={
+            <div className="flex flex-col gap-4">
+              <Input disabled />
+              <Input error="에러 메시지입니다" />
+              <Input hint="힌트 메시지입니다" />
+              <Input readOnly value="읽기 전용" />
+            </div>
+          }
+          code={`<Input disabled />
+<Input error="에러 메시지입니다" />
+<Input hint="힌트 메시지입니다" />
+<Input readOnly />`}
         />
       </GuideSection>
 
       <GuideSection title="Props">
         <PropsTable
           rows={[
-            { prop: 'element', type: 'React.ElementType', def: `'p'`, desc: '출력할 태그/컴포넌트' },
-            { prop: 'className', type: 'string', desc: '추가 Tailwind 클래스' },
-            { prop: 'children', type: 'React.ReactNode', def: '필수', desc: '표시할 내용' },
+            { prop: 'size', type: `'sm' | 'md' | 'lg' | 'full'`, def: `'md'`, desc: '크기' },
+            { prop: 'type', type: `'text' | 'password' | 'email' | 'number' | 'tel'`, def: `'text'`, desc: '타입' },
+            { prop: 'label', type: 'string', def: '—', desc: '라벨 텍스트' },
+            { prop: 'hint', type: 'string', def: '—', desc: '힌트 메시지' },
+            { prop: 'error', type: 'string', def: '—', desc: '에러 메시지' },
+            { prop: 'disabled', type: 'boolean', def: 'false', desc: '비활성화' },
+            { prop: 'required', type: 'boolean', def: 'false', desc: '필수 입력' },
+            { prop: 'invalid', type: 'boolean', def: 'false', desc: '에러 상태' },
+            { prop: 'showPasswordToggle', type: 'boolean', def: 'false', desc: '비밀번호 토글 버튼 표시 여부' },
+            { prop: 'showResetButton', type: 'boolean', def: 'false', desc: '리셋 버튼 표시 여부' },
+            { prop: 'onReset', type: '() => void', def: '—', desc: '리셋 버튼 클릭 핸들러' },
           ]}
         />
       </GuideSection>
