@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import CodeBlock from '../utils/CodeBlock';
+import CodeBlock from '@/components/utils/CodeBlock';
 
 export default function ExampleCard({ demo, code }: { demo?: React.ReactNode; code?: string }) {
     return (
