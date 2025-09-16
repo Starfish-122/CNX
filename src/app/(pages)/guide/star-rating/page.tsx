@@ -3,11 +3,8 @@
 import React from 'react';
 import Text from '@/components/base/Text';
 import StarRating from '@/components/common/StarRating';
-import GuideLayout from '@/components/guide/GuideLayout';
-import GuideSection from '@/components/guide/GuideSection';
-import ExampleCard from '@/components/guide/ExampleCard';
-import PropsTable from '@/components/guide/PropsTable';
-import CodeTag from '@/components/guide/CodeTag';
+import { GuideLayout, GuideSection, ExampleCard, PropsTable, CodeTag } from '@/components/templates/guide';
+
 
 export default function StarRatingGuide(): React.JSX.Element {
   const [ratingDefault, setRatingDefault] = React.useState(3.5);

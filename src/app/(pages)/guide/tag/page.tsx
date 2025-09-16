@@ -7,11 +7,8 @@ import Tag from '@/components/base/Tag';
 import TagList from '@/components/base/TagList';
 import CategoryTag from '@/components/base/CategoryTag';
 
-import GuideLayout from '@/components/guide/GuideLayout';
-import GuideSection from '@/components/guide/GuideSection';
-import ExampleCard from '@/components/guide/ExampleCard';
-import PropsTable from '@/components/guide/PropsTable';
-import CodeTag from '@/components/guide/CodeTag';
+import { GuideLayout, GuideSection, ExampleCard, PropsTable, CodeTag } from '@/components/templates/guide';
+
 
 export default function TagsGuide(): React.JSX.Element {
   return (

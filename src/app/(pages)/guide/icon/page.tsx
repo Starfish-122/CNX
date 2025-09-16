@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import Icon from '@/components/base/Icon';
-import { GuideLayout, GuideSection, ExampleCard, PropsTable, CodeTag } from '@/components/guide';
+import { GuideLayout, GuideSection, ExampleCard, PropsTable, CodeTag } from '@/components/templates/guide';
 
 export default function IconGuidePage() {
     return (
