@@ -3,7 +3,6 @@
 import React from 'react';
 import Input from '@/components/base/Input';
 import { GuideLayout, GuideSection, ExampleCard, PropsTable, CodeTag } from '@/components/templates/guide';
-import Icon from '@/components/base/Icon';
 
 export default function InputGuide() {
   return (
@@ -45,21 +44,11 @@ export default function InputGuide() {
         <ExampleCard
           demo={
             <div className="flex flex-col gap-4">
-              <div className="w-fit">
-                <Input type="text" label="텍스트" size="lg" placeholder="텍스트 입력" showResetButton />
-              </div>
-              <div className="w-fit">
-                <Input type="password" label="비밀번호" placeholder="비밀번호 입력" showPasswordToggle/>
-              </div>
-              <div className="w-fit">
-                <Input type="email" label="이메일" placeholder="mail@mail.com" />
-              </div>
-              <div className="w-fit">
-                <Input type="number" label="숫자" placeholder="숫자만 입력" />
-              </div>
-              <div className="w-fit">
-                <Input type="tel" label="전화번호" placeholder="010-1234-5678" />
-              </div>
+              <Input type="text" label="텍스트" placeholder="텍스트 입력" showResetButton />
+              <Input type="password" label="비밀번호" placeholder="비밀번호 입력" showPasswordToggle/>
+              <Input type="email" label="이메일" placeholder="mail@mail.com" />
+              <Input type="number" label="숫자" placeholder="숫자만 입력" />
+              <Input type="tel" label="전화번호" placeholder="010-1234-5678" />
             </div>
           }
           code={`<Input type="text" label="텍스트" />
@@ -70,7 +59,7 @@ export default function InputGuide() {
         />
       </GuideSection>
 
-      <GuideSection title="상태 (disabled, error, hint, readonly)">
+      <GuideSection title="상태 (disabled, error, hint, readonly, required)">
           <ExampleCard
           demo={
             <div className="flex flex-col gap-4">
@@ -78,12 +67,16 @@ export default function InputGuide() {
               <Input error="에러 메시지입니다" />
               <Input hint="힌트 메시지입니다" />
               <Input readOnly value="읽기 전용" />
+              <Input label="필수 입력" required placeholder="필수 입력 필드" />
+              <Input label="필수 입력 (값 있음)" required placeholder="필수 입력 필드" value="입력된 값" />
             </div>
           }
           code={`<Input disabled />
 <Input error="에러 메시지입니다" />
 <Input hint="힌트 메시지입니다" />
-<Input readOnly />`}
+<Input readOnly />
+<Input label="필수 입력" required />
+<Input label="필수 입력 (값 있음)" required value="입력된 값" />`}
         />
       </GuideSection>
 
@@ -100,7 +93,8 @@ export default function InputGuide() {
             { prop: 'invalid', type: 'boolean', def: 'false', desc: '에러 상태' },
             { prop: 'showPasswordToggle', type: 'boolean', def: 'false', desc: '비밀번호 토글 버튼 표시 여부' },
             { prop: 'showResetButton', type: 'boolean', def: 'false', desc: '리셋 버튼 표시 여부' },
-            { prop: 'onReset', type: '() => void', def: '—', desc: '리셋 버튼 클릭 핸들러' },
+            { prop: 'onReset', type: '() => void', def: '—', desc: '리셋 버튼 클릭 시 호출되는 콜백 (제어형 컴포넌트에서 상태 초기화용)' },
+            { prop: 'className', type: 'string', def: '—', desc: '커스텀 클래스' },
           ]}
         />
       </GuideSection>

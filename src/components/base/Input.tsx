@@ -41,28 +41,32 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
 
 const SIZE = {
   sm: {
-    field: 'text-sm leading-relaxed px-2.5 py-1 pr-8',
+    field: 'text-sm leading-relaxed px-2.5 py-1',
+    fieldWithButton: 'text-sm leading-relaxed px-2.5 py-1 pr-8',
     label: 'text-sm',
     icon: 'sm',
     container: '',
     buttonPosition: 'right-6'
   },
   md: {
-    field: 'text-base leading-relaxed px-4 py-1.5 pr-10',
+    field: 'text-base leading-relaxed px-4 py-1.5',
+    fieldWithButton: 'text-base leading-relaxed px-4 py-1.5 pr-10',
     label: 'text-base',
     icon: 'md',
     container: '',
     buttonPosition: 'right-3'
   },
   lg: {
-    field: 'text-lg leading-relaxed px-5 py-2 pr-12',
+    field: 'text-lg leading-relaxed px-5 py-2',
+    fieldWithButton: 'text-lg leading-relaxed px-5 py-2 pr-12',
     label: 'text-base',
     icon: 'lg',
     container: '',
     buttonPosition: 'right-2'
   },
   full: {
-    field: 'text-base leading-relaxed px-4 py-1.5 w-full pr-10',
+    field: 'text-base leading-relaxed px-4 py-1.5 w-full',
+    fieldWithButton: 'text-base leading-relaxed px-4 py-1.5 w-full pr-10',
     label: 'text-base',
     icon: 'md',
     container: 'w-full',
@@ -99,9 +103,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
   
   const [showPassword, setShowPassword] = useState(false);
   
-  const hasError = !!error || invalid;
-  const hasHint = !!hint && !hasError;
   const hasValue = currentValue.trim().length > 0;
+  const isRequiredEmpty = required && !hasValue;
+  const hasError = !!error || invalid || isRequiredEmpty;
+  const hasHint = !!hint && !hasError;
 
   const isDisabled = disabled;
   const isPassword = type === 'password';
@@ -110,6 +115,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
   // 자동으로 비밀번호 토글 표시 (type이 password이고 showPasswordToggle이 true일 때)
   const shouldShowPasswordToggle = isPassword && showPasswordToggle;
   const shouldShowResetButton = showResetButton && hasValue;
+  const hasButton = shouldShowPasswordToggle || showResetButton;
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     if (!isControlled) setInnerValue(e.target.value);
@@ -134,6 +140,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
       id={inputId}
       type={currentType}
       disabled={isDisabled}
+      required={required}
       placeholder={props.placeholder ?? ' '}
       value={currentValue}
       onChange={handleChange}
@@ -150,7 +157,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
           'disabled:border-gray-400 disabled:cursor-not-allowed disabled:dark:bg-gray-800',
           // readonly
           'read-only:text-gray-500 read-only:border-gray-400 read-only:focus:ring-0 read-only:focus:border-gray-400',
-          s.field,
+          hasButton ? s.fieldWithButton : s.field,
           hasError && 'border-[var(--color-error)] text-[var(--color-error)] placeholder:text-[var(--color-error)] focus:ring-[var(--color-error)] focus:border-[var(--color-error)] ',
           // startAdornment && 'pl-10',
           // (endAdornment || shouldShowPasswordToggle || shouldShowResetButton) && 'pr-10',
@@ -164,7 +171,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
   return (
     <span className={clsx(
         'cnx-input-container relative',
-        label ? 'inline-flex flex-col' : 'inline-block',
+        label ? 'inline-flex flex-col w-fit' : 'inline-block',
         s.container
       )
     }>
@@ -184,7 +191,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
         </label>
       )}
 
-       <span className="inline-block relative">
+       <span className={clsx(
+        'relative',
+        size === 'full' ? 'block' : 'inline-block'
+       )}>
         {inputElement}
         
         {/* 비밀번호 토글 버튼 */}
@@ -254,7 +264,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
               )
             )}
           >
-            {error || '입력값을 확인해주세요.'}
+            {error || (isRequiredEmpty ? '필수 입력 항목입니다.' : '입력값을 확인해주세요.')}
           </span>
         )}
       </span>

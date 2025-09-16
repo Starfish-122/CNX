@@ -11,8 +11,8 @@ export default function TextareaGuide() {
       description={
         <>
           <CodeTag>Textarea</CodeTag>은 여러 줄 텍스트 입력을 위한 컴포넌트입니다. <br />
-          <CodeTag>label</CodeTag>, <CodeTag>hint</CodeTag>, <CodeTag>error</CodeTag> 메시지를 포함하며, <br />
-          <CodeTag>showResetButton</CodeTag>으로 리셋 버튼을 추가할 수 있습니다.
+          <CodeTag>label</CodeTag>, <CodeTag>showResetButton</CodeTag>, <CodeTag>showCharCount</CodeTag> 기능을 포함하며, <br />
+          필수 입력 유효성 검사와 글자 수 제한 기능을 지원합니다.
         </>
       }
     >
@@ -53,20 +53,20 @@ export default function TextareaGuide() {
         />
       </GuideSection>
 
-      <GuideSection title="상태 (disabled, error, hint, readonly)">
+      <GuideSection title="상태 (disabled, readonly, required)">
           <ExampleCard
           demo={
             <div className="flex flex-col gap-4">
               <Textarea disabled placeholder="비활성화된 텍스트 영역" />
-              <Textarea error="에러 메시지입니다" placeholder="에러가 있는 텍스트 영역" />
-              <Textarea hint="힌트 메시지입니다" placeholder="힌트가 있는 텍스트 영역" />
               <Textarea readOnly value="읽기 전용 텍스트 영역입니다" />
+              <Textarea label="필수 입력" required placeholder="필수 입력 필드" />
+              <Textarea label="필수 입력 (값 있음)" required placeholder="필수 입력 필드" value="입력된 값" />
             </div>
           }
           code={`<Textarea disabled />
-<Textarea error="에러 메시지입니다" />
-<Textarea hint="힌트 메시지입니다" />
-<Textarea readOnly />`}
+<Textarea readOnly />
+<Textarea label="필수 입력" required />
+<Textarea label="필수 입력 (값 있음)" required value="입력된 값" />`}
         />
       </GuideSection>
 
@@ -81,20 +81,51 @@ export default function TextareaGuide() {
         />
       </GuideSection>
 
+      <GuideSection title="글자 수 표시">
+        <ExampleCard
+          demo={
+            <div className="flex flex-col gap-4">
+              <Textarea label="글자 수 표시" placeholder="입력해보세요" showCharCount />
+              <Textarea label="최대 100자" placeholder="최대 100자까지 입력 가능" maxLength={100} showCharCount />
+            </div>
+          }
+          code={`<Textarea showCharCount />
+<Textarea maxLength={100} showCharCount />`}
+        />
+      </GuideSection>
+
+      <GuideSection title="리사이즈 (resize: none, both, horizontal, vertical)">
+        <ExampleCard
+          demo={
+            <div className="flex flex-col gap-4">
+              <Textarea label="리사이즈 없음" placeholder="크기 조절 불가" resize="none" />
+              <Textarea label="양방향 리사이즈" placeholder="가로/세로 모두 조절 가능" resize="both" />
+              <Textarea label="가로만 리사이즈" placeholder="가로만 조절 가능" resize="horizontal" />
+              <Textarea label="세로만 리사이즈" placeholder="세로만 조절 가능" resize="vertical" />
+            </div>
+          }
+          code={`<Textarea resize="none" />
+<Textarea resize="both" />
+<Textarea resize="horizontal" />
+<Textarea resize="vertical" />`}
+        />
+      </GuideSection>
+
       <GuideSection title="Props">
         <PropsTable
           rows={[
             { prop: 'size', type: `'sm' | 'md' | 'lg' | 'full'`, def: `'md'`, desc: '크기' },
             { prop: 'label', type: 'string', def: '—', desc: '라벨 텍스트' },
-            { prop: 'hint', type: 'string', def: '—', desc: '힌트 메시지' },
-            { prop: 'error', type: 'string', def: '—', desc: '에러 메시지' },
             { prop: 'disabled', type: 'boolean', def: 'false', desc: '비활성화' },
             { prop: 'required', type: 'boolean', def: 'false', desc: '필수 입력' },
-            { prop: 'invalid', type: 'boolean', def: 'false', desc: '에러 상태' },
             { prop: 'showResetButton', type: 'boolean', def: 'false', desc: '리셋 버튼 표시 여부' },
-            { prop: 'onReset', type: '() => void', def: '—', desc: '리셋 버튼 클릭 핸들러' },
+            { prop: 'onReset', type: '() => void', def: '—', desc: '리셋 버튼 클릭 시 호출되는 콜백 (제어형 컴포넌트에서 상태 초기화용)' },
+            { prop: 'showCharCount', type: 'boolean', def: 'false', desc: '글자 수 표시 여부' },
+            { prop: 'resize', type: `'none' | 'both' | 'horizontal' | 'vertical'`, def: `'none'`, desc: '리사이즈 가능 여부' },
+            { prop: 'maxLength', type: 'number', def: '—', desc: '최대 글자 수' },
             { prop: 'rows', type: 'number', def: '3', desc: '행 수' },
             { prop: 'cols', type: 'number', def: '—', desc: '열 수' },
+            { prop: 'className', type: 'string', def: '—', desc: '커스텀 클래스' },
           ]}
         />
       </GuideSection>
