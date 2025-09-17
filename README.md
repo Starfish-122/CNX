@@ -28,6 +28,7 @@
 -   **tailwind-merge 3.3.1**: Tailwind 클래스 병합 유틸리티
 -   **styled-normalize 8.1.1**: CSS 정규화
 -   **styled-reset 4.5.2**: CSS 리셋
+-   **Material Icons**: Google의 아이콘 라이브러리 (material-symbols-outlined)
 
 #### 1.2.3. 유틸리티
 
@@ -283,8 +284,43 @@ Next.js와 Tailwind CSS에 대해 알아보려면, 아래 링크를 클릭하세
 
 ## 7. 확장프로그램
 
--   [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
--   [Tailwind Documentation](https://marketplace.visualstudio.com/items?itemName=alfredbirk.tailwind-documentation)
+### 7.1. Tailwind CSS IntelliSense
+
+-   **설치 링크**: [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
+-   **장점**: Tailwind 클래스명 자동완성 및 제안
+-   **사용방법**:
+    -   HTML/JSX 파일에서 `className` 속성에 마우스 커서를 올리면 미리보기 표시
+    -   `Ctrl + Space`로 자동완성 목록 확인
+
+### 7.2. Tailwind Documentation
+
+-   **설치 링크**: [Tailwind Documentation](https://marketplace.visualstudio.com/items?itemName=alfredbirk.tailwind-documentation)
+-   **장점**:
+    -   Tailwind 클래스에 대한 공식 문서 빠른 접근
+    -   사용 중인 Tailwind 버전에 맞는 문서 제공
+-   **사용방법**: `Ctrl + Shift + P`로 명령 팔레트 열고 "Tailwind: Open Documentation" 실행
+
+### 7.3. ES7+ React/Redux/React-Native snippets
+
+-   **설치 링크**: [ES7+ React/Redux/React-Native snippets](https://open-vsx.org/extension/dsznajder/es7-react-js-snippets)
+-   **장점**: 빠른 컴포넌트 생성: 자주 사용하는 React 패턴을 단축키로 생성
+-   **주요 스니펫**:
+    -   `rafce`: React Arrow Function Component Export
+    -   `rafc`: React Arrow Function Component
+    -   `rfc`: React Function Component
+    -   `useState`: useState Hook 생성
+    -   `useEffect`: useEffect Hook 생성
+    -   `usf`: useState with function
+    -   `usf`: useEffect with function
+-   **사용방법**:
+    1.  `.jsx` 또는 `.tsx` 파일에서 스니펫 입력
+    2.  `Tab` 키로 자동완성 실행
+
+### 7.4. Bracket Pair Colorizer
+
+-   **설치 링크**: [Bracket Pair Colorizer](https://open-vsx.org/extension/CoenraadS/bracket-pair-colorizer)
+-   **장점**: 중괄호, 대괄호, 소괄호를 색상으로 구분되어 중첩 구조 파악
+-   **사용방법**: 자동 적용
 
 <!--
 #### 3.5.4. 컴포넌트 스타일링
