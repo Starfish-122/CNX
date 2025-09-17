@@ -2,8 +2,9 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import Input from '../atoms/Input';
-import Textarea from '../atoms/Textarea';
+import Input from '@/components/atoms/Input';
+import Textarea from '@/components/atoms/Textarea';
+import Button from '@/components/atoms/Button';
 
 export default function Footer() {
     return (
@@ -21,6 +22,7 @@ export default function Footer() {
                 <div className="w-full flex flex-col gap-2.5">
                     <Input placeholder="이메일을 입력해주세요." size="full" type="email" />
                     <Textarea placeholder="상세 설명을 입력하세요" rows={5} size="full" />
+                    <span className="flex justify-end"><Button>제출</Button></span>
                 </div>
                 <div className="flex gap-5 lg:col-span-2">
                     <Link

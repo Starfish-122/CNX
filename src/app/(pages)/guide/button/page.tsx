@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Button from '@/components/base/Button';
+import Button from '@/components/atoms/Button';
 import GuideLayout from '@/components/templates/GuidePageLayout';
 import GuideSection from '@/components/templates/GuideSection';
 import ExampleCard from '@/components/molecules/ExampleCard';
