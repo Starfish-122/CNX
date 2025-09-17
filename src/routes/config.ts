@@ -54,6 +54,9 @@ export const sidebarCategories: SidebarCategory[] = [
     {
         id: 'molecule',
         name: '모듈 컴포넌트',
-        items: [{ name: 'StarRating', path: '/guide/star-rating' }],
+        items: [
+            { name: 'StarRating', path: '/guide/star-rating' },
+            { name: 'Card', path: '/guide/card' },
+        ],
     },
 ];
