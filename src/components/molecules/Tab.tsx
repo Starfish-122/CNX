@@ -1,6 +1,6 @@
 'use client';
 
-import Icon from '../base/Icon';
+import Icon from '../atoms/Icon';
 
 const TABS = [
     {
@@ -22,7 +22,6 @@ const TABS = [
 export default function Tab() {
     return (
         <div className="container mx-auto flex justify-center align-middle gap-2.5 absolute bottom-0 left-1/2 -translate-x-1/2 bg-white">
-            
             <div className="tab w-full xl:w-1/2 ">
                 <div className="grid grid-cols-3 md:grid-cols-6 w-full">
                     {TABS.map((tab) => (

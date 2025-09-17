@@ -1,7 +1,6 @@
 /* map */
-@utility tab{    
+@utility tab {
     .tab__button:not(:last-child) {
         border-right: 1px solid var(--color-gray-200);
     }
 }
-
