@@ -42,18 +42,22 @@ export default function TextareaGuide() {
                 />
             </GuideSection>
 
-            <GuideSection title="속성 (label, placeholder, rows)">
-                <ExampleCard
-                    demo={
-                        <div className="flex flex-col gap-4">
-                            <Textarea label="메시지" placeholder="메시지를 입력하세요" rows={3} />
-                            <Textarea label="설명" placeholder="상세 설명을 입력하세요" rows={5} />
-                        </div>
-                    }
-                    code={`<Textarea label="메시지" placeholder="메시지를 입력하세요" rows={3} />
-<Textarea label="설명" placeholder="상세 설명을 입력하세요" rows={5} />`}
-                />
-            </GuideSection>
+      <GuideSection title="속성 (label, placeholder, rows, cols)">
+        <ExampleCard
+          demo={
+            <div className="flex flex-col gap-4">
+              <Textarea label="메시지" placeholder="메시지를 입력하세요" rows={3} />
+              <Textarea label="설명" placeholder="상세 설명을 입력하세요" rows={5} />
+              <Textarea label="설명" placeholder="상세 설명을 입력하세요" rows={5} cols={10} />
+              <Textarea label="설명" placeholder="상세 설명을 입력하세요" rows={5} cols={50} />
+            </div>
+          }
+          code={`<Textarea label="메시지" placeholder="메시지를 입력하세요" rows={3} />
+<Textarea label="설명" placeholder="상세 설명을 입력하세요" rows={5} />
+<Textarea label="설명" placeholder="상세 설명을 입력하세요" cols={10} />
+<Textarea label="설명" placeholder="상세 설명을 입력하세요" cols={50} />`}
+        />
+      </GuideSection>
 
             <GuideSection title="상태 (disabled, readonly, required)">
                 <ExampleCard

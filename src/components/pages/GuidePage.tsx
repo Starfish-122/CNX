@@ -39,7 +39,7 @@ const components = [
         link: '/guide/textarea',
     },
     {
-        name: '🔲 Button',
+        name: '⬇️ Button',
         description: '버튼 컴포넌트',
         link: '/guide/button',
     },
