@@ -322,6 +322,16 @@ Next.js와 Tailwind CSS에 대해 알아보려면, 아래 링크를 클릭하세
 -   **장점**: 중괄호, 대괄호, 소괄호를 색상으로 구분되어 중첩 구조 파악
 -   **사용방법**: 자동 적용
 
+### ;ㅁ;
+
+-   동적 세그먼트 : [component] 부분이 URL에서 params.component로 전달
+
+```md
+/detail/button → params.component = "button"
+/detail/card → params.component = "card"  
+/detail/input → params.component = "input"
+```
+
 <!--
 #### 3.5.4. 컴포넌트 스타일링
 
