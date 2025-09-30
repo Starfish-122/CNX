@@ -8,9 +8,9 @@ import PropsTable from '@/components/molecules/PropsTable';
 import GuidePageLayout from '@/components/templates/GuidePageLayout';
 
 interface PageProps {
-    params: {
+    params: Promise<{
         component: string;
-    };
+    }>;
 }
 
 export default async function ComponentGuidePage({
@@ -52,7 +52,7 @@ export default async function ComponentGuidePage({
                     <Title element="h2" className="text-xl">
                         사용법
                     </Title>
-                    <Text className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                    <Text className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">
                         {data.usage}
                     </Text>
                     {data.usageCode && <CodeBlock code={data.usageCode} title="Code" />}
@@ -63,11 +63,25 @@ export default async function ComponentGuidePage({
                     <Title element="h2" className="text-xl">
                         예제
                     </Title>
-                    <div className="space-y-6">
-                        {data.examples.map((example, index) => (
-                            <ExampleCard key={index} demo={example.preview} code={example.code} />
-                        ))}
-                    </div>
+                    {data.examples && data.examples.length > 0 ? (
+                        <div className="space-y-6">
+                            {data.examples.map((example, index) => (
+                                <ExampleCard
+                                    key={index}
+                                    demo={example.preview}
+                                    code={example.code}
+                                    title={example.title}
+                                    description={example.description}
+                                />
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 bg-gray-50 dark:bg-gray-900">
+                            <Text className="text-gray-500 dark:text-gray-400 text-center">
+                                이 컴포넌트의 예제가 아직 준비되지 않았습니다.
+                            </Text>
+                        </div>
+                    )}
                 </div>
 
                 {/* Props 섹션 */}
@@ -75,7 +89,15 @@ export default async function ComponentGuidePage({
                     <Title element="h2" className="text-xl">
                         Props
                     </Title>
-                    <PropsTable props={data.props} />
+                    {data.props && data.props.length > 0 ? (
+                        <PropsTable props={data.props} />
+                    ) : (
+                        <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 bg-gray-50 dark:bg-gray-900">
+                            <Text className="text-gray-500 dark:text-gray-400 text-center">
+                                이 컴포넌트의 Props 정보가 아직 준비되지 않았습니다.
+                            </Text>
+                        </div>
+                    )}
                 </div>
 
                 {/* 주의사항 섹션 */}

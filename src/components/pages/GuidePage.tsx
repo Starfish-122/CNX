@@ -1,60 +1,14 @@
 import Link from 'next/link';
 import Text from '@/components/atoms/Text';
 import GuidePageLayout from '@/components/templates/GuidePageLayout';
-// import Title from '@/components/atoms/Title';
-// import ExampleCard from '@/components/molecules/ExampleCard';
-// import CodeBlock from '@/components/molecules/CodeBlock';
-// import PropsTable from '@/components/molecules/PropsTable';
-// import { componentData } from '../../data/componentData';
+import { componentData } from '@/data/componentData';
 
-const components = [
-    {
-        name: '📑 Title',
-        description: '페이지/섹션에 사용되는 타이틀 컴포넌트',
-        link: '/guide/title',
-    },
-    {
-        name: '📑 Text',
-        description: '기본 텍스트 컴포넌트',
-        link: '/guide/text',
-    },
-    {
-        name: '⭐ StarRating',
-        description: '별점 컴포넌트',
-        link: '/guide/star-rating',
-    },
-    {
-        name: '🏷️ Tag & TagList',
-        description: '태그 컴포넌트',
-        link: '/guide/tag',
-    },
-    {
-        name: '🥨 Icon',
-        description: '아이콘 컴포넌트',
-        link: '/guide/icon',
-    },
-    {
-        name: '⌨️ Input',
-        description: '입력 필드 컴포넌트',
-        link: '/guide/input',
-    },
-    {
-        name: '📝 Textarea',
-        description: '텍스트 영역 컴포넌트',
-        link: '/guide/textarea',
-    },
-    {
-        name: '⬇️ Button',
-        description: '버튼 컴포넌트',
-        link: '/guide/button',
-    },
-    {
-        name: '🃏 Card',
-        description: '카드 컴포넌트',
-        link: '/guide/card',
-    },
-    // 필요 시 더 추가
-];
+// componentData에서 컴포넌트 목록 자동 생성
+const components = Object.entries(componentData).map(([key, data]) => ({
+    name: data.title,
+    description: data.description,
+    link: `/guide/${key}`,
+}));
 
 export default function GuidePage(): React.JSX.Element {
     return (
@@ -65,8 +19,8 @@ export default function GuidePage(): React.JSX.Element {
                     <table className="min-w-full table-fixed text-left text-sm">
                         <thead className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
                             <tr>
-                                <th className="w-1/4 px-4 py-3 text-center w-1/6">이름</th>
-                                <th className="px-4 py-3 text-center">내용</th>
+                                <th className="w-1/4 px-4 py-3 text-center">이름</th>
+                                {/* <th className="px-4 py-3 text-center">내용</th> */}
                                 <th className=" px-4 py-3 text-center w-1/6"></th>
                             </tr>
                         </thead>
@@ -76,11 +30,11 @@ export default function GuidePage(): React.JSX.Element {
                                     <td className="px-4 py-3 align-middle whitespace-nowrap">
                                         <Text className="font-medium">{component.name}</Text>
                                     </td>
-                                    <td className="px-4 py-3 align-middle">
+                                    {/* <td className="px-4 py-3 align-middle">
                                         <Text className="text-gray-600 dark:text-gray-400">
                                             {component.description}
                                         </Text>
-                                    </td>
+                                    </td> */}
                                     <td className="px-4 py-3 align-middle text-right">
                                         <Link
                                             href={component.link}

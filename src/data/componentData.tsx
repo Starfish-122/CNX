@@ -8,10 +8,12 @@ import Tag from '@/components/atoms/Tag';
 import TagList from '@/components/atoms/TagList';
 import CategoryTag from '@/components/atoms/CategoryTag';
 import Text from '@/components/atoms/Text';
+import Title from '@/components/atoms/Title';
+import Textarea from '@/components/atoms/Textarea';
 
 export const componentData = {
     button: {
-        title: 'Button 컴포넌트',
+        title: 'Button ',
         description: '다양한 스타일과 크기의 버튼 컴포넌트입니다.',
         componentName: 'Button',
         examples: [
@@ -117,7 +119,7 @@ export const componentData = {
         ],
     },
     card: {
-        title: 'Card 컴포넌트',
+        title: 'Card ',
         description: '콘텐츠를 그룹화하여 표시하는 카드 컴포넌트입니다.',
         componentName: 'Card',
         examples: [
@@ -173,7 +175,7 @@ export const componentData = {
         ],
     },
     icon: {
-        title: 'Icon 컴포넌트',
+        title: 'Icon ',
         description:
             'Google Material Icons/Symbols를 사용하여 아이콘을 표시합니다. 다양한 크기와 색상, 스타일을 지원하며 클릭 이벤트도 처리할 수 있습니다.',
         componentName: 'Icon',
@@ -369,7 +371,7 @@ export const componentData = {
         ],
     },
     input: {
-        title: 'Input 컴포넌트',
+        title: 'Input ',
         description:
             '폼 입력을 위한 컴포넌트입니다. label, hint, error 메시지를 포함하며, startAdornment, endAdornment로 아이콘이나 버튼을 추가할 수 있습니다.',
         componentName: 'Input',
@@ -553,7 +555,7 @@ label, hint, error 메시지를 포함하며, startAdornment, endAdornment로 �
         ],
     },
     'star-rating': {
-        title: 'StarRating 컴포넌트',
+        title: 'StarRating ',
         description:
             '0.5 단위 선택을 지원하는 별점 컴포넌트입니다. 키보드 및 마우스(호버/클릭) 인터랙션을 지원하며, className으로 Tailwind 스타일을 오버라이드할 수 있습니다.',
         componentName: 'StarRating',
@@ -696,7 +698,7 @@ const [rating, setRating] = useState(3.5);
         ],
     },
     tag: {
-        title: 'Tag / TagList / CategoryTag 컴포넌트',
+        title: 'Tag (TagList, CategoryTag)',
         description:
             'Tag는 팔레트를 받아 렌더링하는 단순한 프레젠테이션 전용 컴포넌트, CategoryTag는 카테고리 → 색상 매핑 컴포넌트입니다. TagList로 여러 태그들을 묶어 간격/줄바꿈을 제어할 수 있습니다.',
         componentName: 'Tag',
@@ -852,5 +854,418 @@ import CategoryTag from '@/components/atoms/CategoryTag';
             'CategoryTag는 카테고리에 따라 자동으로 색상이 매핑됩니다.',
             'TagList로 여러 태그의 간격과 줄바꿈을 제어할 수 있습니다.',
         ],
+    },
+    text: {
+        title: 'Text ',
+        description: '텍스트를 일관된 스타일로 출력하는 컴포넌트입니다.',
+        componentName: 'Text',
+        examples: [
+            {
+                title: '기본 사용',
+                description: '가장 기본적인 텍스트 컴포넌트입니다.',
+                code: `<Text>텍스트 내용</Text>`,
+                preview: <Text>텍스트 내용</Text>,
+            },
+            {
+                title: '다양한 태그 사용',
+                description: 'element 속성으로 다양한 HTML 태그를 지정할 수 있습니다.',
+                code: `<Text element="span">span 태그</Text><Text element="span">span 태그</Text>
+<Text element="div">div 태그</Text>
+<Text>p 태그 (기본)</Text>`,
+                preview: (
+                    <div className="space-y-2">
+                        <Text element="span" className="bg-blue-200 dark:bg-blue-800">
+                            span 태그
+                        </Text>
+                        <Text element="span" className="bg-red-200 dark:bg-red-800">
+                            span 태그
+                        </Text>
+                        <Text element="div" className="bg-yellow-200 dark:bg-yellow-800">
+                            div 태그
+                        </Text>
+                        <Text className="bg-green-200 dark:bg-green-800">p 태그 (기본)</Text>
+                        <small className="block w-full text-gray-500 text-right">
+                            * 텍스트 배경은 참고용
+                        </small>
+                    </div>
+                ),
+            },
+            {
+                title: '다양한 스타일',
+                description: 'className으로 다양한 스타일을 적용할 수 있습니다.',
+                code: `<Text className="text-blue-600 dark:text-blue-400">색상 변경된 텍스트</Text>
+<Text className="bg-blue-100 dark:bg-blue-800">배경 색상 추가</Text>`,
+                preview: (
+                    <div className="space-y-2">
+                        <Text className="text-blue-600 dark:text-blue-400">색상 변경된 텍스트</Text>
+                        <Text className="bg-blue-100 dark:bg-blue-800">배경 색상 추가</Text>
+                    </div>
+                ),
+            },
+        ],
+        props: [
+            {
+                name: 'element',
+                type: 'React.ElementType',
+                required: false,
+                defaultValue: "'p'",
+                description: '출력할 태그/컴포넌트',
+            },
+            {
+                name: 'className',
+                type: 'string',
+                required: false,
+                description: '추가 Tailwind 클래스',
+            },
+            {
+                name: 'children',
+                type: 'React.ReactNode',
+                required: true,
+                description: '표시할 내용',
+            },
+        ],
+        usage: `Text 컴포넌트는 텍스트를 일관된 스타일로 출력하는 컴포넌트입니다.
+element 속성으로 p, span, div 태그를 지정할 수 있으며, className 속성으로 추가 커스텀 클래스 또는 tailwind 클래스를 지정할 수 있습니다.`,
+        usageCode: `import Text from '@/components/atoms/Text';
+
+// 기본 사용법
+<Text>텍스트 내용</Text>
+
+// 다양한 태그 사용
+<Text element="span">span 태그</Text>
+<Text element="div">div 태그</Text>
+
+// 스타일 적용
+<Text className="text-blue-600">색상 변경된 텍스트</Text>`,
+        notes: [
+            'element 속성으로 다양한 HTML 태그를 지정할 수 있습니다.',
+            'className으로 Tailwind CSS 클래스를 적용할 수 있습니다.',
+            '기본값은 p 태그입니다.',
+        ],
+    },
+    title: {
+        title: 'Title ',
+        description: '페이지/섹션 타이틀을 일관된 스타일로 출력하는 컴포넌트입니다.',
+        componentName: 'Title',
+        examples: [
+            {
+                title: '기본 사용',
+                description: '가장 기본적인 타이틀 컴포넌트입니다.',
+                code: `<Title>섹션 제목</Title>`,
+                preview: <Title>섹션 제목</Title>,
+            },
+            {
+                title: '다양한 태그 사용',
+                description: 'element 속성으로 다양한 HTML 태그를 지정할 수 있습니다.',
+                code: `<Title element="h1">메인 타이틀</Title>
+<Title element="a" href="https://example.com" target="_blank">외부 링크 타이틀</Title>
+<Title className="text-red-500">강조된 타이틀</Title>`,
+                preview: (
+                    <div className="space-y-4">
+                        <Title element="h1">메인 타이틀</Title>
+                        <Title element="a" href="https://example.com" target="_blank">
+                            외부 링크 타이틀
+                        </Title>
+                        <Title className="text-red-500">강조된 타이틀</Title>
+                    </div>
+                ),
+            },
+        ],
+        props: [
+            {
+                name: 'element',
+                type: 'React.ElementType',
+                required: false,
+                defaultValue: "'strong'",
+                description: '출력할 태그/컴포넌트',
+            },
+            {
+                name: 'href',
+                type: 'string',
+                required: false,
+                description: 'element="a"일 때 링크 주소',
+            },
+            {
+                name: 'target',
+                type: 'string',
+                required: false,
+                description: 'element="a"일 때 링크 target',
+            },
+            {
+                name: 'className',
+                type: 'string',
+                required: false,
+                description: '추가 Tailwind 클래스',
+            },
+            {
+                name: 'children',
+                type: 'React.ReactNode',
+                required: true,
+                description: '표시할 내용',
+            },
+        ],
+        usage: `Title 컴포넌트는 페이지/섹션 타이틀을 일관된 스타일로 출력하는 컴포넌트입니다.
+
+element 속성으로 HTML 태그/커스텀 컴포넌트를 지정할 수 있으며, className 속성으로 추가 커스텀 클래스 또는 tailwind 클래스를 지정할 수 있습니다.`,
+        usageCode: `import Title from '@/components/atoms/Title';
+
+// 기본 사용법
+<Title>섹션 제목</Title>
+
+// 다양한 태그 사용
+<Title element="h1">메인 타이틀</Title>
+<Title element="a" href="https://example.com" target="_blank">외부 링크 타이틀</Title>
+
+// 스타일 적용
+<Title className="text-red-500">강조된 타이틀</Title>`,
+        notes: [
+            'element 속성으로 다양한 HTML 태그를 지정할 수 있습니다.',
+            '링크로 사용할 때는 href와 target 속성을 함께 사용하세요.',
+            'className으로 Tailwind CSS 클래스를 적용할 수 있습니다.',
+        ],
+    },
+    textarea: {
+        title: 'Textarea ',
+        description: '여러 줄 텍스트 입력을 위한 컴포넌트입니다.',
+        componentName: 'Textarea',
+        examples: [
+            {
+                title: '기본 사용',
+                description: '가장 기본적인 텍스트 영역입니다.',
+                code: `<Textarea />`,
+                preview: <Textarea />,
+            },
+            {
+                title: '사이즈 (size: sm, md, lg, full)',
+                description: '다양한 크기의 텍스트 영역들입니다.',
+                code: `<Textarea size="sm" placeholder="작은 텍스트 영역" />
+<Textarea size="md" placeholder="중간 텍스트 영역" />
+<Textarea size="lg" placeholder="큰 텍스트 영역" />
+<Textarea size="full" placeholder="전체 너비 텍스트 영역" />`,
+                preview: (
+                    <div className="flex flex-col gap-4">
+                        <Textarea size="sm" placeholder="작은 텍스트 영역" />
+                        <Textarea size="md" placeholder="중간 텍스트 영역" />
+                        <Textarea size="lg" placeholder="큰 텍스트 영역" />
+                        <Textarea size="full" placeholder="전체 너비 텍스트 영역" />
+                    </div>
+                ),
+            },
+            {
+                title: '속성 (label, placeholder, rows, cols)',
+                description: '다양한 속성의 텍스트 영역들입니다.',
+                code: `<Textarea label="메시지" placeholder="메시지를 입력하세요" rows={3} />
+<Textarea label="설명" placeholder="상세 설명을 입력하세요" rows={5} />
+<Textarea label="설명" placeholder="상세 설명을 입력하세요" cols={10} />
+<Textarea label="설명" placeholder="상세 설명을 입력하세요" cols={50} />`,
+                preview: (
+                    <div className="flex flex-col gap-4">
+                        <Textarea label="메시지" placeholder="메시지를 입력하세요" rows={3} />
+                        <Textarea label="설명" placeholder="상세 설명을 입력하세요" rows={5} />
+                        <Textarea
+                            label="설명"
+                            placeholder="상세 설명을 입력하세요"
+                            rows={5}
+                            cols={10}
+                        />
+                        <Textarea
+                            label="설명"
+                            placeholder="상세 설명을 입력하세요"
+                            rows={5}
+                            cols={50}
+                        />
+                    </div>
+                ),
+            },
+
+            {
+                title: '상태 (disabled, readonly, required)',
+                description: '다양한 상태의 텍스트 영역들입니다.',
+                code: `<Textarea disabled placeholder="비활성화된 텍스트 영역" />
+<Textarea readOnly value="읽기 전용 텍스트 영역입니다" />
+<Textarea label="필수 입력" required placeholder="필수 입력 필드" />
+<Textarea label="필수 입력 (값 있음)" required value="입력된 값" />`,
+                preview: (
+                    <div className="flex flex-col gap-4">
+                        <Textarea disabled placeholder="비활성화된 텍스트 영역" />
+                        <Textarea readOnly value="읽기 전용 텍스트 영역입니다" />
+                        <Textarea label="필수 입력" required placeholder="필수 입력 필드" />
+                        <Textarea
+                            label="필수 입력 (값 있음)"
+                            required
+                            placeholder="필수 입력 필드"
+                            value="입력된 값"
+                        />
+                    </div>
+                ),
+            },
+            {
+                title: '리셋 버튼과 글자 수 표시',
+                description: '리셋 버튼과 글자 수 표시 기능입니다.',
+                code: `<Textarea showResetButton />
+
+<Textarea showCharCount />
+<Textarea maxLength={100} showCharCount />`,
+                preview: (
+                    <>
+                        <Textarea label="리셋 가능" placeholder="입력해보세요" showResetButton />
+                        <div className="flex flex-col gap-4">
+                            <Textarea
+                                label="글자 수 표시"
+                                placeholder="입력해보세요"
+                                showCharCount
+                            />
+                            <Textarea
+                                label="최대 100자"
+                                placeholder="최대 100자까지 입력 가능"
+                                maxLength={100}
+                                showCharCount
+                            />
+                        </div>
+                    </>
+                ),
+            },
+            {
+                title: '리사이즈 (resize: none, both, horizontal, vertical)',
+                description: '다양한 리사이즈의 텍스트 영역들입니다.',
+                code: `<Textarea resize="none" />
+<Textarea resize="both" />
+<Textarea resize="horizontal" />
+<Textarea resize="vertical" />`,
+                preview: (
+                    <div className="flex flex-col gap-4">
+                        <Textarea
+                            label="리사이즈 없음"
+                            placeholder="크기 조절 불가"
+                            resize="none"
+                        />
+                        <Textarea
+                            label="양방향 리사이즈"
+                            placeholder="가로/세로 모두 조절 가능"
+                            resize="both"
+                        />
+                        <Textarea
+                            label="가로만 리사이즈"
+                            placeholder="가로만 조절 가능"
+                            resize="horizontal"
+                        />
+                        <Textarea
+                            label="세로만 리사이즈"
+                            placeholder="세로만 조절 가능"
+                            resize="vertical"
+                        />
+                    </div>
+                ),
+            },
+        ],
+        props: [
+            {
+                name: 'size',
+                type: "'sm' | 'md' | 'lg' | 'full'",
+                required: false,
+                defaultValue: "'md'",
+                description: '크기',
+            },
+            {
+                name: 'label',
+                type: 'string',
+                required: false,
+                description: '라벨 텍스트',
+            },
+            {
+                name: 'disabled',
+                type: 'boolean',
+                required: false,
+                defaultValue: 'false',
+                description: '비활성화',
+            },
+            {
+                name: 'required',
+                type: 'boolean',
+                required: false,
+                defaultValue: 'false',
+                description: '필수 입력',
+            },
+            {
+                name: 'showResetButton',
+                type: 'boolean',
+                required: false,
+                defaultValue: 'false',
+                description: '리셋 버튼 표시 여부',
+            },
+            {
+                name: 'onReset',
+                type: '() => void',
+                required: false,
+                description: '리셋 버튼 클릭 시 호출되는 콜백 (제어형 컴포넌트에서 상태 초기화용)',
+            },
+            {
+                name: 'showCharCount',
+                type: 'boolean',
+                required: false,
+                defaultValue: 'false',
+                description: '글자 수 표시 여부',
+            },
+            {
+                name: 'resize',
+                type: "'none' | 'both' | 'horizontal' | 'vertical'",
+                required: false,
+                defaultValue: "'none'",
+                description: '리사이즈 가능 여부',
+            },
+            {
+                name: 'maxLength',
+                type: 'number',
+                required: false,
+                description: '최대 글자 수',
+            },
+            {
+                name: 'rows',
+                type: 'number',
+                required: false,
+                defaultValue: '3',
+                description: '행 수',
+            },
+            {
+                name: 'cols',
+                type: 'number',
+                required: false,
+                description: '열 수',
+            },
+            {
+                name: 'className',
+                type: 'string',
+                required: false,
+                description: '커스텀 클래스',
+            },
+        ],
+        usage: `Textarea 컴포넌트는 여러 줄 텍스트 입력을 위한 컴포넌트입니다.
+label, showResetButton, showCharCount 기능을 포함하며, 필수 입력 유효성 검사와 글자 수 제한 기능을 지원합니다.`,
+        usageCode: `import Textarea from '@/components/atoms/Textarea';
+
+// 기본 사용법
+<Textarea />
+
+// 라벨과 크기 지정
+<Textarea label="메시지" size="lg" />
+
+// 리셋 버튼과 글자 수 표시
+<Textarea label="리셋 가능" showResetButton />
+<Textarea label="글자 수 표시" showCharCount />`,
+        notes: [
+            '필수 입력 필드는 required prop을 사용하여 표시하세요.',
+            '리셋 버튼은 제어형 컴포넌트에서 상태 초기화에 유용합니다.',
+            '글자 수 표시는 사용자에게 입력 제한을 명확히 알려줍니다.',
+        ],
+    },
+    textExample: {
+        title: '카테고리 예시',
+        description: '',
+        componentName: 'TextExample',
+        examples: [],
+        props: [],
+        usage: ``,
+        usageCode: ``,
+        notes: [],
     },
 };

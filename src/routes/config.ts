@@ -1,4 +1,5 @@
 // 애플리케이션 네비게이션 및 사이드바 구성
+import { componentData } from '@/data/componentData';
 
 /**
  * 네비게이션 링크 인터페이스
@@ -35,28 +36,44 @@ export const navLinks: NavLink[] = [
 ];
 
 /**
+ * 컴포넌트를 카테고리별 자동 분류
+ */
+const categorizeComponents = () => {
+    const atoms: SidebarItem[] = [];
+    const molecules: SidebarItem[] = [];
+
+    Object.entries(componentData).forEach(([key, data]) => {
+        const item = { name: data.componentName, path: `/guide/${key}` };
+
+        // 컴포넌트 이름으로 카테고리 분류
+        if (
+            ['Button', 'Input', 'Textarea', 'Text', 'Title', 'Icon', 'Tag', 'TextExample'].includes(
+                data.componentName
+            )
+        ) {
+            atoms.push(item);
+        } else {
+            molecules.push(item);
+        }
+    });
+
+    return { atoms, molecules };
+};
+
+const { atoms, molecules } = categorizeComponents();
+
+/**
  * 사이드바 카테고리 및 아이템 정의
  */
 export const sidebarCategories: SidebarCategory[] = [
     {
         id: 'atoms',
         name: '기본 컴포넌트',
-        items: [
-            { name: 'Icon', path: '/guide/icon' },
-            { name: 'Title', path: '/guide/title' },
-            { name: 'Text', path: '/guide/text' },
-            { name: 'Tag', path: '/guide/tag' },
-            { name: 'Input', path: '/guide/input' },
-            { name: 'Textarea', path: '/guide/textarea' },
-            { name: 'Button', path: '/guide/button' },
-        ],
+        items: atoms,
     },
     {
-        id: 'molecule',
+        id: 'molecules',
         name: '모듈 컴포넌트',
-        items: [
-            { name: 'StarRating', path: '/guide/star-rating' },
-            { name: 'Card', path: '/guide/card' },
-        ],
+        items: molecules,
     },
 ];
