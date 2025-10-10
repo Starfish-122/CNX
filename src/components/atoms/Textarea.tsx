@@ -14,8 +14,10 @@ export interface TextareaProps extends Omit<React.TextareaHTMLAttributes<HTMLTex
   label?: string;
   /** 비활성화 여부 */
   disabled?: boolean;
-  /** 필수 입력 여부 */
+  /** 필수 입력 여부 (라벨에 * 표시) */
   required?: boolean;
+  /** 필수값 유효성 검사 여부 (에러 메시지 표시) */
+  validateRequired?: boolean;
   /** 리셋 버튼 표시 여부 */
   showResetButton?: boolean;
   /** 리셋 버튼 클릭 핸들러 */
@@ -68,6 +70,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(({
   label = '',
   disabled = false,
   required = false,
+  validateRequired = false,
   showResetButton = false,
   showCharCount = false,
   resize = 'none',
@@ -84,7 +87,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(({
   const currentValue = isControlled ? String(props.value ?? '') : innerValue;
   
   const hasValue = currentValue.trim().length > 0;
-  const isRequiredEmpty = required && !hasValue;
+  const isRequiredEmpty = validateRequired && !hasValue;
   const hasError = isRequiredEmpty;
   const currentLength = currentValue.length;
   const maxLength = props.maxLength || 0;
@@ -111,7 +114,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(({
       ref={ref}
       id={textareaId}
       disabled={isDisabled}
-      required={required}
+      required={validateRequired}
       placeholder={props.placeholder ?? ' '}
       value={currentValue}
       onChange={handleChange}

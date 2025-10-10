@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '@/components/atoms/Button';
+import ButtonLink from '@/components/atoms/ButtonLink';
 import Card from '@/components/molecules/Card';
 import Icon from '@/components/atoms/Icon';
 import Input from '@/components/atoms/Input';
@@ -48,12 +49,57 @@ export const componentData = {
   <Button size="sm">Small</Button>
   <Button size="md">Medium</Button>
   <Button size="lg">Large</Button>
+</div>
+<Button size="full">full</Button>
+`,
+                preview: (
+                    <>
+                        <div className="flex items-center gap-2">
+                            <Button size="sm">Small</Button>
+                            <Button size="md">Medium</Button>
+                            <Button size="lg">Large</Button>
+                        </div>
+                        <Button size="full">full</Button>
+                    </>
+                ),
+            },
+            {
+                title: '아이콘이 있는 버튼',
+                description: '아이콘과 함께 사용하는 버튼들입니다.',
+                code: `<div className="flex gap-2">
+  <Button icon="save">저장</Button>
+  <Button icon="add">추가</Button>
+  <Button icon="edit" iconPosition="end">편집</Button>
+  <Button icon="delete">삭제</Button>
 </div>`,
                 preview: (
-                    <div className="flex items-center gap-2">
-                        <Button size="sm">Small</Button>
-                        <Button size="md">Medium</Button>
-                        <Button size="lg">Large</Button>
+                    <div className="flex gap-2">
+                        <Button icon="save">저장</Button>
+                        <Button icon="add">추가</Button>
+                        <Button icon="edit" iconPosition="end">편집</Button>
+                        <Button icon="delete">삭제</Button>
+                    </div>
+                ),
+            },
+            {
+                title: '로딩 상태',
+                description: '로딩 상태를 표시하는 버튼입니다.',
+                code: `<Button loading>로딩 중...</Button>`,
+                preview: <Button loading>로딩 중...</Button>,
+            },
+            {
+                title: '비활성화 상태',
+                description: '비활성화된 버튼들입니다.',
+                code: `<div className="flex gap-2">
+  <Button disabled>비활성화</Button>
+  <Button disabled color="success">비활성화</Button>
+  <Button disabled variant="outline">비활성화</Button>
+</div>`,
+                preview: (
+                    <div className="flex gap-2">
+                        <Button disabled>비활성화</Button>
+                        <Button disabled color="success">비활성화</Button>
+                        <Button disabled variant="outline">비활성화</Button>
                     </div>
                 ),
             },
@@ -74,10 +120,49 @@ export const componentData = {
             },
             {
                 name: 'size',
-                type: "'sm' | 'md' | 'lg'",
+                type: "'sm' | 'md' | 'lg' | 'full'",
                 required: false,
                 defaultValue: "'md'",
                 description: '버튼의 크기',
+            },
+            {
+                name: 'variant',
+                type: "'solid' | 'outline' | 'text'",
+                required: false,
+                defaultValue: "'solid'",
+                description: '버튼 스타일 변형',
+            },
+            {
+                name: 'icon',
+                type: "'add' | 'edit' | 'delete' | 'search' | 'save' | 'download'",
+                required: false,
+                description: '내장 아이콘',
+            },
+            {
+                name: 'iconPosition',
+                type: "'start' | 'end'",
+                required: false,
+                defaultValue: "'start'",
+                description: '아이콘 위치 (icon과 함께 사용)',
+            },
+            {
+                name: 'startIcon',
+                type: 'React.ReactNode',
+                required: false,
+                description: '커스텀 앞쪽 아이콘',
+            },
+            {
+                name: 'endIcon',
+                type: 'React.ReactNode',
+                required: false,
+                description: '커스텀 뒤쪽 아이콘',
+            },
+            {
+                name: 'loading',
+                type: 'boolean',
+                required: false,
+                defaultValue: 'false',
+                description: '로딩 상태',
             },
             {
                 name: 'disabled',
@@ -100,7 +185,7 @@ export const componentData = {
             },
         ],
         usage: `Button 컴포넌트는 사용자 인터랙션을 위한 기본적인 UI 요소입니다. 
-다양한 색상, 크기, 상태를 지원하며 접근성을 고려하여 설계되었습니다.`,
+다양한 색상, 크기, 상태, 아이콘을 지원하며 접근성을 고려하여 설계되었습니다.`,
         usageCode: `import Button from '@/components/atoms/Button';
 
 // 기본 사용법
@@ -111,11 +196,244 @@ export const componentData = {
 // 색상과 크기 지정
 <Button color="success" size="lg">
   저장하기
-</Button>`,
+</Button>
+
+// 아이콘과 함께 사용
+<Button icon="save">저장</Button>
+<Button icon="add" iconPosition="end">추가</Button>
+
+// 로딩 상태
+<Button loading>로딩 중...</Button>`,
         notes: [
             '버튼은 항상 명확한 액션을 나타내는 텍스트를 포함해야 합니다.',
             'disabled 상태일 때는 시각적으로 비활성화된 것을 명확히 표시합니다.',
             '색상 선택 시 브랜드 가이드라인을 준수하세요.',
+            '아이콘은 액션을 더 명확하게 전달하는 데 도움이 됩니다.',
+            '로딩 상태는 사용자에게 진행 상황을 알려줍니다.',
+        ],
+    },
+    'button-link': {
+        title: 'ButtonLink ',
+        description: 'Next.js Link 컴포넌트를 사용한 링크 버튼입니다. Button과 동일한 스타일을 지원하며, 페이지 이동이나 외부 링크에 사용됩니다.',
+        componentName: 'ButtonLink',
+        examples: [
+            {
+                title: '기본 사용',
+                description: '가장 기본적인 링크 버튼입니다.',
+                code: `<ButtonLink href="/">이동</ButtonLink>`,
+                preview: <ButtonLink href="/">이동</ButtonLink>,
+            },
+            {
+                title: '색상별 링크 버튼',
+                description: '다양한 색상의 링크 버튼들입니다.',
+                code: `<div className="flex gap-2">
+  <ButtonLink href="/" color="primary">Primary</ButtonLink>
+  <ButtonLink href="/" color="secondary">Secondary</ButtonLink>
+  <ButtonLink href="/" color="success">Success</ButtonLink>
+  <ButtonLink href="/" color="error">Error</ButtonLink>
+</div>`,
+                preview: (
+                    <div className="flex gap-2">
+                        <ButtonLink href="/" color="primary">Primary</ButtonLink>
+                        <ButtonLink href="/" color="secondary">Secondary</ButtonLink>
+                        <ButtonLink href="/" color="success">Success</ButtonLink>
+                        <ButtonLink href="/" color="error">Error</ButtonLink>
+                    </div>
+                ),
+            },
+            {
+                title: '크기별 링크 버튼',
+                description: '다양한 크기의 링크 버튼들입니다.',
+                code: `<div className="flex items-center gap-2">
+  <ButtonLink href="/" size="sm">Small</ButtonLink>
+  <ButtonLink href="/" size="md">Medium</ButtonLink>
+  <ButtonLink href="/" size="lg">Large</ButtonLink>
+</div>
+<ButtonLink href="/" size="full">full</ButtonLink>`,
+                preview: (
+                    <>
+                        <div className="flex items-center gap-2">
+                            <ButtonLink href="/" size="sm">Small</ButtonLink>
+                            <ButtonLink href="/" size="md">Medium</ButtonLink>
+                            <ButtonLink href="/" size="lg">Large</ButtonLink>
+                        </div>
+                        <ButtonLink href="/" size="full">full</ButtonLink>
+                    </>
+                ),
+            },
+            {
+                title: '변형별 링크 버튼',
+                description: '다양한 변형의 링크 버튼들입니다.',
+                code: `<div className="flex gap-2">
+  <ButtonLink href="/" variant="solid">Solid</ButtonLink>
+  <ButtonLink href="/" variant="outline">Outline</ButtonLink>
+  <ButtonLink href="/" variant="text">Text</ButtonLink>
+</div>`,
+                preview: (
+                    <div className="flex gap-2">
+                        <ButtonLink href="/" variant="solid">Solid</ButtonLink>
+                        <ButtonLink href="/" variant="outline">Outline</ButtonLink>
+                        <ButtonLink href="/" variant="text">Text</ButtonLink>
+                    </div>
+                ),
+            },
+            {
+                title: '아이콘이 있는 링크 버튼',
+                description: '아이콘과 함께 사용하는 링크 버튼들입니다.',
+                code: `<div className="flex gap-2">
+  <ButtonLink href="/" icon="save">저장</ButtonLink>
+  <ButtonLink href="/" icon="add">추가</ButtonLink>
+  <ButtonLink href="/" icon="edit" iconPosition="end">편집</ButtonLink>
+  <ButtonLink href="/" icon="delete">삭제</ButtonLink>
+<ButtonLink href="https://example.com" target="_blank" rel="noopener noreferrer" icon="newWindown" iconPosition="end">
+  외부 링크
+</ButtonLink>
+</div>`,
+                preview: (
+                    <div className="flex gap-2">
+                        <ButtonLink href="/" icon="save">저장</ButtonLink>
+                        <ButtonLink href="/" icon="add">추가</ButtonLink>
+                        <ButtonLink href="/" icon="edit" iconPosition="end">편집</ButtonLink>
+                        <ButtonLink href="/" icon="delete">삭제</ButtonLink>
+                        <ButtonLink href="https://example.com" target="_blank" rel="noopener noreferrer" icon="newWindown" iconPosition="end">
+                            외부 링크
+                        </ButtonLink>
+                    </div>
+                ),
+            },
+            {
+                title: '비활성화 상태',
+                description: '비활성화된 버튼들입니다.',
+                code: `<div className="flex gap-2">
+  <ButtonLink disabled>비활성화</ButtonLink>
+  <ButtonLink disabled color="success">비활성화</ButtonLink>
+  <ButtonLink disabled variant="outline">비활성화</ButtonLink>
+</div>`,
+                preview: (
+                    <div className="flex gap-2">
+                        <ButtonLink href="/" disabled>비활성화</ButtonLink>
+                        <ButtonLink href="/" disabled variant="outline">비활성화</ButtonLink>
+                        <ButtonLink href="/" disabled variant="text">비활성화</ButtonLink>
+                    </div>
+                ),
+            },
+        ],
+        props: [
+            {
+                name: 'href',
+                type: 'string',
+                required: true,
+                description: '링크 주소',
+            },
+            {
+                name: 'variant',
+                type: "'solid' | 'outline' | 'text'",
+                required: false,
+                defaultValue: "'solid'",
+                description: '버튼 스타일 변형',
+            },
+            {
+                name: 'color',
+                type: "'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info'",
+                required: false,
+                defaultValue: "'primary'",
+                description: '버튼 컬러',
+            },
+            {
+                name: 'size',
+                type: "'sm' | 'md' | 'lg' | 'full'",
+                required: false,
+                defaultValue: "'md'",
+                description: '버튼 크기',
+            },
+            {
+                name: 'icon',
+                type: "'add' | 'edit' | 'delete' | 'search' | 'save' | 'download' | 'newWindown'",
+                required: false,
+                description: '내장 아이콘',
+            },
+            {
+                name: 'iconPosition',
+                type: "'start' | 'end'",
+                required: false,
+                defaultValue: "'start'",
+                description: '아이콘 위치 (icon과 함께 사용)',
+            },
+            {
+                name: 'startIcon',
+                type: 'React.ReactNode',
+                required: false,
+                description: '커스텀 앞쪽 아이콘',
+            },
+            {
+                name: 'endIcon',
+                type: 'React.ReactNode',
+                required: false,
+                description: '커스텀 뒤쪽 아이콘',
+            },
+            {
+                name: 'disabled',
+                type: 'boolean',
+                required: false,
+                defaultValue: 'false',
+                description: '비활성화 상태',
+            },
+            {
+                name: 'target',
+                type: 'string',
+                required: false,
+                description: '링크 target 속성',
+            },
+            {
+                name: 'rel',
+                type: 'string',
+                required: false,
+                description: '링크 rel 속성',
+            },
+            {
+                name: 'className',
+                type: 'string',
+                required: false,
+                description: '커스텀 클래스',
+            },
+            {
+                name: 'children',
+                type: 'React.ReactNode',
+                required: false,
+                description: '버튼 내용',
+            },
+        ],
+        usage: `ButtonLink 컴포넌트는 Next.js Link 컴포넌트를 사용한 링크 버튼입니다.
+Button과 동일한 스타일을 지원하며, 페이지 이동이나 외부 링크에 사용됩니다.`,
+        usageCode: `import ButtonLink from '@/components/atoms/ButtonLink';
+
+// 기본 사용법
+<ButtonLink href="/">이동</ButtonLink>
+
+// 색상과 크기 지정
+<ButtonLink href="/about" color="success" size="lg">
+  소개 페이지
+</ButtonLink>
+
+// 외부 링크
+<ButtonLink href="https://example.com" target="_blank" rel="noopener noreferrer">
+  외부 사이트
+</ButtonLink>
+
+// 아이콘과 함께
+<ButtonLink href="/download" icon="download">
+  다운로드
+</ButtonLink>
+
+// 외부 링크 아이콘
+<ButtonLink href="https://example.com" target="_blank" rel="noopener noreferrer" icon="newWindown" iconPosition="end">
+  외부 링크
+</ButtonLink>`,
+        notes: [
+            'href 속성은 필수입니다.',
+            '외부 링크 사용 시 target="_blank"와 rel="noopener noreferrer"를 함께 사용하세요.',
+            'Button과 동일한 스타일과 props를 지원합니다.',
+            'disabled 상태일 때는 span으로 렌더링되어 클릭이 비활성화됩니다.',
         ],
     },
     card: {

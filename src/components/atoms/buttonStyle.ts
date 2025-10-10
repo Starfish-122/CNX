@@ -5,10 +5,10 @@ export type ButtonVariant = 'solid' | 'outline' | 'text';
 export type ButtonColor = 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info';
 
 export const SIZE = {
-  sm: 'text-sm leading-relaxed px-3 py-1',
-  md: 'text-base leading-relaxed px-4 py-1.5',
-  lg: 'text-lg leading-relaxed px-5 py-2',
-  full: 'text-lg leading-relaxed py-2 w-full',
+  sm: 'text-sm leading-5 px-3 py-1',
+  md: 'text-base leading-6 px-4 py-1.5',
+  lg: 'text-lg leading-7 px-5 py-2',
+  full: 'text-lg leading-7 py-2 w-full',
 } as const;
 
 export function ButtonClass({
@@ -59,18 +59,18 @@ export function ButtonClass({
     solid: `
       ${colorMap[color].solid}
       hover:cursor-pointer
-      disabled:opacity-60 disabled:cursor-not-allowed
+      disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:opacity-60
     `,
     outline: `
       border ${colorMap[color].outline}
       bg-transparent hover:cursor-pointer
       disabled:opacity-50 disabled:cursor-not-allowed
+      disabled:hover:opacity-50 disabled:hover:bg-transparent disabled:hover:text-[var(--color-primary)] disabled:hover:border-[var(--color-primary)]
     `,
     text: `
       ${colorMap[color].text}
       bg-transparent hover:cursor-pointer
-      disabled:opacity-50 disabled:cursor-not-allowed
-      [&:hover_.button-text]:underline
+      disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:opacity-50
       [&_.button-icon]:no-underline
       [&_.button-icon_*]:no-underline
     `,

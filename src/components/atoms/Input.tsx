@@ -6,7 +6,7 @@ import { twMerge } from 'tailwind-merge';
 import Icon from './Icon';
 
 type InputSize = 'sm' | 'md' | 'lg' | 'full';
-type InputType = 'text' | 'password' | 'email' | 'number' | 'tel';
+type InputType = 'text' | 'password' | 'email' | 'number' | 'tel' | 'submit';
 
 export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'type' | 'children'> {
   /** 크기 */
@@ -21,8 +21,10 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   error?: string;
   /** 비활성화 여부 */
   disabled?: boolean;
-  /** 필수 입력 여부 */
+  /** 필수 입력 여부 (라벨에 * 표시) */
   required?: boolean;
+  /** 필수값 유효성 검사 여부 (에러 메시지 표시) */
+  validateRequired?: boolean;
   /** aria-invalid 토글 */
   invalid?: boolean;
   /** 시작 adornment (아이콘, 버튼 등) */
@@ -82,6 +84,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
   error,
   disabled = false,
   required = false,
+  validateRequired = false,
   invalid = false,
   // startAdornment,
   // endAdornment,
@@ -104,7 +107,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
   const [showPassword, setShowPassword] = useState(false);
   
   const hasValue = currentValue.trim().length > 0;
-  const isRequiredEmpty = required && !hasValue;
+  const isRequiredEmpty = validateRequired && !hasValue;
   const hasError = !!error || invalid || isRequiredEmpty;
   const hasHint = !!hint && !hasError;
 
@@ -140,7 +143,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
       id={inputId}
       type={currentType}
       disabled={isDisabled}
-      required={required}
+      required={validateRequired}
       placeholder={props.placeholder ?? ' '}
       value={currentValue}
       onChange={handleChange}

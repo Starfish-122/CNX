@@ -1,10 +1,12 @@
 import React from 'react';
+import Link from 'next/link';
 import { twMerge } from 'tailwind-merge';
 import { ButtonClass, ButtonSize, ButtonVariant, ButtonColor } from './buttonStyle';
 
-type IconName = 'add' | 'edit' | 'delete' | 'search' | 'save' | 'download';
+type IconName = 'add' | 'edit' | 'delete' | 'search' | 'save' | 'download' | 'newWindown';
 
-type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+type AnchorProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  href: string;
   variant?: ButtonVariant;
   color?: ButtonColor;
   size?: ButtonSize;
@@ -13,9 +15,10 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   startIcon?: React.ReactNode;
   endIcon?: React.ReactNode;
   disabled?: boolean;
-  loading?: boolean;
   className?: string;
   children?: React.ReactNode;
+  target?: string;
+  rel?: string;
 }
 
 const iconMap: Record<IconName, string> = {
@@ -24,11 +27,12 @@ const iconMap: Record<IconName, string> = {
   delete: 'delete',
   search: 'search',
   save: 'save',
-  download: 'download'
+  download: 'download',
+  newWindown: 'arrow_outward'
 };
 
-const Button = ({
-  type = 'button',
+const Anchor = ({
+  href = '#',
   variant = 'solid',
   color = 'primary',
   size = 'md',
@@ -37,14 +41,11 @@ const Button = ({
   startIcon,
   endIcon,
   disabled = false,
-  loading = false,
   className,
   children,
-  ...props
-}: ButtonProps) => {
-  const isDisabeld = disabled;
-  const isLoading = loading;
-  
+  target,
+  rel,
+}: AnchorProps) => {
   // 내장 아이콘이 있으면 해당 아이콘을 사용, 없으면 기존 startIcon/endIcon 사용
   const getIconElement = (iconName: IconName, position: 'start' | 'end') => {
     if (icon && iconPosition === position) {
@@ -56,28 +57,34 @@ const Button = ({
   const startIconElement = getIconElement(icon!, 'start');
   const endIconElement = getIconElement(icon!, 'end');
 
-  return (
-    <button
-      type={type}
-      disabled={isDisabeld}
-      className={twMerge(
-        ButtonClass({ variant, color, size }), 
-        (startIconElement || endIconElement) && 'gap-2',
-        isDisabeld && 'opacity-50 cursor-not-allowed',
-        isLoading && 'opacity-50 cursor-progress',
-        className
-      )}
-      {...props}
-    >
-      {loading ? (
-        <span className="material-symbols-outlined animate-spin">progress_activity</span>
-      ) : (
-        startIconElement && <span className="button-icon flex items-center">{startIconElement}</span>
-      )}
-      {!loading && children && <span className="button-text flex items-center">{children}</span>}
-      {!loading && endIconElement && <span className="button-icon flex items-center">{endIconElement}</span>}
-    </button>
-  )
-}
+  const buttonClasses = twMerge(
+    ButtonClass({ variant, color, size }), 
+    (startIconElement || endIconElement) && 'gap-2',
+    disabled && 'opacity-50 cursor-not-allowed pointer-events-none',
+    className
+  );
 
-export default Button;
+  const buttonContent = (
+    <>
+      {startIconElement && <span className="button-icon flex items-center">{startIconElement}</span>}
+      {children && <span>{children}</span>}
+      {endIconElement && <span className="button-icon flex items-center">{endIconElement}</span>}
+    </>
+  );
+
+  if (disabled) {
+    return (
+      <span className={buttonClasses}>
+        {buttonContent}
+      </span>
+    );
+  }
+
+  return (
+    <Link href={href} target={target} rel={rel} className={buttonClasses}>
+      {buttonContent}
+    </Link>
+  );
+};
+
+export default Anchor;
