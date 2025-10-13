@@ -42,25 +42,16 @@ export default function Footer() {
                                 width={82}
                                 height={30}
                                 className="w-6 h-6"
-                            />Notion</ButtonLink>
-
-                    {/* <Link
-                        className="flex items-center gap-2.5 pb-2 hover:border-b border-white"
-                        href=""
-                        target="_blank"
-                    >
-                        
-                        
-                    </Link>
-                    <Link
-                        className="flex items-center gap-2.5 pb-2 hover:border-b border-white"
-                        href="https://www.notion.so/React-1d542c76ec4c8066aad3d0d50a9f9f7c?source=copy_link"
-                        target="_blank"
-                    >
-                        
-                        Notion
-                    </Link> */}
+                            />Notion
+                    </ButtonLink>
                 </div>
+                <div
+  data-emailjs-vars={[
+    !!process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+    !!process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+    !!process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
+  ].join(',')}
+/>
             </div>
         </footer>
     );
