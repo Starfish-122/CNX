@@ -4,3 +4,20 @@
         border-right: 1px solid var(--color-gray-200);
     }
 }
+
+@utility detail {
+    .detail__card {
+        display: flex;
+        flex-direction: column;
+
+        .card-header {
+            border: 1px solid blue;
+            order: 2;
+        }
+
+        .card-body {
+            border: 1px solid green;
+            order: 1;
+        }
+    }
+}

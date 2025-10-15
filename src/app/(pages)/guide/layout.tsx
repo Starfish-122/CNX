@@ -15,10 +15,10 @@ export default function GuidePageLayout({ children }: { children: React.ReactNod
             <div className="w-full md:w-64 mt-4 md:mt-10 h-auto md:h-full flex flex-col bg-gray-50 dark:bg-gray-900 sticky top-5">
                 <div className="flex-grow overflow-x-auto md:overflow-x-hidden overflow-y-auto p-4">
                     <Link
-                        href="/guide"
+                        href="/"
                         className={clsx(
                             'mb-4 flex items-center gap-2 px-3 py-2 rounded-md font-medium transition-colors',
-                            pathname === '/guide'
+                            pathname === '/'
                                 ? 'bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300'
                                 : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
                         )}

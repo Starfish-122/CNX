@@ -47,9 +47,17 @@ const categorizeComponents = () => {
 
         // 컴포넌트 이름으로 카테고리 분류
         if (
-            ['Button', 'ButtonLink', 'Input', 'Textarea', 'Text', 'Title', 'Icon', 'Tag', 'TextExample'].includes(
-                data.componentName
-            )
+            [
+                'Button',
+                'ButtonLink',
+                'Input',
+                'Textarea',
+                'Text',
+                'Title',
+                'Icon',
+                'Tag',
+                'TextExample',
+            ].includes(data.componentName)
         ) {
             atoms.push(item);
         } else {

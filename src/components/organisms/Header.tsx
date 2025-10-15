@@ -8,7 +8,7 @@ export default function Header() {
     return (
         <header className="border-b border-gray-200 w-full py-4 font-sans">
             <div className="container mx-auto px-4 flex justify-between items-center">
-                <Link href="/guide">
+                <Link href="/">
                     <Image
                         className="dark:invert"
                         src="/cnx-logo.svg"
@@ -30,10 +30,10 @@ export default function Header() {
                         </li>
                         <li>
                             <Link
-                                href="/map"
+                                href="/detail"
                                 className="hover:text-blue-500 transition-colors text-lg"
                             >
-                                Map
+                                Detail
                             </Link>
                         </li>
                     </ul>
