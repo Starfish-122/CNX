@@ -1,12 +1,7 @@
 import React from 'react';
-import Card from './Card';
-import Title from '../atoms/Title';
-import Text from '../atoms/Text';
-import TagList from '../atoms/TagList';
-import CategoryTag from '../atoms/CategoryTag';
-import { TagCategory } from '../atoms/categoryColors';
+import { Title, Text, TagList, CategoryTag, Icon } from '@/components/atoms';
+import { TagCategory } from '@/components/atoms/categoryColors';
 import clsx from 'clsx';
-import Icon from '../atoms/Icon';
 
 type Tag = {
     label: string;

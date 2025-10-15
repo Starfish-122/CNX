@@ -1,9 +1,8 @@
 'use client';
 
-import PlaceCard from '@/components/molecules/PlaceCard';
-import Text from '@/components/atoms/Text';
-import Title from '@/components/atoms/Title';
 import { useEffect, useState } from 'react';
+import { PlaceCard } from '@/components/molecules';
+import { Text, Title } from '@/components/atoms';
 import { TagCategory } from '@/components/atoms/categoryColors';
 // Tag 타입 정의
 type Tag = {

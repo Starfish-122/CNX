@@ -3,7 +3,7 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
-import Icon from '@/components/atoms/Icon';
+import { Icon } from '@/components/atoms';
 import { sidebarCategories } from '@/routes';
 
 export default function GuidePageLayout({ children }: { children: React.ReactNode }) {

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import Icon from '../atoms/Icon';
+import { Icon } from '@/components/atoms';
 
 export default function Header() {
     return (

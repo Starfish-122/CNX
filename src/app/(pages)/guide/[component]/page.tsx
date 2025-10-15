@@ -1,10 +1,7 @@
 import React from 'react';
 import { componentData } from '@/data/componentData';
-import Title from '@/components/atoms/Title';
-import Text from '@/components/atoms/Text';
-import ExampleCard from '@/components/molecules/ExampleCard';
-import CodeBlock from '@/components/molecules/CodeBlock';
-import PropsTable from '@/components/molecules/PropsTable';
+import { Title, Text } from '@/components/atoms';
+import { ExampleCard, CodeBlock, PropsTable } from '@/components/molecules';
 import GuidePageLayout from '@/components/templates/GuidePageLayout';
 
 interface PageProps {

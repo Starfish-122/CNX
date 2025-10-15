@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Text from '@/components/atoms/Text';
+import { Text } from '@/components/atoms';
 import GuidePageLayout from '@/components/templates/GuidePageLayout';
 import { componentData } from '@/data/componentData';
 

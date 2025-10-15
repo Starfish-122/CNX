@@ -1,9 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
-import CategoryTag from '../atoms/CategoryTag';
-import { TagCategory } from '../atoms/categoryColors';
+import { Icon } from '@/components/atoms';
+import { TagCategory } from '@/components/atoms/categoryColors';
 import clsx from 'clsx';
-import Icon from '../atoms/Icon';
 
 type Tag = {
     label: string;

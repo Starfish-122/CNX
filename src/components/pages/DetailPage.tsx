@@ -1,10 +1,6 @@
 'use client';
 
-import Card from '@/components/molecules/Card';
-import Tag from '@/components/atoms/Tag';
-import TagList from '@/components/atoms/TagList';
-import CategoryTag from '@/components/atoms/CategoryTag';
-import CustomDetailCard from '@/components/molecules/CustomDetailCard';
+import  { CustomDetailCard } from '@/components/molecules';
 
 export default function DetailPage(): React.JSX.Element {
     return (

@@ -1,8 +1,7 @@
 'use client';
 import React from 'react';
-import CodeBlock from '@/components/molecules/CodeBlock';
-import Title from '@/components/atoms/Title';
-import Text from '@/components/atoms/Text';
+import { CodeBlock } from '@/components/molecules';
+import { Title, Text } from '@/components/atoms';
 
 interface ExampleCardProps {
     demo?: React.ReactNode;

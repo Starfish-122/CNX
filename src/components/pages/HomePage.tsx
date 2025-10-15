@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import Tab from '@/components/molecules/Tab';
+import { Tab } from '@/components/molecules';
 
 export default function HomePage() {
     return (

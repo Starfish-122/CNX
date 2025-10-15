@@ -1,16 +1,6 @@
 import React from 'react';
-import Button from '@/components/atoms/Button';
-import ButtonLink from '@/components/atoms/ButtonLink';
-import Card from '@/components/molecules/Card';
-import Icon from '@/components/atoms/Icon';
-import Input from '@/components/atoms/Input';
-import StarRating from '@/components/molecules/StarRating';
-import Tag from '@/components/atoms/Tag';
-import TagList from '@/components/atoms/TagList';
-import CategoryTag from '@/components/atoms/CategoryTag';
-import Text from '@/components/atoms/Text';
-import Title from '@/components/atoms/Title';
-import Textarea from '@/components/atoms/Textarea';
+import { Button, ButtonLink, Icon, Input, Tag, TagList, CategoryTag, Text, Title, Textarea } from '@/components/atoms';
+import { Card, StarRating } from '@/components/molecules';
 
 export const componentData = {
     button: {

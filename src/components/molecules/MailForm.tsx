@@ -2,10 +2,7 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
-
-import Input from '@/components/atoms/Input';
-import Textarea from '@/components/atoms/Textarea';
-import Button from '@/components/atoms/Button';
+import { Input, Textarea, Button } from '@/components/atoms';
 
 type Status = 'idle' | 'loading' | 'success' | 'error';
 

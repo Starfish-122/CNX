@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import Text from '@/components/atoms/Text';
+import { Text } from '@/components/atoms';
 
 interface Prop {
     name: string;

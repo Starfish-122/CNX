@@ -1,8 +1,7 @@
 'use client';
 import React from 'react';
 import clsx from 'clsx';
-import Title from '@/components/atoms/Title';
-import Text from '@/components/atoms/Text';
+import { Title, Text } from '@/components/atoms';
 
 export default function DetailLayout({
     title,
