@@ -81,8 +81,8 @@ export default function MailForm() {
   };
 
   return (
-    <form ref={formRef} onSubmit={sendEmail}>
-      <div className="flex gap-2.5">
+    <form ref={formRef} onSubmit={sendEmail} className="flex flex-col gap-2.5">
+      <div className="flex w-full gap-2.5">
         <Input 
           name="name" 
           placeholder="닉네임 *" 
@@ -92,12 +92,13 @@ export default function MailForm() {
           required={true}
           validateRequired={false}
         />
-        <Input 
+        <Input
           name="email" 
           placeholder="이메일" 
           type="email" 
           value={formData.email}
           onChange={handleInputChange}
+          className="flex-1"
         />
       </div>
       <Textarea 
@@ -110,7 +111,7 @@ export default function MailForm() {
         required={true}
         validateRequired={false}
       />
-      <Button type="submit" loading={status === 'loading'}>
+      <Button type="submit" loading={status === 'loading'} className="self-end">
         제출
       </Button>
 

@@ -53,8 +53,8 @@ const Button = ({
     return position === 'start' ? startIcon : endIcon;
   };
 
-  const startIconElement = getIconElement(icon!, 'start');
-  const endIconElement = getIconElement(icon!, 'end');
+  const startIconElement = icon ? getIconElement(icon, 'start') : startIcon;
+  const endIconElement = icon ? getIconElement(icon, 'end') : endIcon;
 
   return (
     <button

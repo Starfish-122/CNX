@@ -58,7 +58,7 @@ const Anchor = ({
   const endIconElement = getIconElement(icon!, 'end');
 
   const buttonClasses = twMerge(
-    ButtonClass({ variant, color, size }), 
+    ButtonClass({ variant, color, size }),
     (startIconElement || endIconElement) && 'gap-2',
     disabled && 'opacity-50 cursor-not-allowed pointer-events-none',
     className
@@ -67,7 +67,7 @@ const Anchor = ({
   const buttonContent = (
     <>
       {startIconElement && <span className="button-icon flex items-center">{startIconElement}</span>}
-      {children && <span>{children}</span>}
+      {children && <span className="flex items-center gap-2">{children}</span>}
       {endIconElement && <span className="button-icon flex items-center">{endIconElement}</span>}
     </>
   );

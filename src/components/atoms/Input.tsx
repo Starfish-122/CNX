@@ -94,15 +94,18 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
   className,
   ...props
 }, ref) => {
+  // className을 props에서 제거 (외부 container에만 적용)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { className: _, ...inputProps } = props as typeof props & { className?: string };
   const id = useId();
   const inputId = `input-${id}`;
   const hintId = `hint-${id}`;
   const errorId = `error-${id}`;
 
   const s = SIZE[size];
-  const isControlled = props.value !== undefined;
-  const [innerValue, setInnerValue] = useState<string>(() => (props.defaultValue as string) ?? '');
-  const currentValue = isControlled ? String(props.value ?? '') : innerValue;
+  const isControlled = inputProps.value !== undefined;
+  const [innerValue, setInnerValue] = useState<string>(() => (inputProps.defaultValue as string) ?? '');
+  const currentValue = isControlled ? String(inputProps.value ?? '') : innerValue;
   
   const [showPassword, setShowPassword] = useState(false);
   
@@ -122,7 +125,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     if (!isControlled) setInnerValue(e.target.value);
-    props.onChange?.(e);
+    inputProps.onChange?.(e);
   };
   const handleReset = () => {
     if (!isControlled) setInnerValue('');
@@ -144,7 +147,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
       type={currentType}
       disabled={isDisabled}
       required={validateRequired}
-      placeholder={props.placeholder ?? ' '}
+      placeholder={inputProps.placeholder ?? ' '}
       value={currentValue}
       onChange={handleChange}
       {...(hasError && { 'aria-invalid': true })}
@@ -162,20 +165,21 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
           'read-only:text-gray-500 read-only:border-gray-400 read-only:focus:ring-0 read-only:focus:border-gray-400',
           hasButton ? s.fieldWithButton : s.field,
           hasError && 'border-[var(--color-error)] text-[var(--color-error)] placeholder:text-[var(--color-error)] focus:ring-[var(--color-error)] focus:border-[var(--color-error)] ',
+          (className || size === 'full') && 'w-full',
           // startAdornment && 'pl-10',
           // (endAdornment || shouldShowPasswordToggle || shouldShowResetButton) && 'pr-10',
-          className
         )
       )}
-      {...props}
+      {...inputProps}
     />
   );
 
   return (
     <span className={clsx(
         'cnx-input-container relative',
-        label ? 'inline-flex flex-col w-fit' : 'inline-block',
-        s.container
+        label ? 'inline-flex flex-col w-fit' : (className ? 'block' : 'inline-block'),
+        s.container,
+        className
       )
     }>
       {label && (
@@ -194,9 +198,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
         </label>
       )}
 
-       <span className={clsx(
+      <span className={clsx(
         'relative',
-        size === 'full' ? 'block' : 'inline-block'
+        className || size === 'full' ? 'block' : 'inline-block'
        )}>
         {inputElement}
         

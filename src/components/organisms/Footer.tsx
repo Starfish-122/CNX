@@ -23,35 +23,28 @@ export default function Footer() {
                 </div>
                 <div className="w-full flex flex-col gap-2.5">
                     <MailForm />
-                </div>
+                </div> 
                 <div className="flex gap-5 lg:col-span-2">
-                    <ButtonLink variant="text" href="https://github.com/Starfish-122/CNX" target="_blank" className="flex items-center gap-2.5">
+                    <ButtonLink variant="text" href="https://github.com/Starfish-122/CNX" target="_blank" className="flex items-center gap-2.5 text-gray-900 dark:text-gray-100">
                         <Image
-                                src="/cnx-github.png"
-                                alt="cnx github"
-                                width={82}
-                                height={30}
-                                className="w-6 h-6"
-                            />
-                        <span>Github</span>
+                            src="/cnx-github.png"
+                            alt="cnx github"
+                            width={82}
+                            height={30}
+                            className="w-6 h-6"
+                        />
+                        Github
                     </ButtonLink>
-                    <ButtonLink variant="text" href="https://www.notion.so/React-1d542c76ec4c8066aad3d0d50a9f9f7c?source=copy_link" target="_blank">
+                    <ButtonLink variant="text" href="https://www.notion.so/React-1d542c76ec4c8066aad3d0d50a9f9f7c?source=copy_link" target="_blank" className="flex items-center gap-2.5 text-gray-900 dark:text-gray-100">
                         <Image
-                                src="/cnx-notion.png"
-                                alt="cnx github"
-                                width={82}
-                                height={30}
-                                className="w-6 h-6"
-                            />Notion
+                            src="/cnx-notion.png"
+                            alt="cnx github"
+                            width={82}
+                            height={30}
+                            className="w-6 h-6"
+                        />Notion
                     </ButtonLink>
                 </div>
-                <div
-  data-emailjs-vars={[
-    !!process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
-    !!process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
-    !!process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
-  ].join(',')}
-/>
             </div>
         </footer>
     );
