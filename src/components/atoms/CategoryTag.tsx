@@ -12,6 +12,10 @@ type CategoryTagProps = {
   className?: string;
 };
 
+const renderLabel = (label: string) => {
+  return label.split(', ');
+}
+
 export default function CategoryTag({
   label,
   category,
@@ -20,13 +24,19 @@ export default function CategoryTag({
   className,
 }: CategoryTagProps) {
   const palette = category ? CATEGORY_COLOR[category] : NEUTRAL;
+  const labels = renderLabel(label); /* 문자열 분리한 결과 */
   return (
-    <Tag
-      label={label}
-      palette={palette}
-      disabled={disabled}
-      size={size}
-      className={className}
-    />
+    <>
+      {labels.map((lbl, index) => (
+        <Tag
+          key={index}
+          label={lbl}
+          palette={palette}
+          disabled={disabled}
+          size={size}
+          className={className}
+        />
+      ))}
+    </>
   );
 }

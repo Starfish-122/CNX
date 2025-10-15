@@ -1038,19 +1038,19 @@ const [rating, setRating] = useState(3.5);
             {
                 title: 'CategoryTag : 카테고리별 색상 매핑',
                 description: '카테고리에 따라 색상이 자동으로 매핑되는 태그입니다.',
-                code: `<CategoryTag label="카페" category="Status" />
-<CategoryTag label="한강로길" category="Location" />
-<CategoryTag label="데이트" category="PartySize" />
-<CategoryTag label="감성" category="Mood" />
-<CategoryTag label="테이크아웃" category="Service" />
+                code: `<CategoryTag label="카페" category="status" />
+<CategoryTag label="한강로길" category="location" />
+<CategoryTag label="데이트" category="partySize" />
+<CategoryTag label="감성" category="mood" />
+<CategoryTag label="테이크아웃" category="service" />
 <CategoryTag label="자유 태그" />`,
                 preview: (
                     <TagList>
-                        <CategoryTag label="카페" category="Status" />
-                        <CategoryTag label="한강로길" category="Location" />
-                        <CategoryTag label="데이트" category="PartySize" />
-                        <CategoryTag label="감성" category="Mood" />
-                        <CategoryTag label="테이크아웃" category="Service" />
+                        <CategoryTag label="카페" category="status" />
+                        <CategoryTag label="한강로길" category="location" />
+                        <CategoryTag label="데이트" category="partySize" />
+                        <CategoryTag label="감성" category="mood" />
+                        <CategoryTag label="테이크아웃" category="service" />
                         <CategoryTag label="자유 태그" />
                     </TagList>
                 ),
@@ -1064,8 +1064,8 @@ const [rating, setRating] = useState(3.5);
                     <div className="space-y-6">
                         <div>
                             <TagList>
-                                <CategoryTag label="작음(sm)" category="Mood" size="sm" />
-                                <CategoryTag label="기본(md)" category="Mood" size="md" />
+                                <CategoryTag label="작음(sm)" category="mood" size="sm" />
+                                <CategoryTag label="기본(md)" category="mood" size="md" />
                             </TagList>
                         </div>
                     </div>
@@ -1087,7 +1087,7 @@ const [rating, setRating] = useState(3.5);
                                     <CategoryTag
                                         key={i}
                                         label={`태그 ${i + 1}`}
-                                        category="Status"
+                                        category="status"
                                     />
                                 ))}
                             </TagList>
@@ -1111,7 +1111,7 @@ const [rating, setRating] = useState(3.5);
             },
             {
                 name: 'category',
-                type: "'Status' | 'Location' | 'PartySize' | 'Mood' | 'Service'",
+                type: "'status' | 'location' | 'partySize' | 'mood' | 'service'",
                 required: false,
                 description: '카테고리 (CategoryTag만)',
             },
