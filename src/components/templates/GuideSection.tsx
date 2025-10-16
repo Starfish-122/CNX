@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import clsx from 'clsx';
+import { Title } from '@/components/atoms';
 
 export default function GuideSection({
   title,
@@ -13,7 +14,7 @@ export default function GuideSection({
 }) {
   return (
     <section className={clsx('mb-12', className)}>
-      <h2 className="text-xl font-semibold mb-3">{title}</h2>
+      <Title element="h2" className="text-xl font-semibold mb-3">{title}</Title>
       {children}
     </section>
   );

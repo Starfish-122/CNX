@@ -79,7 +79,7 @@ export default function MailForm() {
 
   return (
     <form ref={formRef} onSubmit={sendEmail} className="flex flex-col gap-2.5">
-      <div className="flex w-full gap-2.5">
+      <div className="flex flex-col w-full gap-2.5 lg:flex-row">
         <Input 
           name="name" 
           placeholder="닉네임 *" 
@@ -88,6 +88,7 @@ export default function MailForm() {
           onChange={handleInputChange}
           required={true}
           validateRequired={false}
+          className="flex-1"
         />
         <Input
           name="email" 
@@ -99,7 +100,7 @@ export default function MailForm() {
         />
       </div>
       <Textarea 
-        placeholder="맛집 내용 *" 
+        placeholder="자유롭게 내용을 적어주세요. (500자 이내) *" 
         rows={5} 
         size="full" 
         name="message" 
@@ -107,13 +108,17 @@ export default function MailForm() {
         onChange={handleInputChange}
         required={true}
         validateRequired={false}
+        showCharCount={true}
+        maxLength={500}
       />
-      <Button type="submit" loading={status === 'loading'} className="self-end">
-        제출
-      </Button>
-
-      {status === 'success' && <p className="text-green-600" role="status">메일이 전송되었습니다.</p>}
-      {status === 'error' && <p className="text-red-600" role="alert">메일 전송에 실패했습니다. 잠시 후 다시 시도해주세요.</p>}
+      <div className="flex gap-2.5 items-center">
+        <Button type="submit" loading={status === 'loading'} className="self-baseline">
+          제출
+        </Button>
+        {status === 'success' && <p className="text-green-600" role="status">메일이 전송되었습니다.</p>}
+        {status === 'error' && <p className="text-red-600" role="alert">메일 전송에 실패했습니다. 잠시 후 다시 시도해주세요.</p>}
+      </div>
+      
     </form>
   );
 };

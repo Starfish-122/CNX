@@ -69,6 +69,7 @@ export function ButtonClass({
     `,
     text: `
       ${colorMap[color].text}
+      px-0 py-0
       bg-transparent hover:cursor-pointer
       disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:opacity-50
       [&_.button-icon]:no-underline

@@ -20,12 +20,12 @@ export default async function ComponentGuidePage({
         return (
             <div className="min-h-screen flex items-center justify-center">
                 <div className="text-center">
-                    <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+                    <Title element="h1" className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
                         컴포넌트를 찾을 수 없습니다
-                    </h1>
-                    <p className="text-gray-600 dark:text-gray-400">
+                    </Title>
+                    <Text className="text-gray-600 dark:text-gray-400">
                         요청하신 컴포넌트의 상세 정보가 없습니다.
-                    </p>
+                    </Text>
                 </div>
             </div>
         );
