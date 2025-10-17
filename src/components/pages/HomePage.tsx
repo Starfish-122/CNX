@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { Tab } from '@/components/molecules';
+import { Tab, PlaceList } from '@/components/molecules';
 
 export default function HomePage() {
     return (
@@ -25,6 +25,7 @@ export default function HomePage() {
             <h2 className="flex items-center justify-center bg-amber-50 my-5 py-5 rounded-lg">
                 리스트
             </h2>
+            <PlaceList />
         </>
     );
 }

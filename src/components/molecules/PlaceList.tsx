@@ -21,7 +21,11 @@ interface NotionItem {
   score: number;
 }
 
-export default function PlaceList(): React.JSX.Element {
+interface PlaceListProps {
+  className?: string;
+}
+
+export default function PlaceList({ className }: PlaceListProps): React.JSX.Element {
     const [notionData, setNotionData] = useState<NotionItem[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -46,7 +50,7 @@ export default function PlaceList(): React.JSX.Element {
     }, []);
 
     return (
-      <div className="place-list">
+      <div className={`place-list ${className}`}>
           <Title element="h2">
               맛집 목록 ({notionData.length}개)
           </Title>
