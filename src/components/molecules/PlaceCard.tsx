@@ -3,8 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { StarRating } from '@/components/molecules';
-import { TagCategory } from '@/components/atoms/categoryColors';
-import { Title, Text, CategoryTag, TagList } from '@/components/atoms';
+import { Title, Text, CategoryTag, TagList, type TagCategory } from '@/components/atoms';
 
 type Tag = {
   label: string;

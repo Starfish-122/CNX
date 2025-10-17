@@ -1,7 +1,6 @@
 import React from 'react';
-import { Title, Text, TagList, CategoryTag, Icon } from '@/components/atoms';
-import { TagCategory } from '@/components/atoms/categoryColors';
 import clsx from 'clsx';
+import { Title, Text, TagList, CategoryTag, Icon, type TagCategory } from '@/components/atoms';
 
 type Tag = {
     label: string;

@@ -9,3 +9,5 @@ export { default as TagList} from './TagList';
 export { default as Text} from './Text';
 export { default as Textarea} from './Textarea';
 export { default as Title} from './Title';
+export type { TagCategory } from './categoryColors';
+export { CATEGORY_COLOR, NEUTRAL } from './categoryColors';

@@ -2,11 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import clsx from 'clsx';
-import ButtonLink from '@/components/atoms/ButtonLink';
-import { Icon } from '@/components/atoms';
 import Image from 'next/image';
-import Title from '@/components/atoms/Title';
-import Text from '@/components/atoms/Text';
+import { Icon, Title, Text, ButtonLink } from '@/components/atoms';
 import MailForm from '@/components/molecules/MailForm';
 
 export default function Footer() {

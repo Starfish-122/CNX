@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { PlaceCard } from '@/components/molecules';
-import { Text, Title } from '@/components/atoms';
-import { TagCategory } from '@/components/atoms/categoryColors';
+import { Text, Title, type TagCategory } from '@/components/atoms';
 // Tag 타입 정의
 type Tag = {
   label: string;
