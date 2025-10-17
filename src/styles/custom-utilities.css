@@ -21,3 +21,41 @@
         }
     }
 }
+
+@utility footer {
+    background-color: var(--color-brand-1);
+    .cnx-title,
+    .cnx-text,
+    a {
+        color:var(--color-gray-100);
+    }
+    .btn-mail-form {
+        background-color: var(--color-gray-300);
+        color:var(--color-brand-1);
+    }
+    input,
+    textarea {
+        border-color: var(--color-gray-300);
+        color:var(--color-gray-100);
+    }
+
+    .btn-gotop {
+        padding:0.5rem;
+        cursor:pointer;
+        background:var(--color-black);
+        border-radius: var(--radius-full);
+        transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        opacity: 0;
+        transform: translateY(100%);
+    }
+    .btn-gotop.visible {
+        opacity:1;
+        transform: translateY(0);
+    }
+    .btn-gotop svg {
+        color:var(--color-gray-100);
+    }
+    .btn-gotop:hover {
+        opacity:0.7;
+    }
+}

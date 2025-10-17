@@ -112,7 +112,7 @@ export default function MailForm() {
         maxLength={500}
       />
       <div className="flex gap-2.5 items-center">
-        <Button type="submit" loading={status === 'loading'} className="self-baseline">
+        <Button type="submit" loading={status === 'loading'} className="btn-mail-form self-baseline">
           제출
         </Button>
         {status === 'success' && <p className="text-green-600" role="status">메일이 전송되었습니다.</p>}

@@ -12,7 +12,7 @@ export default function GuidePageLayout({ children }: { children: React.ReactNod
     return (
         <div className="container mx-auto   flex flex-col md:flex-row min-h-screen">
             {/* 사이드바 */}
-            <div className="w-full md:w-64 mt-4 md:mt-10 h-auto md:h-full flex flex-col bg-gray-50 dark:bg-gray-900 sticky top-5">
+            <div className="w-full md:w-64 mt-4 md:mt-10 h-auto md:h-full flex flex-col bg-gray-50 dark:bg-gray-900 md:sticky md:top-5 lg:sticky lg:top-5">
                 <div className="flex-grow overflow-x-auto md:overflow-x-hidden overflow-y-auto p-4">
                     <Link
                         href="/"
