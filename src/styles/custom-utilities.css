@@ -42,6 +42,7 @@
     .btn-gotop {
         padding:0.5rem;
         cursor:pointer;
+        pointer-events: none;
         background:var(--color-black);
         border-radius: var(--radius-full);
         transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
@@ -51,6 +52,7 @@
     .btn-gotop.visible {
         opacity:1;
         transform: translateY(0);
+        pointer-events: auto;
     }
     .btn-gotop svg {
         color:var(--color-gray-100);

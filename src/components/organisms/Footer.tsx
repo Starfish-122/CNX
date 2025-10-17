@@ -10,12 +10,12 @@ import Text from '@/components/atoms/Text';
 import MailForm from '@/components/molecules/MailForm';
 
 export default function Footer() {
-    const [isTop, setIsTop] = useState(false);
+    const [isTop, setIsTop] = useState(true);
     const handleScroll = () => {
-        if(window.scrollY <= 100) {
-            setIsTop(true);
-        } else {
+        if(window.scrollY > 100) {
             setIsTop(false);
+        } else {
+            setIsTop(true);
         }
     }
     const scrollToTop = () => {
@@ -25,9 +25,10 @@ export default function Footer() {
         });
     };
     useEffect(() => {
-        window.addEventListener('scroll', handleScroll, true);
+        handleScroll();
+        window.addEventListener('scroll', handleScroll);
         return () => {
-            window.removeEventListener('scroll', handleScroll, false);
+            window.removeEventListener('scroll', handleScroll);
         }
     });
     return (
