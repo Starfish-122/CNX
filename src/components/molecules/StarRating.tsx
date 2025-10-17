@@ -119,8 +119,8 @@ export default function StarRating({
           'block',
           interactive && 'cursor-pointer'
         );
-        const emptyColor = 'text-indigo-900';
-        const fillColor = 'text-indigo-900';
+        const emptyColor = 'text-indigo-900 dark:text-gray-100';
+        const fillColor = 'text-indigo-900 dark:text-gray-100';
 
         const Star = (
           <span

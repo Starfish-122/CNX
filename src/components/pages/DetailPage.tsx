@@ -1,10 +1,11 @@
 'use client';
 
-import  { CustomDetailCard } from '@/components/molecules';
+import  { CustomDetailCard, PlaceList } from '@/components/molecules';
 
 export default function DetailPage(): React.JSX.Element {
     return (
         <div className="detail min-h-[100vh]">
+            <PlaceList />
             <CustomDetailCard
                 className="detail__card"
                 name="카드 제목"

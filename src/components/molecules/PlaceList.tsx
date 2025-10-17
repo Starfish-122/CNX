@@ -53,7 +53,7 @@ export default function PlaceList(): React.JSX.Element {
           {loading ? (
               <Text>데이터를 불러오는 중...</Text>
           ) : (
-              <div className="w-full">
+              <div className="w-full grid grid-cols-1 gap-6">
                   {notionData.map((item) => {
                       const tags: Tag[] = [];
                       if (item.location) {
