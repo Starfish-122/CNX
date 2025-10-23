@@ -5,23 +5,23 @@ import { PlaceCard } from '@/components/molecules';
 import { Text, Title, type TagCategory } from '@/components/atoms';
 // Tag 타입 정의
 type Tag = {
-  label: string;
-  category: TagCategory;
-}
+    label: string;
+    category: TagCategory;
+};
 
 interface NotionItem {
-  id: string;
-  name: string;
-  summary: string;
-  location: string;
-  status: string;
-  partySize: string;
-  partnered: boolean;
-  score: number;
+    id: string;
+    name: string;
+    summary: string;
+    location: string;
+    status: string;
+    partySize: string;
+    partnered: boolean;
+    score: number;
 }
 
 interface PlaceListProps {
-  className?: string;
+    className?: string;
 }
 
 export default function PlaceList({ className }: PlaceListProps): React.JSX.Element {
@@ -31,7 +31,9 @@ export default function PlaceList({ className }: PlaceListProps): React.JSX.Elem
     useEffect(() => {
         async function fetchNotionData() {
             try {
-                const response = await fetch('/api/notion?pageSize=100', { cache: 'no-store' });
+                const response = await fetch('/api/notion?pageSize=20', {
+                    next: { revalidate: 300 }, // 5분 캐시
+                });
                 const data = await response.json();
                 console.log('[MAP PAGE - NOTION DATA]', data);
                 if (data.ok) {
@@ -49,40 +51,46 @@ export default function PlaceList({ className }: PlaceListProps): React.JSX.Elem
     }, []);
 
     return (
-      <div className={`place-list ${className}`}>
-          <Title element="h2">
-              맛집 목록 ({notionData.length}개)
-          </Title>
-          {loading ? (
-              <Text>데이터를 불러오는 중...</Text>
-          ) : (
-              <div className="w-full grid grid-cols-1 gap-6">
-                  {notionData.map((item) => {
-                      const tags: Tag[] = [];
-                      if (item.location) {
-                          tags.push({ label: item.location, category: 'location' });
-                      }
-                      if (item.status) {
-                          tags.push({ label: item.status, category: 'status' });
-                      }
-                      if (item.partySize) {
-                          tags.push({ label: item.partySize, category: 'mood' });
-                      }
-                      if (item.partnered) {
-                          tags.push({ label: '임직원 할인', category: 'service' });
-                      }
-                      return (
-                          <PlaceCard
-                              key={item.id}
-                              name={item.name || '이름 없음'}
-                              description={item.summary || ''}
-                              tags={tags}
-                              rating={item.score}
-                          />
-                      );
-                  })}
-              </div>
-          )}
+        <div className={`place-list ${className}`}>
+            <Title element="h2">맛집 목록 ({notionData.length}개)</Title>
+            {loading ? (
+                <div className="space-y-4">
+                    {[...Array(3)].map((_, i) => (
+                        <div key={i} className="animate-pulse">
+                            <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
+                            <div className="h-6 bg-gray-200 rounded w-1/2 mb-2"></div>
+                            <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <div className="w-full grid grid-cols-1 gap-6">
+                    {notionData.map((item) => {
+                        const tags: Tag[] = [];
+                        if (item.location) {
+                            tags.push({ label: item.location, category: 'location' });
+                        }
+                        if (item.status) {
+                            tags.push({ label: item.status, category: 'status' });
+                        }
+                        if (item.partySize) {
+                            tags.push({ label: item.partySize, category: 'mood' });
+                        }
+                        if (item.partnered) {
+                            tags.push({ label: '임직원 할인', category: 'service' });
+                        }
+                        return (
+                            <PlaceCard
+                                key={item.id}
+                                name={item.name || '이름 없음'}
+                                description={item.summary || ''}
+                                tags={tags}
+                                rating={item.score}
+                            />
+                        );
+                    })}
+                </div>
+            )}
         </div>
     );
 }
