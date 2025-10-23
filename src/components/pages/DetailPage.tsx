@@ -1,6 +1,6 @@
 'use client';
 
-import  { CustomDetailCard } from '@/components/molecules';
+import { CustomDetailCard } from '@/components/molecules';
 
 export default function DetailPage(): React.JSX.Element {
     return (
@@ -11,8 +11,8 @@ export default function DetailPage(): React.JSX.Element {
                 description="카드 내용입니다."
                 image="/images/image1.png"
                 tags={[
-                    { label: '태그1', category: 'Mood' },
-                    { label: '태그2', category: 'Location' },
+                    { label: '태그1', category: 'mood' },
+                    { label: '태그2', category: 'location' },
                 ]}
                 rating={4.5}
             />
