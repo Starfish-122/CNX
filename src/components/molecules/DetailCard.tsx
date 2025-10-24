@@ -1,5 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
+import Image from 'next/image';
 import { Title, Text, TagList, CategoryTag, Icon, type TagCategory } from '@/components/atoms';
 
 type Tag = {
@@ -28,7 +29,13 @@ export default function DetailCard({
         <figure className={clsx('card bg-white overflow-hidden w-full', className)}>
             {image && (
                 <div className="card-header relative">
-                    <img src={image} alt={name} />
+                    <Image
+                        src={image}
+                        alt={name || '상세 이미지'}
+                        width={800}
+                        height={400}
+                        className="w-full h-auto object-cover"
+                    />
 
                     <div className="absolute top-0 left-0 flex items-center justify-between p-5">
                         <div className="flex items-center justify-center bg-white rounded-full w-9 h-9">
