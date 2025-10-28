@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import { Icon, type TagCategory } from '@/components/atoms';
 import { searchKakaoPlace, copyToClipboard } from '@/utils/services/kakaoMap';
 import type { NotionPlace } from '@/utils/types';
+import { CommentList } from '@/components/molecules';
 
 type Tag = {
     label: string;
@@ -327,6 +328,9 @@ export default function CustomDetailCard({
                     </div>
                 </div>
             )}
+            <div className="p-6">
+                <CommentList placeName={name || ''} />
+            </div>
         </div>
     );
 }
