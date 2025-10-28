@@ -1,4 +1,4 @@
-# CUI project
+# CNX project
 
 > [Next.js](https://nextjs.org) 기반의 UI 프로젝트
 >
@@ -312,7 +312,9 @@ Next.js와 Tailwind CSS에 대해 알아보려면, 아래 링크를 클릭하세
 -   **사용방법**: 자동 적용
 
 ## 9. 설치 패키지
+
 ### 9.1. Notion API
+
 -   **설치**: [npm i @notionhq/client] (https://www.npmjs.com/package/@notionhq/client)
 -   **역할**: Notion 데이터베이스를 코드에서 조회/생성/수정할 수 있는 공식 SDK
 -   **환경변수**: .env.local
@@ -320,17 +322,19 @@ Next.js와 Tailwind CSS에 대해 알아보려면, 아래 링크를 클릭하세
     : Notion Internal Integration Secret
     `NOTION_DATABASE_ID`=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
     : 원본 데이터베이스 페이지 → 링크 복사 시 URL 중간 32자 해시
--   **사전준비**: 
-    - 1. Notion 내부 통합(Internal Integration) 생성 → Secret 발급
-    - 2. 대상 DB 페이지 ▸ 공유 ▸ 연결(Connections) 에서 통합 초대(Can read)
-        (연결 탭이 안 보이면 DB를 내 워크스페이스로 Move to 후 다시 시도)
+-   **사전준비**:
+    -   1. Notion 내부 통합(Internal Integration) 생성 → Secret 발급
+    -   2. 대상 DB 페이지 ▸ 공유 ▸ 연결(Connections) 에서 통합 초대(Can read)
+           (연결 탭이 안 보이면 DB를 내 워크스페이스로 Move to 후 다시 시도)
 
 ### 9.2. EmailJS
+
 -   **설치**: [npm i @emailjs/browser] (https://www.npmjs.com/package/@emailjs/browser)
 -   **사이트**: [메일 템플릿 작성 등] (https://www.emailjs.com/)
 -   **역할**: 백엔드 없이 클라이언트에서 이메일 전송
 -   **환경변수**: .env.local
-    `NEXT_PUBLIC_EMAILJS_PUBLIC_KEY`=*****************
-    `EMAILJS_TEMPLATE_ID`=***************
-    `EMAILJS_SERVICE_ID`=***************
+    `NEXT_PUBLIC_EMAILJS_PUBLIC_KEY`=********\*********
+    `EMAILJS_TEMPLATE_ID`=******\*\*\*******
+    `EMAILJS_SERVICE_ID`=******\*\*\*******
+
 ---
