@@ -2,12 +2,12 @@ import { initializeApp, getApps, FirebaseApp } from 'firebase/app';
 import { getFirestore, Firestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyA3i8StWWvcYNd3pp1nf1sX5QPLWxjLZQk",
-    authDomain: "cnx-place.firebaseapp.com",
-    projectId: "cnx-place",
-    storageBucket: "cnx-place.firebasestorage.app",
-    messagingSenderId: "188111575423",
-    appId: "1:188111575423:web:4de8ee4055be285de6224a"
+    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
 };
 
 // Initialize Firebase
