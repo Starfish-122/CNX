@@ -166,6 +166,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
           hasButton ? s.fieldWithButton : s.field,
           hasError && 'border-[var(--color-error)] text-[var(--color-error)] placeholder:text-[var(--color-error)] focus:ring-[var(--color-error)] focus:border-[var(--color-error)] ',
           (className || size === 'full') && 'w-full',
+          className
           // startAdornment && 'pl-10',
           // (endAdornment || shouldShowPasswordToggle || shouldShowResetButton) && 'pr-10',
         )
