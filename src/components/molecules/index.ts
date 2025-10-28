@@ -10,3 +10,6 @@ export { default as CodeBlock } from './CodeBlock';
 export { default as Card } from './Card';
 export { default as StarRating } from './StarRating';
 export { default as KakaoMap } from './KakaoMap';
+export { default as CommentList } from './CommentList';
+export { default as CommentItem } from './CommentItem';
+export { default as CommentForm } from './CommentForm';
