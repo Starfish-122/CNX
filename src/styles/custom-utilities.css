@@ -1,8 +1,10 @@
 /* map */
 @utility tab {
-    .tab__button:not(:last-child) {
-        border-right: 1px solid var(--color-gray-200);
+    .tab {
     }
+    /* .tab__button:not(:last-child) {
+        border-right: 1px solid var(--color-gray-200);
+    } */
 }
 
 @utility detail {
@@ -27,37 +29,109 @@
     .cnx-title,
     .cnx-text,
     a {
-        color:var(--color-gray-100);
+        color: var(--color-gray-100);
     }
     .btn-mail-form {
         background-color: var(--color-gray-300);
-        color:var(--color-brand-1);
+        color: var(--color-brand-1);
     }
     input,
     textarea {
         border-color: var(--color-gray-300);
-        color:var(--color-gray-100);
+        color: var(--color-gray-100);
     }
 
     .btn-gotop {
-        padding:0.5rem;
-        cursor:pointer;
+        padding: 0.5rem;
+        cursor: pointer;
         pointer-events: none;
-        background:var(--color-black);
+        background: var(--color-black);
         border-radius: var(--radius-full);
         transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
         opacity: 0;
         transform: translateY(100%);
     }
     .btn-gotop.visible {
-        opacity:1;
+        opacity: 1;
         transform: translateY(0);
         pointer-events: auto;
     }
     .btn-gotop svg {
-        color:var(--color-gray-100);
+        color: var(--color-gray-100);
     }
     .btn-gotop:hover {
-        opacity:0.7;
+        opacity: 0.7;
+    }
+}
+
+/* 페이드 인 애니메이션 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* 온라인 탭 - 지도 전체 오버레이 */
+.map-offline-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    pointer-events: auto;
+    z-index: 10;
+    cursor: not-allowed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--color-gray-100);
+    font-weight: 700;
+    text-align: center;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* 카카오맵 커스텀 오버레이 버튼 스타일 */
+.overlay-container {
+    position: relative;
+    background: white;
+    border: 2px solid #2c2c2c;
+    border-radius: 24px;
+    padding: 18px 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    white-space: nowrap;
+    font-weight: 700;
+    font-size: 16px;
+    color: #2b394e;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s ease;
+
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-top: 8px solid #2c2c2c;
+    }
+
+    &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
     }
 }

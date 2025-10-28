@@ -1,6 +1,6 @@
 export const runtime = 'nodejs';
 import { NextResponse } from 'next/server';
-import { notion, pick, buildSorts } from '@/utils/notion';
+import { notion, pick, buildSorts } from '@/utils/services/notion';
 
 export async function GET(req: Request) {
     try {

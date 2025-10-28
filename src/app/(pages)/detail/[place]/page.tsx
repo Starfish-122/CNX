@@ -5,21 +5,14 @@ import { useParams } from 'next/navigation';
 import { CustomDetailCard } from '@/components/molecules';
 import { Title, Text, type TagCategory } from '@/components/atoms';
 
-interface NotionItem {
-    id: string;
-    name: string;
-    summary: string;
-    location: string;
-    status: string;
-    partySize: string;
-    partnered: boolean;
-    score: number;
-}
+import type { NotionPlace } from '@/utils/types';
+
+type TagType = { label: string; category: TagCategory };
 
 export default function PlaceDetailPage(): React.JSX.Element {
     const params = useParams();
     const placeName = params.place as string;
-    const [placeData, setPlaceData] = useState<NotionItem | null>(null);
+    const [placeData, setPlaceData] = useState<NotionPlace | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -34,7 +27,7 @@ export default function PlaceDetailPage(): React.JSX.Element {
                 if (data.ok) {
                     console.log('API Response:', data.items.length, 'items');
                     const place = data.items.find(
-                        (item: NotionItem) => item.name === decodeURIComponent(placeName)
+                        (item: NotionPlace) => item.name === decodeURIComponent(placeName)
                     );
                     console.log('Found place:', place);
                     setPlaceData(place || null);
@@ -79,7 +72,7 @@ export default function PlaceDetailPage(): React.JSX.Element {
         );
     }
 
-    const tags: { label: string; category: TagCategory }[] = [];
+    const tags: TagType[] = [];
     if (placeData.location) {
         tags.push({ label: placeData.location, category: 'location' as TagCategory });
     }
@@ -95,14 +88,7 @@ export default function PlaceDetailPage(): React.JSX.Element {
 
     return (
         <div className="detail min-h-[100vh] p-6">
-            <CustomDetailCard
-                className="detail__card"
-                name={placeData.name}
-                description={placeData.summary}
-                image="/images/image1.png"
-                tags={tags}
-                rating={placeData.score}
-            />
+            <CustomDetailCard data={placeData} className="detail__card" />
         </div>
     );
 }

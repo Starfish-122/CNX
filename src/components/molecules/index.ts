@@ -1,6 +1,5 @@
 export { default as CustomDetailCard } from './CustomDetailCard';
 export { default as DetailCard } from './DetailCard';
-export { default as RecommendCard } from './RecommendCard';
 export { default as PlaceCard } from './PlaceCard';
 export { default as PlaceList } from './PlaceList';
 export { default as Tab } from './Tab';
@@ -9,5 +8,5 @@ export { default as ExampleCard } from './ExampleCard';
 export { default as PropsTable } from './PropsTable';
 export { default as CodeBlock } from './CodeBlock';
 export { default as Card } from './Card';
-export { default as Slide } from './Slide';
 export { default as StarRating } from './StarRating';
+export { default as KakaoMap } from './KakaoMap';
