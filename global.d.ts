@@ -31,12 +31,4 @@ declare global {
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
-// 타입 통합 Export
-export type {
-    KakaoMapProps,
-    MapMarkerData,
-    MapBounds,
-    KakaoPlaceResult,
-} from './types/kakaoMap.types';
-
-export type { NotionPlace } from './types/notion.types';
+export {};

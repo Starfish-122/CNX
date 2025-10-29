@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
 import { Icon } from '@/components/atoms';
-import { sidebarCategories } from '@/routes';
+import { sidebarCategories } from '@/config';
 
 export default function GuidePageLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();

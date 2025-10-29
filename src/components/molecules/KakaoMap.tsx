@@ -1,12 +1,9 @@
 'use client';
 import React from 'react';
 import { MapContainer, MapLoadingSpinner, MapErrorMessage } from '@/components/atoms';
-import { useKakaoMapInit } from '@/utils/hooks/useKakaoMapInit';
-import { useMapBounds } from '@/utils/hooks/useMapBounds';
-import { useMapMarkers } from '@/utils/hooks/useMapMarkers';
-import { useMapPolygons } from '@/utils/hooks/useMapPolygons';
+import { useKakaoMapInit, useMapBounds, useMapMarkers, useMapPolygons } from '@/hooks';
 import { COMPANY_CENTER, DEFAULT_MAP_LEVEL, type LocationKey } from '@/utils/constants';
-import type { NotionPlace } from '@/utils/types';
+import type { NotionPlace } from '@/types';
 import type { Coordinates } from '@/utils/constants';
 
 interface KakaoMapProps {

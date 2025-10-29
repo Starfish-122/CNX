@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { collection, getDocs, query, orderBy } from 'firebase/firestore';
-import { db } from '@/utils/firebase';
-import CommentForm from './CommentForm';
-import CommentItem from './CommentItem';
+import { db } from '@/utils/services/firebase';
+import { CommentForm, CommentItem } from '@/components/molecules';
 
 interface Comment {
     id: string;
@@ -26,6 +25,13 @@ export default function CommentList({ placeName }: { placeName: string }) {
                 setLoading(true);
                 setError(null);
 
+                // Firebase 연결 확인
+                if (!db) {
+                    setError('Firebase 연결 오류: 환경변수를 확인해주세요.');
+                    setLoading(false);
+                    return;
+                }
+
                 // Firestore의 'places/{placeName}/comments' 서브컬렉션에서 데이터 가져오기
                 const commentsRef = collection(db, 'places', placeName, 'comments');
                 const q = query(commentsRef, orderBy('createdAt', 'desc'));
@@ -39,7 +45,10 @@ export default function CommentList({ placeName }: { placeName: string }) {
                     fetchedComments.push({
                         id: doc.id,
                         author: data.author || '익명',
-                        date: data.createdAt?.toDate?.()?.toLocaleDateString('ko-KR') || data.date || '날짜 정보 없음',
+                        date:
+                            data.createdAt?.toDate?.()?.toLocaleDateString('ko-KR') ||
+                            data.date ||
+                            '날짜 정보 없음',
                         content: data.content || '',
                         password: data.password || '',
                         createdAt: data.createdAt?.toDate?.() || null,
@@ -49,19 +58,20 @@ export default function CommentList({ placeName }: { placeName: string }) {
                 setComments(fetchedComments);
             } catch (err) {
                 console.error('댓글을 불러오는 중 오류 발생:', err);
-                
+
                 // 더 자세한 에러 메시지
                 let errorMessage = '댓글을 불러오는데 실패했습니다.';
                 if (err instanceof Error) {
                     if (err.message.includes('index')) {
-                        errorMessage = 'Firestore 인덱스를 생성해주세요. 콘솔에서 링크를 확인하세요.';
+                        errorMessage =
+                            'Firestore 인덱스를 생성해주세요. 콘솔에서 링크를 확인하세요.';
                     } else if (err.message.includes('permission')) {
                         errorMessage = 'Firebase 권한 오류: Firestore 보안 규칙을 확인해주세요.';
                     } else {
                         errorMessage = `오류: ${err.message}`;
                     }
                 }
-                
+
                 setError(errorMessage);
             } finally {
                 setLoading(false);
@@ -76,6 +86,11 @@ export default function CommentList({ placeName }: { placeName: string }) {
     const handleRefreshComments = () => {
         const handleFetchComments = async () => {
             try {
+                if (!db) {
+                    console.error('Firebase 연결 오류');
+                    return;
+                }
+
                 const commentsRef = collection(db, 'places', placeName, 'comments');
                 const q = query(commentsRef, orderBy('createdAt', 'desc'));
                 const querySnapshot = await getDocs(q);
@@ -88,7 +103,10 @@ export default function CommentList({ placeName }: { placeName: string }) {
                     fetchedComments.push({
                         id: doc.id,
                         author: data.author || '익명',
-                        date: data.createdAt?.toDate?.()?.toLocaleDateString('ko-KR') || data.date || '날짜 정보 없음',
+                        date:
+                            data.createdAt?.toDate?.()?.toLocaleDateString('ko-KR') ||
+                            data.date ||
+                            '날짜 정보 없음',
                         content: data.content || '',
                         password: data.password || '',
                         createdAt: data.createdAt?.toDate?.() || null,
@@ -100,7 +118,7 @@ export default function CommentList({ placeName }: { placeName: string }) {
                 console.error('댓글을 불러오는 중 오류 발생:', err);
             }
         };
-        
+
         handleFetchComments();
     };
 
@@ -124,17 +142,23 @@ export default function CommentList({ placeName }: { placeName: string }) {
 
     return (
         <div className="comment-list">
-            <strong className="block text-xl font-medium mb-4">Comments <span className="text-blue-400 text-md">{comments.length}</span></strong>
+            <strong className="block text-xl font-medium mb-4">
+                Comments <span className="text-blue-400 text-md">{comments.length}</span>
+            </strong>
             <div className="flex flex-col gap-4">
                 {comments.length === 0 ? (
-                    <div className="text-center text-gray-500 p-4">아직 댓글이 없습니다. 첫 댓글을 작성해보세요!</div>
+                    <div className="text-center text-gray-500 p-4">
+                        아직 댓글이 없습니다. 첫 댓글을 작성해보세요!
+                    </div>
                 ) : (
                     comments.map((comment) => (
                         <CommentItem
                             key={comment.id}
                             id={comment.id}
                             author={comment.author}
-                            date={comment.createdAt?.toLocaleDateString('ko-KR') || '날짜 정보 없음'}
+                            date={
+                                comment.createdAt?.toLocaleDateString('ko-KR') || '날짜 정보 없음'
+                            }
                             content={comment.content}
                             placeName={placeName}
                             password={comment.password}
@@ -143,7 +167,7 @@ export default function CommentList({ placeName }: { placeName: string }) {
                         />
                     ))
                 )}
-            
+
                 <CommentForm placeName={placeName} />
             </div>
         </div>

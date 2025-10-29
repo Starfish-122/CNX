@@ -28,3 +28,9 @@ export interface NotionPlace {
     coordinates?: { lat: number; lng: number }; // 장소의 좌표
 }
 
+// Notion API 응답 타입
+export interface NotionApiResponse {
+    ok: boolean;
+    items?: NotionPlace[];
+    error?: string;
+}

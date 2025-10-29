@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { doc, deleteDoc, updateDoc } from 'firebase/firestore';
-import { db } from '@/utils/firebase';
+import { db } from '@/utils/services/firebase';
 import { Button, Input, Textarea } from '../atoms';
 
 interface CommentItemProps {
@@ -16,15 +16,15 @@ interface CommentItemProps {
     onUpdate?: () => void;
 }
 
-export default function CommentItem({ 
-    id, 
-    author, 
-    date, 
-    content, 
-    placeName, 
+export default function CommentItem({
+    id,
+    author,
+    date,
+    content,
+    placeName,
     password: storedPassword,
     onDelete,
-    onUpdate 
+    onUpdate,
 }: CommentItemProps) {
     const [isEditing, setIsEditing] = useState(false);
     const [editContent, setEditContent] = useState(content);
@@ -34,18 +34,17 @@ export default function CommentItem({
     const [loading, setLoading] = useState(false);
 
     const handleVerifyPassword = (action: 'edit' | 'delete') => {
-        
         // 비밀번호가 저장되지 않은 경우 (기존 댓글)
         if (!storedPassword || storedPassword === '') {
             setError('수정/삭제할 수 없는 댓글입니다. 관리자에게 문의하세요.');
             return;
         }
-        
+
         if (passwordInput.trim() === String(storedPassword).trim()) {
             setError(null);
             setPasswordInput('');
             setShowPasswordModal(null);
-            
+
             if (action === 'edit') {
                 setIsEditing(true);
             } else {
@@ -57,6 +56,11 @@ export default function CommentItem({
     };
 
     const handleDelete = async () => {
+        if (!db) {
+            setError('Firebase 연결 오류');
+            return;
+        }
+
         try {
             setLoading(true);
             const commentRef = doc(db, 'places', placeName, 'comments', id);
@@ -71,6 +75,11 @@ export default function CommentItem({
     };
 
     const handleUpdate = async () => {
+        if (!db) {
+            setError('Firebase 연결 오류');
+            return;
+        }
+
         if (!editContent.trim()) {
             setError('댓글 내용을 입력해주세요.');
             return;
@@ -127,7 +136,7 @@ export default function CommentItem({
                             <div className="text-xs text-gray-500">{date}</div>
                         </div>
                     </div>
-                    
+
                     {!isEditing && (
                         <div className="flex gap-2">
                             <button
@@ -159,9 +168,7 @@ export default function CommentItem({
                             size="full"
                             className="border-gray-300 bg-white text-sm"
                         />
-                        {error && (
-                            <div className="text-xs text-red-600">{error}</div>
-                        )}
+                        {error && <div className="text-xs text-red-600">{error}</div>}
                         <div className="flex gap-2">
                             <Button
                                 color="primary"
@@ -187,19 +194,15 @@ export default function CommentItem({
                 )}
                 {/* 비밀번호 확인 모달 */}
                 {showPasswordModal && (
-                    <div 
-                        className=""
-                        onClick={handleClosePasswordModal}
-                    >
-                        <div 
+                    <div className="" onClick={handleClosePasswordModal}>
+                        <div
                             className="bg-white rounded-xl p-4 w-full"
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <h3 className="text-lg font-medium mb-4">
-                                비밀번호 확인
-                            </h3>
+                            <h3 className="text-lg font-medium mb-4">비밀번호 확인</h3>
                             <p className="text-sm text-gray-600 mb-4">
-                                {showPasswordModal === 'edit' ? '댓글을 수정' : '댓글을 삭제'}하려면 비밀번호를 입력해주세요.
+                                {showPasswordModal === 'edit' ? '댓글을 수정' : '댓글을 삭제'}하려면
+                                비밀번호를 입력해주세요.
                             </p>
                             <Input
                                 type="password"
@@ -210,9 +213,7 @@ export default function CommentItem({
                                 aria-label="비밀번호 입력"
                                 autoFocus
                             />
-                            {error && (
-                                <div className="text-xs text-red-600 mt-2">{error}</div>
-                            )}
+                            {error && <div className="text-xs text-red-600 mt-2">{error}</div>}
                             <div className="flex gap-2 mt-4">
                                 <Button
                                     color="primary"
@@ -221,10 +222,7 @@ export default function CommentItem({
                                 >
                                     확인
                                 </Button>
-                                <Button
-                                    onClick={handleClosePasswordModal}
-                                    aria-label="취소"
-                                >
+                                <Button onClick={handleClosePasswordModal} aria-label="취소">
                                     취소
                                 </Button>
                             </div>

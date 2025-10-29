@@ -6,7 +6,7 @@ import { Title, type TagCategory } from '@/components/atoms';
 import { findPlaceCoordinates } from '@/utils/services/kakaoMap';
 import { getDistanceBetween } from '@/utils/helpers';
 import { COMPANY_CENTER } from '@/utils/constants';
-import type { NotionPlace } from '@/utils/types';
+import type { NotionPlace } from '@/types';
 // Tag 타입 정의
 type Tag = {
     label: string;

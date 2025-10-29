@@ -1,5 +1,5 @@
 'use client';
-import type { KakaoPlaceResult, NotionPlace } from '@/utils/types';
+import type { NotionPlace, KakaoPlaceResult } from '@/types';
 import type { Coordinates } from '@/utils/constants';
 
 /**

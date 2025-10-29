@@ -10,7 +10,7 @@ interface CardProps {
     className?: string;
 }
 
-export default function Card({ children, title, description, image, className }: CardProps) {
+export default function Card({ children, image, className }: CardProps) {
     return (
         <div
             className={clsx('card bg-white rounded-lg shadow-md overflow-hidden w-full', className)}

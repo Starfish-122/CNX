@@ -6,7 +6,7 @@ import {
     createCompanyInfoContent,
 } from '@/utils/services/kakaoMap';
 import { COMPANY_CENTER, COMPANY_MARKER_Z_INDEX, OVERLAY_Y_ANCHOR } from '@/utils/constants';
-import type { NotionPlace } from '@/utils/types';
+import type { NotionPlace } from '@/types';
 import type { Coordinates, LocationKey } from '@/utils/constants';
 
 interface UseMapMarkersProps {
