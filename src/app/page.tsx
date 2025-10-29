@@ -82,9 +82,9 @@ export default function HomePage() {
 
     return (
         <>
-            <h2 className="flex items-center justify-center bg-amber-50 my-5 py-5 rounded-lg">
+            {/* <h2 className="flex items-center justify-center bg-amber-50 mb-12 h-50 py-5 rounded-lg">
                 카드
-            </h2>
+            </h2> */}
 
             <div className="">
                 <div className="relative">
@@ -127,10 +127,7 @@ export default function HomePage() {
                 </div>
             </div>
 
-            <h2 className="flex items-center justify-center bg-amber-50 my-5 py-5 rounded-lg">
-                리스트
-            </h2>
-            <PlaceList sortByDistance={sortByDistance} />
+            <PlaceList className="mt-12 mb-24" sortByDistance={sortByDistance} />
         </>
     );
 }

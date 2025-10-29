@@ -77,8 +77,8 @@ export default function PlaceList({
     }, []);
 
     return (
-        <div className={`place-list ${className}`}>
-            <Title element="h2">
+        <div className={`place-list container mx-auto ${className}`}>
+            <Title element="h2" className="mb-6">
                 맛집 목록 ({notionData.length}개)
                 {sortByDistance && (
                     <span className="ml-2 text-sm text-blue-500 font-normal">· 거리순 정렬</span>
