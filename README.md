@@ -337,4 +337,20 @@ Next.js와 Tailwind CSS에 대해 알아보려면, 아래 링크를 클릭하세
     `EMAILJS_TEMPLATE_ID`=******\*\*\*******
     `EMAILJS_SERVICE_ID`=******\*\*\*******
 
+### 9.3. Firebase
+
+-   **설치**: [npm i firebase] (https://www.npmjs.com/package/firebase)
+-   **사이트**: [Firebase Console] (https://console.firebase.google.com/)
+-   **역할**: 구글의 백엔드 서비스 플랫폼 (인증, 데이터베이스, 스토리지, 호스팅 등)
+-   **환경변수**: .env.local
+    `NEXT_PUBLIC_FIREBASE_API_KEY`=AIzaSy******************************
+    `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`=***************.firebaseapp.com
+    `NEXT_PUBLIC_FIREBASE_PROJECT_ID`=***************
+    `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`=***************.appspot.com
+    `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`=************
+    `NEXT_PUBLIC_FIREBASE_APP_ID`=*:************:web:**************
+
+-   **주요 기능**:
+    -   **Firestore**: NoSQL 실시간 데이터베이스
+
 ---
