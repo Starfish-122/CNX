@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/utils/services/firebase';
-import { Button, Input, Textarea } from '../atoms';
+import { Button, Input, Textarea } from '@/components/atoms';
 
 interface FormData {
     author: string;

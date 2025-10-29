@@ -3,16 +3,9 @@
 import { useState, useEffect } from 'react';
 import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 import { db } from '@/utils/services/firebase';
-import { CommentForm, CommentItem } from '@/components/molecules';
-
-interface Comment {
-    id: string;
-    author: string;
-    date: string;
-    content: string;
-    password: string;
-    createdAt?: Date;
-}
+import CommentForm from './CommentForm';
+import CommentItem from './CommentItem';
+import type { Comment } from './types';
 
 export default function CommentList({ placeName }: { placeName: string }) {
     const [comments, setComments] = useState<Comment[]>([]);

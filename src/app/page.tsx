@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Tab, PlaceList, KakaoMap } from '@/components/molecules';
+import { Tab } from '@/components/molecules';
+import { KakaoMap, PlaceList } from '@/components/organisms';
 import { useMapState } from '@/hooks';
 import { type LocationKey } from '@/utils/constants';
 import type { NotionPlace } from '@/types';

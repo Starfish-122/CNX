@@ -21,11 +21,6 @@ export { default as Icon } from './Icon';
 export { default as LoadingState } from './LoadingState';
 export { default as ErrorState } from './ErrorState';
 
-// Map Components
-export { default as MapContainer } from './MapContainer';
-export { default as MapLoadingSpinner } from './MapLoadingSpinner';
-export { default as MapErrorMessage } from './MapErrorMessage';
-
 // Styles & Colors
 export * from './buttonStyle';
 export * from './categoryColors';

@@ -7,7 +7,7 @@ import { searchKakaoPlace, copyToClipboard } from '@/utils/services/kakaoMap';
 import DetailHeader from './DetailHeader';
 import DetailTabs from './DetailTabs';
 import InfoSection from './InfoSection';
-import { CommentList } from '@/components/molecules';
+import { Comments } from '@/components/organisms';
 import type { DetailCardProps, PlaceTag, TabType } from '@/types/components';
 
 export default function DetailCard({
@@ -151,7 +151,7 @@ export default function DetailCard({
 
                 {activeTab === 'review' && (
                     <div className="flex flex-col gap-3">
-                        <CommentList placeName={name} />
+                        <Comments placeName={name} />
                     </div>
                 )}
             </div>

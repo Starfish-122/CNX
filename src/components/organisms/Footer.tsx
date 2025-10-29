@@ -4,21 +4,21 @@ import { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { Icon, Title, Text, ButtonLink } from '@/components/atoms';
-import MailForm from '@/components/molecules/MailForm';
+import { MailForm } from '@/components/organisms';
 
 export default function Footer() {
     const [isTop, setIsTop] = useState(true);
     const handleScroll = () => {
-        if(window.scrollY > 100) {
+        if (window.scrollY > 100) {
             setIsTop(false);
         } else {
             setIsTop(true);
         }
-    }
+    };
     const scrollToTop = () => {
         window.scrollTo({
             top: 0,
-            behavior: 'smooth'
+            behavior: 'smooth',
         });
     };
     useEffect(() => {
@@ -26,7 +26,7 @@ export default function Footer() {
         window.addEventListener('scroll', handleScroll);
         return () => {
             window.removeEventListener('scroll', handleScroll);
-        }
+        };
     });
     return (
         <footer className="footer">
@@ -45,7 +45,12 @@ export default function Footer() {
                             <Text className="mt-2.5">홍익인간의 뜻으로 만들어진 맛집 지도</Text>
                         </div>
                         <div className="flex gap-5 mt-5 lg:mt-0 lg:col-span-2">
-                            <ButtonLink variant="text" href="https://github.com/Starfish-122/CNX" target="_blank" className="flex items-center gap-2.5 text-gray-900 dark:text-gray-100">
+                            <ButtonLink
+                                variant="text"
+                                href="https://github.com/Starfish-122/CNX"
+                                target="_blank"
+                                className="flex items-center gap-2.5 text-gray-900 dark:text-gray-100"
+                            >
                                 <Image
                                     src="/cnx-github.png"
                                     alt="cnx github"
@@ -55,14 +60,20 @@ export default function Footer() {
                                 />
                                 Github
                             </ButtonLink>
-                            <ButtonLink variant="text" href="https://www.notion.so/React-1d542c76ec4c8066aad3d0d50a9f9f7c?source=copy_link" target="_blank" className="flex items-center gap-2.5 text-gray-900 dark:text-gray-100">
+                            <ButtonLink
+                                variant="text"
+                                href="https://www.notion.so/React-1d542c76ec4c8066aad3d0d50a9f9f7c?source=copy_link"
+                                target="_blank"
+                                className="flex items-center gap-2.5 text-gray-900 dark:text-gray-100"
+                            >
                                 <Image
                                     src="/cnx-notion.png"
                                     alt="cnx github"
                                     width={82}
                                     height={30}
                                     className="w-6 h-6"
-                                />Notion
+                                />
+                                Notion
                             </ButtonLink>
                         </div>
                     </div>
@@ -71,8 +82,17 @@ export default function Footer() {
                     </div>
                 </div>
             </div>
-            <div onClick={scrollToTop} className={clsx(isTop ? 'btn-gotop' : 'btn-gotop visible', 'fixed', 'bottom-6', 'right-6', 'z-100')}>
-                <Icon name="arrow_upward_alt" size="lg" className="text-gray-100"/>
+            <div
+                onClick={scrollToTop}
+                className={clsx(
+                    isTop ? 'btn-gotop' : 'btn-gotop visible',
+                    'fixed',
+                    'bottom-6',
+                    'right-6',
+                    'z-100'
+                )}
+            >
+                <Icon name="arrow_upward_alt" size="lg" className="text-gray-100" />
             </div>
         </footer>
     );
