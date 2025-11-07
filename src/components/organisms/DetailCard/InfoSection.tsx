@@ -69,7 +69,7 @@ export default function InfoSection({
                                     rel="noopener noreferrer"
                                     className="text-indigo-600 font-medium hover:text-indigo-800 hover:underline break-all"
                                 >
-                                    카카오맵에서 보기
+                                    {place_url}
                                 </a>
                             ) : (
                                 '카카오맵 정보 없음'

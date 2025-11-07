@@ -13,9 +13,9 @@ interface InfoRowProps {
 
 export default function InfoRow({ icon, iconColor, iconBg, label, value }: InfoRowProps) {
     return (
-        <div className="flex gap-3">
+        <div className="flex items-center gap-3">
             <div className={`${iconBg} rounded-2xl p-2.5 shrink-0`}>
-                <Icon name={icon} size="sm" className={iconColor} />
+                <Icon name={icon} size="md" className={iconColor} />
             </div>
             <div className="flex flex-col gap-1 min-w-0">
                 <p className="text-gray-500 text-sm">{label}</p>

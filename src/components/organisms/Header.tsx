@@ -28,14 +28,14 @@ export default function Header() {
                                 Guide
                             </Link>
                         </li>
-                        <li>
+                        {/* <li>
                             <Link
                                 href="/detail"
                                 className="hover:text-blue-500 transition-colors text-lg"
                             >
                                 Detail
                             </Link>
-                        </li>
+                        </li> */}
                     </ul>
                 </nav>
                 <button className="p-3 hover:bg-gray-100 rounded-md">

@@ -11,19 +11,14 @@ interface DetailTabsProps {
 
 export default function DetailTabs({ activeTab, onTabChange }: DetailTabsProps) {
     return (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-1 grid grid-cols-3 gap-1">
+        <div className="detail-tabs bg-white rounded-2xl shadow-sm border border-gray-100 p-1 grid grid-cols-2 gap-1">
             <button
                 onClick={() => onTabChange('info')}
-                className={clsx(
-                    'py-2 px-4 rounded-xl text-sm font-medium transition-all',
-                    activeTab === 'info'
-                        ? 'bg-indigo-500 text-white shadow-sm'
-                        : 'text-gray-700 hover:bg-gray-50'
-                )}
+                className={clsx('detail-tabs__button', activeTab === 'info' && 'active')}
             >
                 정보
             </button>
-            <button
+            {/* <button
                 onClick={() => onTabChange('menu')}
                 disabled
                 className={clsx(
@@ -32,15 +27,10 @@ export default function DetailTabs({ activeTab, onTabChange }: DetailTabsProps) 
                 )}
             >
                 메뉴
-            </button>
+            </button> */}
             <button
                 onClick={() => onTabChange('review')}
-                className={clsx(
-                    'py-2 px-4 rounded-xl text-sm font-medium transition-all',
-                    activeTab === 'review'
-                        ? 'bg-indigo-500 text-white shadow-sm'
-                        : 'text-gray-700 hover:bg-gray-50'
-                )}
+                className={clsx('detail-tabs__button', activeTab === 'review' && 'active')}
             >
                 리뷰
             </button>
