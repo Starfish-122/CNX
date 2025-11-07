@@ -20,7 +20,7 @@ export default function CategoryTag({
   label,
   category,
   disabled,
-  size = 'md',
+  size = 'sm',
   className,
 }: CategoryTagProps) {
   const palette = category ? CATEGORY_COLOR[category] : NEUTRAL;

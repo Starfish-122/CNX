@@ -46,7 +46,7 @@ export default function Tag({
     <span
       className={twMerge(
         clsx(
-          'cnx-tag inline-flex items-center rounded-full font-semibold transition-colors duration-200',
+          'cnx-tag inline-flex items-center rounded-full font-semibold transition-colors duration-200 font-light',
           SIZE_MAP[size],
           palette?.base,
           !disabled && palette?.hover,
