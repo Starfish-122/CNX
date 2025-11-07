@@ -123,7 +123,7 @@ export const LOCATION_POLYGONS: Record<LocationKey, Coordinates[]> = {
 // ========== 지도 설정 ==========
 export const DEFAULT_MAP_LEVEL = 3;
 export const COMPANY_MARKER_Z_INDEX = 999;
-export const OVERLAY_Y_ANCHOR = 1.5;
+export const OVERLAY_Y_ANCHOR = 1.7;
 
 // ========== 폴리곤 스타일 ==========
 export const POLYGON_STYLE = {
@@ -136,16 +136,16 @@ export const POLYGON_STYLE = {
 
 export const POLYGON_STYLE_ACTIVE = {
     strokeWeight: 3,
-    strokeColor: '#0066cc',
+    strokeColor: 'var(--color-blue-500)',
     strokeOpacity: 1,
-    fillColor: '#0080ff',
+    fillColor: 'var(--color-blue-400)',
     fillOpacity: 0.4,
 } as const;
 
 export const POLYGON_STYLE_INACTIVE = {
-    strokeWeight: 1,
-    strokeColor: '#333333',
+    strokeWeight: 2,
+    strokeColor: 'var(--color-gray-400)',
     strokeOpacity: 0.5,
-    fillColor: '#000000',
+    fillColor: 'var(--color-gray-300)',
     fillOpacity: 0.4,
 } as const;

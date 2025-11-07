@@ -19,5 +19,5 @@ export function createOverlayContent(placeName: string): HTMLElement {
  * 회사 인포윈도우 HTML 생성
  */
 export function createCompanyInfoContent(): string {
-    return '<div style="padding:10px;font-size:14px;font-weight:700;white-space:nowrap;">🏢 컨센트릭스</div>';
+    return '<div class="company-info-content">🏢</div>';
 }
