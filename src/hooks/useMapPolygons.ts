@@ -1,6 +1,7 @@
 import { useEffect, useRef, useCallback } from 'react';
 import {
     LOCATION_POLYGONS,
+    LOCATION_CENTERS,
     POLYGON_STYLE,
     POLYGON_STYLE_ACTIVE,
     POLYGON_STYLE_INACTIVE,
@@ -21,6 +22,7 @@ interface UseMapPolygonsProps {
 export function useMapPolygons({ map, selectedLocation, onLocationSelect }: UseMapPolygonsProps) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const polygonsRef = useRef<Map<LocationKey, any>>(new Map());
+    const overlaysRef = useRef<Map<LocationKey, any>>(new Map());
 
     // 폴리곤 스타일 업데이트
     const updatePolygonStyles = useCallback(() => {
@@ -57,6 +59,7 @@ export function useMapPolygons({ map, selectedLocation, onLocationSelect }: UseM
         if (!map) return;
 
         Object.entries(LOCATION_POLYGONS).forEach(([locationKey, coords]) => {
+            if (locationKey === '온라인' || coords.length === 0) return;
             const path = coords.map((coord) => new window.kakao.maps.LatLng(coord.lat, coord.lng));
 
             const polygon = new window.kakao.maps.Polygon({
@@ -66,12 +69,39 @@ export function useMapPolygons({ map, selectedLocation, onLocationSelect }: UseM
                 zIndex: 10,
             });
 
+            // 폴리곤 중심점 계산
+            const bounds = new window.kakao.maps.LatLngBounds();
+            path.forEach((latLng) => bounds.extend(latLng));
+
+            // bounds에 좌표가 제대로 추가되었는지 확인
+            const center = path.length > 0 
+                ? new window.kakao.maps.LatLng(
+                    (bounds.getSouthWest().getLat() + bounds.getNorthEast().getLat()) / 2,
+                    (bounds.getSouthWest().getLng() + bounds.getNorthEast().getLng()) / 2
+                )
+                : new window.kakao.maps.LatLng(LOCATION_CENTERS[locationKey as LocationKey].lat, LOCATION_CENTERS[locationKey as LocationKey].lng);
+
+            // 지역명 오버레이 생성
+            const content = `
+                <div class="polygon-text">
+                    ${locationKey}
+                </div>
+            `;
+
+            const overlay = new window.kakao.maps.CustomOverlay({
+                map: map,
+                position: center,
+                content: content,
+                zIndex: 20,
+            });
+
             window.kakao.maps.event.addListener(polygon, 'click', () => {
                 const currentLocation = locationKey as LocationKey;
                 onLocationSelect?.(currentLocation);
             });
 
             polygonsRef.current.set(locationKey as LocationKey, polygon);
+            overlaysRef.current.set(locationKey as LocationKey, overlay);
         });
 
         updatePolygonStyles();
