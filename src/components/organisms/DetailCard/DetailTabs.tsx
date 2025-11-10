@@ -18,16 +18,7 @@ export default function DetailTabs({ activeTab, onTabChange }: DetailTabsProps) 
             >
                 정보
             </button>
-            {/* <button
-                onClick={() => onTabChange('menu')}
-                disabled
-                className={clsx(
-                    'py-2 px-4 rounded-xl text-sm font-medium transition-all',
-                    'bg-gray-100 text-gray-400 cursor-not-allowed'
-                )}
-            >
-                메뉴
-            </button> */}
+
             <button
                 onClick={() => onTabChange('review')}
                 className={clsx('detail-tabs__button', activeTab === 'review' && 'active')}

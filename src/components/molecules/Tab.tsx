@@ -1,6 +1,6 @@
 'use client';
 
-import { Icon } from '@/components/atoms';
+// import { Icon } from '@/components/atoms';
 import {
     TAB_CONFIGS,
     LOCATION_CENTERS,
@@ -32,8 +32,6 @@ const TABS: TabLocation[] = [
 interface TabProps {
     selectedTab?: string;
     onTabChange?: (tab: TabLocation) => void;
-    onSortByDistance?: () => void;
-    isSortedByDistance?: boolean;
 }
 
 // 탭 버튼 스타일 유틸 함수
@@ -48,18 +46,9 @@ const getTabButtonClass = (isSelected: boolean): string =>
             : 'border-transparent hover:bg-blue-50'
     );
 
-export default function Tab({
-    selectedTab,
-    onTabChange,
-    onSortByDistance,
-    isSortedByDistance = false,
-}: TabProps) {
+export default function Tab({ selectedTab, onTabChange }: TabProps) {
     const handleTabClick = (tab: TabLocation) => {
         onTabChange?.(tab);
-    };
-
-    const handleSortClick = () => {
-        onSortByDistance?.();
     };
 
     return (
@@ -78,23 +67,6 @@ export default function Tab({
                         </button>
                     ))}
                 </div>
-            </div>
-            <div className="flex items-center justify-center px-2.5">
-                <button
-                    type="button"
-                    onClick={handleSortClick}
-                    className={clsx(
-                        'p-2 rounded-lg transition-all cursor-pointer',
-                        isSortedByDistance ? 'bg-blue-500 text-white' : 'hover:bg-blue-50'
-                    )}
-                    aria-label="거리순 정렬"
-                    title={isSortedByDistance ? '거리순 정렬됨' : '거리순 정렬'}
-                >
-                    <Icon
-                        name="measuring_tape"
-                        className={isSortedByDistance ? 'text-white' : 'hover:text-blue-500 '}
-                    />
-                </button>
             </div>
         </div>
     );

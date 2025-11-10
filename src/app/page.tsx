@@ -7,6 +7,7 @@ import { useMapState } from '@/hooks';
 import { type LocationKey, TAB_CONFIGS } from '@/utils/constants';
 import type { NotionPlace } from '@/types';
 import type { TabLocation } from '@/components/molecules/Tab';
+import Filter, { type DistanceFilterType } from '@/components/molecules/Filter';
 
 /**
  * 홈페이지
@@ -17,7 +18,10 @@ export default function HomePage() {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [selectedTab, setSelectedTab] = useState<string>('all');
-    const [sortByDistance, setSortByDistance] = useState(false);
+    const [sortByDistance] = useState(false);
+    const [sortByRating] = useState(false);
+    const [distanceFilter, setDistanceFilter] = useState<DistanceFilterType>(null);
+    const [ratingFilter, setRatingFilter] = useState<number>(0);
 
     // 지도 상태 관리 훅 사용
     const { center, bounds, selectedLocation, setLocationByKey } = useMapState('한강로길');
@@ -51,6 +55,14 @@ export default function HomePage() {
     const handleTabChange = (tab: TabLocation) => {
         console.log('[HomePage] 탭 변경:', tab.label);
         setSelectedTab(tab.value);
+
+        // 온라인 탭으로 전환 시 필터 초기화
+        if (tab.value === 'online') {
+            setDistanceFilter(null);
+            setRatingFilter(0);
+            console.log('[HomePage] 온라인 탭 - 필터 초기화');
+        }
+
         // '전체' 탭이 아닐 때만 지도 위치 변경
         if (tab.label !== '전체' && tab.center) {
             setLocationByKey(tab.label as LocationKey);
@@ -72,21 +84,36 @@ export default function HomePage() {
                 하이브: 'hybe',
                 온라인: 'online',
             };
-            setSelectedTab(tabConfig[location]);
+            const tabValue = tabConfig[location];
+            setSelectedTab(tabValue);
             setLocationByKey(location);
+
+            // 온라인 구역 선택 시 필터 초기화
+            if (tabValue === 'online') {
+                setDistanceFilter(null);
+                setRatingFilter(0);
+                console.log('[HomePage] 온라인 구역 - 필터 초기화');
+            }
         }
     };
 
-    // 거리순 정렬 핸들러
-    const handleSortByDistance = () => {
-        setSortByDistance((prev) => !prev);
-        console.log('[HomePage] 거리순 정렬:', !sortByDistance);
+    // 필터 변경 핸들러
+    const handleDistanceFilterChange = (value: DistanceFilterType) => {
+        setDistanceFilter(value);
+        console.log('[HomePage] 거리 필터:', value);
+    };
+
+    const handleRatingFilterChange = (value: number) => {
+        setRatingFilter(value);
+        console.log('[HomePage] 평점 필터:', value);
     };
 
     // selectedTab에 해당하는 LocationKey 찾기 (PlaceList 필터링용)
     // 'all'일 때는 null (전체 표시)
     const filterLocation =
-        selectedTab === 'all' ? null : TAB_CONFIGS.find((config) => config.value === selectedTab)?.label || null;
+        selectedTab === 'all'
+            ? null
+            : TAB_CONFIGS.find((config) => config.value === selectedTab)?.label || null;
 
     return (
         <>
@@ -94,7 +121,7 @@ export default function HomePage() {
                 카드
             </h2> */}
 
-            <div className="">
+            <div className="map">
                 <div className="relative">
                     {isLoading ? (
                         <div className="w-full h-[60vh] flex items-center justify-center bg-gray-50 rounded-lg">
@@ -124,18 +151,30 @@ export default function HomePage() {
                                 selectedLocation={selectedLocation}
                                 onLocationSelect={handleLocationSelect}
                             />
-                            <Tab
-                                selectedTab={selectedTab}
-                                onTabChange={handleTabChange}
-                                onSortByDistance={handleSortByDistance}
-                                isSortedByDistance={sortByDistance}
-                            />
+                            <Tab selectedTab={selectedTab} onTabChange={handleTabChange} />
                         </>
                     )}
                 </div>
             </div>
 
-            <PlaceList className="mt-12 mb-24" sortByDistance={sortByDistance} selectedLocation={filterLocation} />
+            {/* 온라인 탭이 아닐 때만 필터 표시 */}
+            {selectedTab !== 'online' && (
+                <Filter
+                    distanceFilter={distanceFilter}
+                    onDistanceFilterChange={handleDistanceFilterChange}
+                    ratingFilter={ratingFilter}
+                    onRatingFilterChange={handleRatingFilterChange}
+                />
+            )}
+
+            <PlaceList
+                className="mt-12 mb-24"
+                sortByDistance={sortByDistance}
+                sortByRating={sortByRating}
+                selectedLocation={filterLocation}
+                distanceFilter={distanceFilter}
+                ratingFilter={ratingFilter}
+            />
         </>
     );
 }

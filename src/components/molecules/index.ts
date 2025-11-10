@@ -11,3 +11,5 @@ export { default as CodeBlock } from './CodeBlock';
 export { default as PropsTable } from './PropsTable';
 export { default as SearchBar } from './SearchBar';
 export { default as SkeletonCard } from './SkeletonCard';
+export { default as Filter } from './Filter';
+export { default as FilterSection } from './FilterSection';

@@ -1,11 +1,4 @@
 /* map */
-@utility tab {
-    .tab {
-    }
-    /* .tab__button:not(:last-child) {
-        border-right: 1px solid var(--color-gray-200);
-    } */
-}
 
 @utility detail {
     .detail__card {
@@ -25,15 +18,15 @@
 }
 
 @utility footer {
-    background-color: var(--color-brand-1);
+    background-color: var(--color-brand-2);
     .cnx-title,
     .cnx-text,
     a {
         color: var(--color-gray-100);
     }
     .btn-mail-form {
-        background-color: var(--color-gray-300);
-        color: var(--color-brand-1);
+        background-color: var(--color-gray-100);
+        color: var(--color-brand-2);
     }
     input,
     textarea {
@@ -196,16 +189,3 @@
         }
     }
 }
-
-.btn-gotop.visible {
-    opacity:1;
-    transform: translateY(0);
-    pointer-events: auto;
-}
-.btn-gotop svg {
-    color:var(--color-gray-100);
-}
-.btn-gotop:hover {
-    opacity:0.7;
-}
-
