@@ -1,27 +1,18 @@
 'use client';
 
 import React from 'react';
-import { StarRating } from '@/components/molecules';
-import { Title, Text, CategoryTag, TagList, type TagCategory } from '@/components/atoms';
-
-type Tag = {
-  label: string;
-  category: TagCategory;
-}
+import { Title, Text, TagList } from '@/components/atoms';
 
 interface PlaceCardProps {
-  name?: string;
   description?: string;
-  tags?: Tag[];
   className?: string;
-  rating?: number;
   location?: string;
   status?: string;
   partySize?: string;
   partnered?: boolean;
 }
 
-export default function PlaceCard({ name, description, tags, rating }: PlaceCardProps) {
+export default function PlaceCard({ description }: PlaceCardProps) {
   return (    
     <div className="place-list__card px-6 py-6 border-1 animate-pulse border-gray-100 rounded-lg">
       <div className="flex flex-col gap-4">

@@ -22,6 +22,7 @@ interface UseMapPolygonsProps {
 export function useMapPolygons({ map, selectedLocation, onLocationSelect }: UseMapPolygonsProps) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const polygonsRef = useRef<Map<LocationKey, any>>(new Map());
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const overlaysRef = useRef<Map<LocationKey, any>>(new Map());
 
     // 폴리곤 스타일 업데이트

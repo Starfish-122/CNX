@@ -32,36 +32,25 @@ export function useMapMarkers({ map, places, selectedLocation }: UseMapMarkersPr
     // 회사 마커 생성
     const createCompanyMarker = useCallback(() => {
         if (!map) return;
-      
+
         const position = new window.kakao.maps.LatLng(COMPANY_CENTER.lat, COMPANY_CENTER.lng);
-      
-        // 마커 생성
-        const marker = new window.kakao.maps.Marker({
-          position,
-          map,
-          zIndex: COMPANY_MARKER_Z_INDEX,
-        });
-      
+
         // 커스텀 오버레이 내용 (기존 InfoWindow content 대체)
         const content = `
           <div class="custom-overlay">
             ${createCompanyInfoContent()}
           </div>
         `;
-      
+
         // CustomOverlay 생성
-        const customOverlay = new window.kakao.maps.CustomOverlay({
-          position,
-          content,
-          map,
-          yAnchor: 1.2, // 오버레이 아래쪽이 기준점이 되게 설정
-          zIndex: COMPANY_MARKER_Z_INDEX + 1,
+        new window.kakao.maps.CustomOverlay({
+            position,
+            content,
+            map,
+            yAnchor: 1.2, // 오버레이 아래쪽이 기준점이 되게 설정
+            zIndex: COMPANY_MARKER_Z_INDEX + 1,
         });
-      
-        // 필요하면 overlay를 state 등에 저장 가능
-        // setCompanyOverlay(customOverlay);
-      }, [map]);
-      
+    }, [map]);
 
     // 개별 장소 마커 생성
     const createPlaceMarker = useCallback(
