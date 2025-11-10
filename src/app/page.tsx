@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Tab } from '@/components/molecules';
 import { KakaoMap, PlaceList } from '@/components/organisms';
 import { useMapState } from '@/hooks';
-import { type LocationKey } from '@/utils/constants';
+import { type LocationKey, TAB_CONFIGS } from '@/utils/constants';
 import type { NotionPlace } from '@/types';
 import type { TabLocation } from '@/components/molecules/Tab';
 
@@ -16,7 +16,7 @@ export default function HomePage() {
     const [places, setPlaces] = useState<NotionPlace[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [selectedTab, setSelectedTab] = useState<string>('hangang');
+    const [selectedTab, setSelectedTab] = useState<string>('all');
     const [sortByDistance, setSortByDistance] = useState(false);
 
     // 지도 상태 관리 훅 사용
@@ -51,7 +51,10 @@ export default function HomePage() {
     const handleTabChange = (tab: TabLocation) => {
         console.log('[HomePage] 탭 변경:', tab.label);
         setSelectedTab(tab.value);
-        setLocationByKey(tab.label);
+        // '전체' 탭이 아닐 때만 지도 위치 변경
+        if (tab.label !== '전체' && tab.center) {
+            setLocationByKey(tab.label as LocationKey);
+        }
     };
 
     // 폴리곤 클릭 핸들러
@@ -79,6 +82,11 @@ export default function HomePage() {
         setSortByDistance((prev) => !prev);
         console.log('[HomePage] 거리순 정렬:', !sortByDistance);
     };
+
+    // selectedTab에 해당하는 LocationKey 찾기 (PlaceList 필터링용)
+    // 'all'일 때는 null (전체 표시)
+    const filterLocation =
+        selectedTab === 'all' ? null : TAB_CONFIGS.find((config) => config.value === selectedTab)?.label || null;
 
     return (
         <>
@@ -127,7 +135,7 @@ export default function HomePage() {
                 </div>
             </div>
 
-            <PlaceList className="mt-12 mb-24" sortByDistance={sortByDistance} />
+            <PlaceList className="mt-12 mb-24" sortByDistance={sortByDistance} selectedLocation={filterLocation} />
         </>
     );
 }

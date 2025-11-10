@@ -37,16 +37,18 @@ export default function PlaceCard({ name, description, tags, rating, distance }:
                 href={`/detail/${encodeURIComponent(name || '')}`}
                 className="flex flex-col gap-4"
             >
-                <TagList gap="sm">
-                    {tags?.map((tag) => (
-                        <CategoryTag
-                            key={tag.label}
-                            category={tag.category}
-                            label={tag.label}
-                            size="sm"
-                        />
-                    ))}
-                </TagList>
+                {tags && tags.length > 0 && (
+                    <TagList gap="sm">
+                        {tags.map((tag) => (
+                            <CategoryTag
+                                key={tag.label}
+                                category={tag.category}
+                                label={tag.label}
+                                size="sm"
+                            />
+                        ))}
+                    </TagList>
+                )}
                 <div>
                     <div className="flex items-center gap-2">
                         <Title element="h3" className="text-lg">

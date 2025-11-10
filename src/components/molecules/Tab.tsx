@@ -10,17 +10,24 @@ import {
 import { clsx } from 'clsx';
 
 export interface TabLocation {
-    label: LocationKey;
+    label: LocationKey | '전체';
     value: string;
-    center: Coordinates;
+    center: Coordinates | null;
 }
 
-// TAB_CONFIGS에서 TABS 배열 자동 생성
-const TABS: TabLocation[] = TAB_CONFIGS.map((config) => ({
-    label: config.label,
-    value: config.value,
-    center: LOCATION_CENTERS[config.label],
-}));
+// '전체' 탭 추가하여 TABS 배열 생성
+const TABS: TabLocation[] = [
+    {
+        label: '전체',
+        value: 'all',
+        center: null,
+    },
+    ...TAB_CONFIGS.map((config) => ({
+        label: config.label,
+        value: config.value,
+        center: LOCATION_CENTERS[config.label],
+    })),
+];
 
 interface TabProps {
     selectedTab?: string;
@@ -58,7 +65,7 @@ export default function Tab({
     return (
         <div className="container mx-auto flex justify-center align-middle gap-2.5 absolute bottom-0 left-1/2 -translate-x-1/2 bg-white z-10">
             <div className="tab w-full ">
-                <div className="grid grid-cols-4 md:grid-cols-8 w-full">
+                <div className="grid grid-cols-4 md:grid-cols-9 w-full">
                     {TABS.map((tab) => (
                         <button
                             key={tab.value}

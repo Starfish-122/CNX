@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { PlaceCard } from '@/components/molecules';
+import { useEffect, useState, useMemo } from 'react';
+import { PlaceCard, SkeletonCard } from '@/components/molecules';
 import { Title, type TagCategory } from '@/components/atoms';
 import { findPlaceCoordinates } from '@/utils/services/kakaoMap';
 import { getDistanceBetween } from '@/utils/helpers';
-import { COMPANY_CENTER } from '@/utils/constants';
+import { COMPANY_CENTER, type LocationKey } from '@/utils/constants';
 import type { NotionPlace } from '@/types';
 // Tag 타입 정의
 type Tag = {
@@ -20,24 +20,59 @@ interface NotionItemWithDistance extends NotionPlace {
 interface PlaceListProps {
     className?: string;
     sortByDistance?: boolean;
+    selectedLocation?: LocationKey | null;
 }
 
 export default function PlaceList({
     className,
     sortByDistance = false,
+    selectedLocation = null,
 }: PlaceListProps): React.JSX.Element {
     const [notionData, setNotionData] = useState<NotionItemWithDistance[]>([]);
     const [loading, setLoading] = useState(true);
+    const [totalCount, setTotalCount] = useState(0);
+
+    // 지역별 필터링 적용
+    const filteredData = useMemo(() => {
+        if (!selectedLocation) {
+            return notionData;
+        }
+
+        return notionData.filter((item) => {
+            // '인터넷'과 '온라인'은 동일하게 처리
+            if (selectedLocation === '온라인') {
+                return item.location === '인터넷' || item.location === '온라인';
+            }
+            
+            // '아모레 / LS'는 다양한 형식 허용 (공백, 슬래시 형식 등)
+            if (selectedLocation === '아모레 / LS') {
+                const location = item.location || '';
+                // '아모레'와 'LS'가 모두 포함된 경우 매칭
+                // 또는 정확히 일치하는 형식들
+                return (
+                    location === '아모레 / LS' ||
+                    location === '아모레/LS' ||
+                    (location.includes('아모레') && location.includes('LS'))
+                );
+            }
+            
+            return item.location === selectedLocation;
+        });
+    }, [notionData, selectedLocation]);
 
     // 거리순 정렬 적용
-    const sortedData = sortByDistance
-        ? [...notionData].sort((a, b) => {
-              // distance가 없는 경우 맨 뒤로
-              if (a.distance === undefined) return 1;
-              if (b.distance === undefined) return -1;
-              return a.distance - b.distance;
-          })
-        : notionData;
+    const sortedData = useMemo(() => {
+        if (!sortByDistance) {
+            return filteredData;
+        }
+
+        return [...filteredData].sort((a, b) => {
+            // distance가 없는 경우 맨 뒤로
+            if (a.distance === undefined) return 1;
+            if (b.distance === undefined) return -1;
+            return a.distance - b.distance;
+        });
+    }, [filteredData, sortByDistance]);
 
     useEffect(() => {
         async function fetchNotionData() {
@@ -48,6 +83,7 @@ export default function PlaceList({
                 if (data.ok) {
                     // 먼저 노션 데이터만 표시 (거리 없이)
                     setNotionData(data.items);
+                    setTotalCount(data.items.length);
                     setLoading(false);
 
                     // 백그라운드에서 좌표를 가져와서 거리 계산
@@ -61,9 +97,9 @@ export default function PlaceList({
                         } else {
                             itemsWithDistance.push(item);
                         }
-                        // 실시간으로 업데이트
-                        setNotionData([...itemsWithDistance]);
                     }
+                    // 거리 계산 완료 후 한 번에 업데이트
+                    setNotionData(itemsWithDistance);
                 } else {
                     console.error('[NOTION API ERROR]', data.error || data);
                     setLoading(false);
@@ -76,22 +112,21 @@ export default function PlaceList({
         fetchNotionData();
     }, []);
 
+    // 필터링된 개수 계산
+    const displayCount = loading ? totalCount : filteredData.length;
+
     return (
         <div className={`place-list container mx-auto ${className}`}>
             <Title element="h2" className="mb-6">
-                맛집 목록 ({notionData.length}개)
+                {selectedLocation ? `${selectedLocation} 맛집 목록` : '맛집 목록'} {!loading && ` (${displayCount}개)`}
                 {sortByDistance && (
                     <span className="ml-2 text-sm text-blue-500 font-normal">· 거리순 정렬</span>
                 )}
             </Title>
             {loading ? (
-                <div className="space-y-4">
-                    {[...Array(3)].map((_, i) => (
-                        <div key={i} className="animate-pulse">
-                            <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
-                            <div className="h-6 bg-gray-200 rounded w-1/2 mb-2"></div>
-                            <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                        </div>
+                <div className="w-full grid grid-cols-1 gap-6">
+                    {[...Array(10)].map((_, i) => (
+                        <SkeletonCard key={i} />
                     ))}
                 </div>
             ) : (
