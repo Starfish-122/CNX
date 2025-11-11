@@ -16,8 +16,8 @@ export const pick = (p: any) => {
             '',
         status: p.properties?.Status?.select?.name ?? '',
         score:
-            typeof p.properties?.['Score /5']?.number === 'number'
-                ? p.properties['Score /5'].number
+            typeof p.properties?.['Score']?.number === 'number'
+                ? p.properties['Score'].number
                 : null,
         location: p.properties?.Location?.select?.name ?? '',
         // partySize: (p.properties?.PartySize?.multi_select ?? []).map((t: {name?: string}) => t?.name ?? '').join(', '),
@@ -32,7 +32,9 @@ export const pick = (p: any) => {
         service: (p.properties?.Service?.multi_select ?? [])
             .map((t: { name?: string }) => t?.name ?? '')
             .join(', '),
-        naverplace: p.properties?.NaverPlace?.url ?? null,
+            naverplace: p.properties?.NaverPlace?.url ?? null,
+        // googlemap: p.properties?.GooogleMap?.url ?? null,
+        // googleplaceid: p.properties?.GooglePlaceID?.rich_text ?? null,
         kakaomap: p.properties?.Kakao?.url ?? null,
         website: p.properties?.website?.url ?? null,
         pricecap: p.properties?.PriceCap?.number ?? null,
@@ -50,6 +52,7 @@ export const pick = (p: any) => {
             p.properties?.Image?.files?.[0]?.file?.url ??
             p.properties?.Image?.files?.[0]?.external?.url ??
             null,
+        copyright: p.properties?.Copyright?.rich_text ?? null,
         // notion 기본 데이터
         url: p.url ?? null,
         created: p.created_time ?? null,
@@ -63,7 +66,7 @@ export function buildSorts(sortKey: string, direction: 'ascending' | 'descending
         case 'id':
             return [{ property: 'Id', direction }];
         case 'score':
-            return [{ property: 'Score /5', direction }];
+            return [{ property: 'Score', direction }];
         case 'name':
             return [{ property: 'Name', direction }];
         case 'location':

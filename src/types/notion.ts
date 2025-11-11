@@ -12,7 +12,8 @@ export interface NotionPlace {
     partySize: string;
     mood: string;
     service: string;
-    naverplace: string | null;
+    googlemap: string | null;
+    googleplaceid: string | null;
     kakaomap: string | null;
     website: string | null;
     pricecap: number | null;
@@ -21,6 +22,7 @@ export interface NotionPlace {
     address: string;
     phone: string;
     image: string | null;
+    copyright: string | null;
     url: string | null;
     created: string | null;
     lastEdited: string | null;
