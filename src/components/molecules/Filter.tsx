@@ -12,6 +12,7 @@ interface FilterProps {
     onDistanceFilterChange?: (value: DistanceFilterType) => void;
     ratingFilter?: number;
     onRatingFilterChange?: (value: number) => void;
+    onFilterBoxToggle?: (isOpen: boolean) => void;
 }
 
 // 거리 필터 옵션
@@ -39,11 +40,11 @@ const getDistanceLabel = (value: DistanceFilterType): string => {
 
 const RATING_OPTIONS = [
     { value: 0, label: '전체' },
-    { value: 0.5, label: '1점 미만 (0~0.5점)' },
-    { value: 1, label: '1점 (1~1.5점)' },
-    { value: 2, label: '2점 (2~2.5점)' },
-    { value: 3, label: '3점 (3~3.5점)' },
-    { value: 4, label: '4점 (4~4.5점)' },
+    { value: 0.5, label: '1점 미만' },
+    { value: 1, label: '1점' },
+    { value: 2, label: '2점' },
+    { value: 3, label: '3점' },
+    { value: 4, label: '4점' },
     { value: 5, label: '5점' },
 ] as const;
 
@@ -58,6 +59,7 @@ export default function Filter({
     onDistanceFilterChange,
     ratingFilter = 0,
     onRatingFilterChange,
+    onFilterBoxToggle,
 }: FilterProps) {
     // 임시 필터 상태 (버튼 조작용)
     const [tempDistanceFilter, setTempDistanceFilter] =
@@ -105,12 +107,19 @@ export default function Filter({
     // 필터 변경 감지
     const hasChanges = tempDistanceFilter !== distanceFilter || tempRatingFilter !== ratingFilter;
 
+    // 필터 박스 토글 핸들러
+    const handleToggleFilterBox = () => {
+        const newIsOpen = !isOpen;
+        setIsOpen(newIsOpen);
+        onFilterBoxToggle?.(newIsOpen);
+    };
+
     return (
         <div className="filter container mx-auto mt-8 mb-6">
             <button
                 type="button"
-                onClick={() => setIsOpen(!isOpen)}
-                className="filter__button text-lg font-bold text-gray-800 flex items-center gap-2 mb-4"
+                onClick={handleToggleFilterBox}
+                className="filter__title text-lg font-bold text-gray-800 flex items-center gap-2"
                 aria-expanded={isOpen}
             >
                 필터 보기
@@ -118,10 +127,10 @@ export default function Filter({
             </button>
 
             {isOpen && (
-                <div className="filter__box bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div className="filter__box">
                     <div className="grid grid-cols-1 md:flex gap-6 mb-6">
                         <FilterSection
-                            label="거리 필터"
+                            label="거리 순"
                             options={DISTANCE_OPTIONS}
                             selectedValue={tempDistanceFilter}
                             onValueChange={handleDistanceChange}
@@ -133,7 +142,7 @@ export default function Filter({
                         />
 
                         <FilterSection
-                            label="평점 필터"
+                            label="평점 순"
                             options={RATING_OPTIONS}
                             selectedValue={tempRatingFilter}
                             onValueChange={handleRatingChange}
@@ -170,7 +179,7 @@ export default function Filter({
                     {/* 현재 적용된 필터 표시 */}
                     {(distanceFilter !== null || ratingFilter > 0) && (
                         <div className="mt-4 pt-4 border-t border-gray-200">
-                            <p className="text-sm text-gray-600 mb-2">현재 적용된 필터:</p>
+                            {/* <p className="text-sm text-gray-600 mb-2">현재 적용된 필터:</p> */}
                             <div className="flex flex-wrap gap-2">
                                 {distanceFilter !== null && (
                                     <span className="px-3 py-1 bg-blue-100 text-blue-700 text-xs rounded-full font-medium">

@@ -29,6 +29,10 @@ body {
     color: var(--foreground);
 }
 
+button {
+    cursor: pointer;
+}
+
 /* Material Icons 스타일 */
 .material-fill-0 {
     font-variation-settings: 'FILL' 0;
@@ -38,7 +42,7 @@ body {
     font-variation-settings: 'FILL' 1;
 }
 
-/* Tailwind v4에서는 클래스를 직접 정의 */
+/* example: Tailwind v4에서는 클래스를 직접 정의 */
 .button {
     border-radius: 9999px;
     border-width: 1px;

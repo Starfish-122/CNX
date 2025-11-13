@@ -1,7 +1,5 @@
 'use client';
 
-import { Icon } from '@/components/atoms';
-
 // 필터 옵션 타입
 export interface FilterOption<T> {
     value: T;
@@ -38,17 +36,19 @@ export default function FilterSection<T>({
 }: FilterSectionProps<T>) {
     const colorClasses = {
         blue: {
-            active: 'bg-blue-500 text-white shadow-md',
-            reset: 'text-xs text-white bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded-lg',
+            class: 'filter__distance',
+            active: 'filter__button--distance',
+            reset: 'filter__button--reset',
         },
         yellow: {
-            active: 'bg-yellow-500 text-white shadow-md',
-            reset: 'text-xs text-white bg-yellow-500 hover:bg-yellow-700 px-4 py-2 rounded-lg',
+            class: 'filter__rating',
+            active: 'filter__button--rating',
+            reset: 'filter__button--reset',
         },
     };
 
     return (
-        <div className="filter-item col-span-2">
+        <div className={`filter-item col-span-2 ${colorClasses[activeColor].class}`}>
             {/* 헤더: 라벨 + 초기화 버튼 */}
             <div className="flex items-center justify-between mb-3">
                 <label className="flex items-center gap-2 text-sm font-semibold text-gray-700">
@@ -71,7 +71,7 @@ export default function FilterSection<T>({
                         className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                             selectedValue === null
                                 ? colorClasses[activeColor].active
-                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                : 'filter__button'
                         }`}
                     >
                         {nullLabel}
@@ -87,7 +87,7 @@ export default function FilterSection<T>({
                         className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                             selectedValue === value
                                 ? colorClasses[activeColor].active
-                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                : 'filter__button'
                         }`}
                     >
                         {optionLabel}

@@ -18,7 +18,7 @@ export default function HomePage() {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [selectedTab, setSelectedTab] = useState<string>('all');
-    const [sortByDistance] = useState(false);
+    const [sortByDistance, setSortByDistance] = useState(false);
     const [sortByRating] = useState(false);
     const [distanceFilter, setDistanceFilter] = useState<DistanceFilterType>(null);
     const [ratingFilter, setRatingFilter] = useState<number>(0);
@@ -56,12 +56,11 @@ export default function HomePage() {
         console.log('[HomePage] 탭 변경:', tab.label);
         setSelectedTab(tab.value);
 
-        // 온라인 탭으로 전환 시 필터 초기화
-        if (tab.value === 'online') {
-            setDistanceFilter(null);
-            setRatingFilter(0);
-            console.log('[HomePage] 온라인 탭 - 필터 초기화');
-        }
+        // 탭 전환 시 필터 초기화
+        setDistanceFilter(null);
+        setRatingFilter(0);
+        setSortByDistance(false);
+        console.log('[HomePage] 탭 전환 - 필터 초기화');
 
         // '전체' 탭이 아닐 때만 지도 위치 변경
         if (tab.label !== '전체' && tab.center) {
@@ -88,12 +87,11 @@ export default function HomePage() {
             setSelectedTab(tabValue);
             setLocationByKey(location);
 
-            // 온라인 구역 선택 시 필터 초기화
-            if (tabValue === 'online') {
-                setDistanceFilter(null);
-                setRatingFilter(0);
-                console.log('[HomePage] 온라인 구역 - 필터 초기화');
-            }
+            // 구역 선택 시 필터 초기화
+            setDistanceFilter(null);
+            setRatingFilter(0);
+            setSortByDistance(false);
+            console.log('[HomePage] 구역 선택 - 필터 초기화');
         }
     };
 
@@ -106,6 +104,15 @@ export default function HomePage() {
     const handleRatingFilterChange = (value: number) => {
         setRatingFilter(value);
         console.log('[HomePage] 평점 필터:', value);
+    };
+
+    // 필터 박스 토글 핸들러
+    const handleFilterBoxToggle = (isOpen: boolean) => {
+        // 필터 박스가 열리면 거리순 정렬 활성화
+        if (isOpen) {
+            setSortByDistance(true);
+            console.log('[HomePage] 필터 박스 열림 - 거리순 정렬 활성화');
+        }
     };
 
     // selectedTab에 해당하는 LocationKey 찾기 (PlaceList 필터링용)
@@ -164,6 +171,7 @@ export default function HomePage() {
                     onDistanceFilterChange={handleDistanceFilterChange}
                     ratingFilter={ratingFilter}
                     onRatingFilterChange={handleRatingFilterChange}
+                    onFilterBoxToggle={handleFilterBoxToggle}
                 />
             )}
 
