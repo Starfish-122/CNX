@@ -14,6 +14,7 @@ interface DetailHeaderProps {
     rating: number;
     reviewCount: number;
     likeCount: number;
+    isLiked?: boolean;
     onClose?: () => void;
     onShare: () => void;
     onLike: () => void;
@@ -27,6 +28,7 @@ export default function DetailHeader({
     rating,
     reviewCount,
     likeCount,
+    isLiked = false,
     onClose,
     onShare,
     onLike,
@@ -91,6 +93,7 @@ export default function DetailHeader({
                         icon="favorite"
                         label={likeCount}
                         onClick={onLike}
+                        isActive={isLiked}
                     />
                 </div>
             </div>

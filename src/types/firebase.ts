@@ -36,3 +36,15 @@ export interface CommentFormData {
     password: string;
     content: string;
 }
+
+// ============ Like Types ============
+export interface PlaceData {
+    likeCount: number;
+    createdAt?: Date | null;
+    updatedAt?: Date | null;
+}
+
+export interface LikedUser {
+    userId: string;
+    likedAt: Date | null;
+}

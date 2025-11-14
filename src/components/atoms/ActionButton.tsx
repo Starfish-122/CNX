@@ -20,6 +20,8 @@ type ActionButtonProps = {
     className?: string;
     /** children (커스텀 컨텐츠) */
     children?: React.ReactNode;
+    /** 활성 상태 (좋아요 등) */
+    isActive?: boolean;
 };
 
 export default function ActionButton({
@@ -30,6 +32,7 @@ export default function ActionButton({
     iconSize = 'xs',
     className,
     children,
+    isActive = false,
 }: ActionButtonProps) {
     const isButton = variant === 'button';
 
@@ -40,13 +43,21 @@ export default function ActionButton({
             onClick={isButton ? onClick : undefined}
             className={twMerge(
                 clsx(
-                    'inline-flex items-center gap-1.5 bg-white/20 backdrop-blur-sm px-3 py-2 rounded-full text-white text-sm',
-                    isButton && 'hover:bg-white/30 transition-colors cursor-pointer',
+                    'inline-flex items-center gap-1.5 backdrop-blur-sm px-3 py-2 rounded-full text-white text-sm transition-colors',
+                    isActive ? 'bg-red-500/80 hover:bg-red-600/80' : 'bg-white/20',
+                    isButton && !isActive && 'hover:bg-white/30',
+                    isButton && 'cursor-pointer',
                     className
                 )
             )}
         >
-            {icon && <Icon name={icon} size={iconSize} className="text-white" />}
+            {icon && (
+                <Icon
+                    name={icon}
+                    size={iconSize}
+                    className={clsx('transition-colors', isActive ? 'text-white' : 'text-white')}
+                />
+            )}
             {label !== undefined && <span className="font-medium">{label}</span>}
             {children}
         </Component>

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { Icon } from '@/components/atoms';
 import { searchKakaoPlace, copyToClipboard } from '@/utils/services/kakaoMap';
+import { getLikeCount, checkUserLiked, toggleLike } from '@/utils/services/firebase';
 import DetailHeader from './DetailHeader';
 import DetailTabs from './DetailTabs';
 import InfoSection from './InfoSection';
@@ -24,10 +25,16 @@ export default function DetailCard({
 }: DetailCardProps) {
     const [activeTab, setActiveTab] = useState<TabType>('info');
     const [showAlert, setShowAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState<{
+        type: 'success' | 'error';
+        text: string;
+    } | null>(null);
     const [address, setAddress] = useState<string>('');
     const [phone, setPhone] = useState<string>('');
     const [place_url, setPlaceUrl] = useState<string>('');
     const [isLoading, setIsLoading] = useState(false);
+    const [isLiked, setIsLiked] = useState(false);
+    const [currentLikeCount, setCurrentLikeCount] = useState(likeCount);
 
     // Notion 데이터 또는 props에서 값 가져오기
     const name = data?.name || propName || '';
@@ -47,6 +54,27 @@ export default function DetailCard({
         }
         if (data.location) tags.push({ label: data.location, category: 'location' });
     }
+
+    // 좋아요 상태 및 카운트 불러오기 (Firebase)
+    useEffect(() => {
+        const fetchLikeData = async () => {
+            if (!name) return;
+
+            try {
+                // Firebase에서 좋아요 카운트 조회
+                const count = await getLikeCount(name);
+                setCurrentLikeCount(count);
+
+                // 현재 사용자의 좋아요 상태 확인
+                const liked = await checkUserLiked(name);
+                setIsLiked(liked);
+            } catch (error) {
+                console.error('좋아요 데이터 조회 실패:', error);
+            }
+        };
+
+        fetchLikeData();
+    }, [name]);
 
     // 카카오맵에서 주소/전화번호/URL 가져오기
     useEffect(() => {
@@ -94,11 +122,39 @@ export default function DetailCard({
     }, [name, data, location]);
 
     const handleLike = async () => {
-        const url = data?.url || window.location.href;
-        const success = await copyToClipboard(url);
-        if (success) {
+        if (!name) return;
+
+        try {
+            // Firebase에서 좋아요 토글
+            const result = await toggleLike(name);
+
+            // 상태 업데이트
+            setIsLiked(result.isLiked);
+            setCurrentLikeCount(result.likeCount);
+
+            // 실패 시 사용자에게 알림
+            if (!result.success && result.error) {
+                setAlertMessage({
+                    type: 'error',
+                    text: result.error,
+                });
+                setShowAlert(true);
+                setTimeout(() => {
+                    setShowAlert(false);
+                    setAlertMessage(null);
+                }, 3000);
+            }
+        } catch (error) {
+            console.error('좋아요 처리 실패:', error);
+            setAlertMessage({
+                type: 'error',
+                text: '좋아요 처리 중 오류가 발생했습니다.',
+            });
             setShowAlert(true);
-            setTimeout(() => setShowAlert(false), 3000);
+            setTimeout(() => {
+                setShowAlert(false);
+                setAlertMessage(null);
+            }, 3000);
         }
     };
 
@@ -106,8 +162,15 @@ export default function DetailCard({
         const url = data?.url || window.location.href;
         const success = await copyToClipboard(url);
         if (success) {
+            setAlertMessage({
+                type: 'success',
+                text: '링크가 복사되었습니다! 🔗',
+            });
             setShowAlert(true);
-            setTimeout(() => setShowAlert(false), 3000);
+            setTimeout(() => {
+                setShowAlert(false);
+                setAlertMessage(null);
+            }, 3000);
         }
     };
 
@@ -121,7 +184,8 @@ export default function DetailCard({
                 tags={tags}
                 rating={rating}
                 reviewCount={reviewCount}
-                likeCount={likeCount}
+                likeCount={currentLikeCount}
+                isLiked={isLiked}
                 onClose={onClose}
                 onShare={handleShare}
                 onLike={handleLike}
@@ -156,13 +220,31 @@ export default function DetailCard({
                 )}
             </div>
 
-            {/* 링크 복사 알럿 */}
-            {showAlert && (
+            {/* 알럿 메시지 */}
+            {showAlert && alertMessage && (
                 <div className="fixed bottom-24 left-1/2 transform -translate-x-1/2 z-50 animate-fade-in">
-                    <div className="bg-white border border-gray-200 rounded-lg shadow-xl px-4 py-3 flex items-center gap-3">
-                        <Icon name="check_circle" size="sm" className="text-green-500" />
-                        <p className="text-sm text-gray-900 font-medium">
-                            링크가 복사되었습니다! 🔗
+                    <div
+                        className={clsx(
+                            'rounded-lg shadow-xl px-4 py-3 flex items-center gap-3 border',
+                            alertMessage.type === 'success'
+                                ? 'bg-white border-gray-200'
+                                : 'bg-red-50 border-red-200'
+                        )}
+                    >
+                        <Icon
+                            name={alertMessage.type === 'success' ? 'check_circle' : 'error'}
+                            size="sm"
+                            className={
+                                alertMessage.type === 'success' ? 'text-green-500' : 'text-red-500'
+                            }
+                        />
+                        <p
+                            className={clsx(
+                                'text-sm font-medium',
+                                alertMessage.type === 'success' ? 'text-gray-900' : 'text-red-900'
+                            )}
+                        >
+                            {alertMessage.text}
                         </p>
                     </div>
                 </div>
