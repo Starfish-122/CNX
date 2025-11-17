@@ -5,14 +5,12 @@
 import {
     doc,
     getDoc,
-    setDoc,
-    deleteDoc,
     increment,
     serverTimestamp,
     runTransaction,
 } from 'firebase/firestore';
 import { db } from './config';
-import type { PlaceData, LikedUser } from '@/types/firebase';
+import type { PlaceData } from '@/types/firebase';
 
 /**
  * 고유 사용자 ID 생성 또는 가져오기

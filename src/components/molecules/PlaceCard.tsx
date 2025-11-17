@@ -32,7 +32,7 @@ interface PlaceCardProps {
     copyright?: string;
 }
 
-export default function PlaceCard({ name, description, tags, rating, distance, image, copyright }: PlaceCardProps) {
+export default function PlaceCard({ name, description, tags, rating, distance }: PlaceCardProps) {
     return (
         <div className="place-list__card px-6 py-6 border-1 border-gray-100 rounded-lg">
             <Link

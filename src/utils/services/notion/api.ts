@@ -2,15 +2,57 @@ import { Client } from '@notionhq/client';
 
 export const notion = new Client({ auth: process.env.NOTION_KEY });
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const pick = (p: any) => {
-    const readRichText = (prop: any): string =>
+// Notion 페이지 속성 타입 정의
+interface NotionRichTextProperty {
+    rich_text?: Array<{ plain_text?: string; text?: { content?: string } }>;
+}
+
+interface NotionMultiSelectProperty {
+    multi_select?: Array<{ name?: string }>;
+}
+
+interface NotionPageProperties {
+    Name?: { title?: Array<{ plain_text?: string; text?: { content?: string } }> };
+    Status?: { select?: { name?: string } };
+    Score?: { number?: number };
+    Location?: { select?: { name?: string } };
+    PartySize?: NotionMultiSelectProperty;
+    Mood?: NotionMultiSelectProperty;
+    Service?: NotionMultiSelectProperty;
+    Kakao?: { url?: string | null };
+    website?: { url?: string | null };
+    PriceCap?: { number?: number | null };
+    Summary?: NotionRichTextProperty;
+    Partnered?: { checkbox?: boolean | null };
+    Address?: NotionRichTextProperty;
+    Phone?: NotionRichTextProperty;
+    Image?:
+        | NotionRichTextProperty
+        | { files?: Array<{ file?: { url?: string }; external?: { url?: string } }> };
+    Copyright?: NotionRichTextProperty;
+    GoogleMap?: { url?: string | null };
+    GooglePlaceID?: NotionRichTextProperty;
+}
+
+interface NotionPage {
+    id: string;
+    properties?: NotionPageProperties;
+    url?: string | null;
+    created_time?: string | null;
+    last_edited_time?: string | null;
+}
+
+export const pick = (p: NotionPage) => {
+    const readRichText = (prop: NotionRichTextProperty | undefined): string =>
         (prop?.rich_text ?? [])
-            .map((t: { plain_text?: string; text?: { content?: string } }) => t?.plain_text ?? t?.text?.content ?? '')
+            .map(
+                (t: { plain_text?: string; text?: { content?: string } }) =>
+                    t?.plain_text ?? t?.text?.content ?? ''
+            )
             .join('') || '';
 
     // helper: multi_select → "A, B, C"
-    const readMultiSelect = (prop: any): string =>
+    const readMultiSelect = (prop: NotionMultiSelectProperty | undefined): string =>
         (prop?.multi_select ?? [])
             .map((t: { name?: string }) => t?.name ?? '')
             .filter(Boolean)
@@ -19,12 +61,26 @@ export const pick = (p: any) => {
     const status: string = p.properties?.Status?.select?.name ?? '';
 
     // 🔹 Image: 우선 rich_text(지금 sync-place.js가 쓰는 방식), 없으면 예전 files 방식
-    const imageFromRichText = readRichText(p.properties?.Image);
+    const imageProperty = p.properties?.Image;
+    const imageFromRichText =
+        'rich_text' in (imageProperty || {})
+            ? readRichText(imageProperty as NotionRichTextProperty)
+            : '';
     const imageFromFiles =
-        p.properties?.Image?.files?.[0]?.file?.url ??
-        p.properties?.Image?.files?.[0]?.external?.url ??
-        null;
-    
+        imageProperty && 'files' in imageProperty
+            ? (
+                  imageProperty as {
+                      files?: Array<{ file?: { url?: string }; external?: { url?: string } }>;
+                  }
+              ).files?.[0]?.file?.url ??
+              (
+                  imageProperty as {
+                      files?: Array<{ file?: { url?: string }; external?: { url?: string } }>;
+                  }
+              ).files?.[0]?.external?.url ??
+              null
+            : null;
+
     const statusFallbackMap: Record<string, string> = {
         한식: '/images/korean.png',
         일식: '/images/japanese.png',
@@ -36,10 +92,11 @@ export const pick = (p: any) => {
         패스트푸드: '/images/fastfood.png',
         고기: '/images/meat.png',
         주점: '/images/drink.png',
-        기타: '/images/etc.png'
-    }
+        기타: '/images/etc.png',
+    };
 
-    const statusFallbackImage = (status && statusFallbackMap[status]) ? statusFallbackMap[status] : '/images/etc.png';
+    const statusFallbackImage =
+        status && statusFallbackMap[status] ? statusFallbackMap[status] : '/images/etc.png';
     const finalImage = imageFromRichText || imageFromFiles || statusFallbackImage;
 
     return {
