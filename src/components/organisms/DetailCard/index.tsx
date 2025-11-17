@@ -16,6 +16,7 @@ export default function DetailCard({
     name: propName,
     description: propDescription,
     image: propImage,
+    copyright: propCopyright,
     tags: propTags,
     rating: propRating,
     reviewCount = 0,
@@ -39,10 +40,14 @@ export default function DetailCard({
     // Notion 데이터 또는 props에서 값 가져오기
     const name = data?.name || propName || '';
     const description = data?.summary || propDescription || '';
-    const image = data?.image || propImage || '/images/image1.png';
+    // Notion 이미지를 우선적으로 사용 (유효한 URL인 경우)
+    const notionImage = data?.image && data.image.trim() !== '' ? data.image : null;
+    const image = notionImage || propImage || '';
+    const copyright = data?.copyright || propCopyright || '';
     const rating = data?.score || propRating || 0;
     const location = data?.location || '';
-
+    const website = data?.website || '';
+    
     // 태그 생성
     const tags: PlaceTag[] = propTags || [];
     if (data) {
@@ -204,6 +209,7 @@ export default function DetailCard({
                         place_url={place_url}
                         location={location}
                         isLoading={isLoading}
+                        website={website}
                     />
                 )}
 
@@ -218,6 +224,9 @@ export default function DetailCard({
                         <Comments placeName={name} />
                     </div>
                 )}
+                {
+                    copyright && <p className="text-xs text-gray-500 text-right">사진출처 : {copyright}</p>
+                }
             </div>
 
             {/* 알럿 메시지 */}

@@ -46,6 +46,12 @@ export function useMapBounds({ map, center, bounds, selectedLocation }: UseMapBo
             // Center 설정
             const newCenter = new window.kakao.maps.LatLng(center.lat, center.lng);
             map.setCenter(newCenter);
+            
+            // '전체' 탭일 때 줌 아웃 (1단계)
+            if (selectedLocation === null) {
+                const currentLevel = map.getLevel();
+                map.setLevel(currentLevel + 1);
+            }
         }
     }, [map, center, bounds, selectedLocation]);
 }

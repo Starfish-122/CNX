@@ -25,6 +25,7 @@ export interface DetailCardProps {
     name?: string;
     description?: string;
     image?: string;
+    copyright?: string;
     tags?: PlaceTag[];
     rating?: number;
     reviewCount?: number;

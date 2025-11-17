@@ -4,9 +4,43 @@ export const notion = new Client({ auth: process.env.NOTION_KEY });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const pick = (p: any) => {
-    // console.log('=== Notion Page Properties ===');
-    // console.log(JSON.stringify(p.properties, null, 2));
-    // console.log('==============================');
+    const readRichText = (prop: any): string =>
+        (prop?.rich_text ?? [])
+            .map((t: { plain_text?: string; text?: { content?: string } }) => t?.plain_text ?? t?.text?.content ?? '')
+            .join('') || '';
+
+    // helper: multi_select → "A, B, C"
+    const readMultiSelect = (prop: any): string =>
+        (prop?.multi_select ?? [])
+            .map((t: { name?: string }) => t?.name ?? '')
+            .filter(Boolean)
+            .join(', ');
+
+    const status: string = p.properties?.Status?.select?.name ?? '';
+
+    // 🔹 Image: 우선 rich_text(지금 sync-place.js가 쓰는 방식), 없으면 예전 files 방식
+    const imageFromRichText = readRichText(p.properties?.Image);
+    const imageFromFiles =
+        p.properties?.Image?.files?.[0]?.file?.url ??
+        p.properties?.Image?.files?.[0]?.external?.url ??
+        null;
+    
+    const statusFallbackMap: Record<string, string> = {
+        한식: '/images/korean.png',
+        일식: '/images/japanese.png',
+        중식: '/images/chinese.png',
+        양식: '/images/restaurant.png',
+        분식: '/images/snack.png',
+        카페: '/images/cafe.png',
+        치킨: '/images/chicken.png',
+        패스트푸드: '/images/fastfood.png',
+        고기: '/images/meat.png',
+        주점: '/images/drink.png',
+        기타: '/images/etc.png'
+    }
+
+    const statusFallbackImage = (status && statusFallbackMap[status]) ? statusFallbackMap[status] : '/images/etc.png';
+    const finalImage = imageFromRichText || imageFromFiles || statusFallbackImage;
 
     return {
         id: p.id,
@@ -20,39 +54,20 @@ export const pick = (p: any) => {
                 ? p.properties['Score'].number
                 : null,
         location: p.properties?.Location?.select?.name ?? '',
-        // partySize: (p.properties?.PartySize?.multi_select ?? []).map((t: {name?: string}) => t?.name ?? '').join(', '),
-        // mood: (p.properties?.Mood?.multi_select ?? []).map((t: {name?: string}) => t?.name ?? '').join(', '),
-        // service: (p.properties?.Service?.multi_select ?? []).map((t: {name?: string}) => t?.name ?? '').join(', '),
-        partySize: (p.properties?.PartySize?.multi_select ?? [])
-            .map((t: { name?: string }) => t?.name ?? '')
-            .join(', '),
-        mood: (p.properties?.Mood?.multi_select ?? [])
-            .map((t: { name?: string }) => t?.name ?? '')
-            .join(', '),
-        service: (p.properties?.Service?.multi_select ?? [])
-            .map((t: { name?: string }) => t?.name ?? '')
-            .join(', '),
-            naverplace: p.properties?.NaverPlace?.url ?? null,
-        // googlemap: p.properties?.GooogleMap?.url ?? null,
-        // googleplaceid: p.properties?.GooglePlaceID?.rich_text ?? null,
+        partySize: readMultiSelect(p.properties?.PartySize),
+        mood: readMultiSelect(p.properties?.Mood),
+        service: readMultiSelect(p.properties?.Service),
         kakaomap: p.properties?.Kakao?.url ?? null,
         website: p.properties?.website?.url ?? null,
         pricecap: p.properties?.PriceCap?.number ?? null,
-        summary: (p.properties?.Summary?.rich_text ?? [])
-            .map((t: { plain_text?: string }) => t?.plain_text ?? '')
-            .join(''),
+        summary: readRichText(p.properties?.Summary),
         partnered: p.properties?.Partnered?.checkbox ?? null,
-        address: (p.properties?.Address?.rich_text ?? [])
-            .map((t: { plain_text?: string }) => t?.plain_text ?? '')
-            .join(''),
-        phone: (p.properties?.Phone?.rich_text ?? [])
-            .map((t: { plain_text?: string }) => t?.plain_text ?? '')
-            .join(''),
-        image:
-            p.properties?.Image?.files?.[0]?.file?.url ??
-            p.properties?.Image?.files?.[0]?.external?.url ??
-            null,
-        copyright: p.properties?.Copyright?.rich_text ?? null,
+        address: readRichText(p.properties?.Address),
+        phone: readRichText(p.properties?.Phone),
+        image: finalImage,
+        copyright: readRichText(p.properties?.Copyright) || null,
+        googlemap: p.properties?.GoogleMap?.url ?? null,
+        googleplaceid: readRichText(p.properties?.GooglePlaceID),
         // notion 기본 데이터
         url: p.url ?? null,
         created: p.created_time ?? null,

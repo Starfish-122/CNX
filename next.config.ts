@@ -1,7 +1,9 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-    /* config options here */
+    images: {
+        domains: ['places.googleapis.com'],
+    },
     // 카카오 맵 API를 위한 보안 헤더 설정
     async headers() {
         return [

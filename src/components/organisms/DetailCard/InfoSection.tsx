@@ -9,6 +9,7 @@ interface InfoSectionProps {
     place_url: string;
     location: string;
     isLoading: boolean;
+    website?: string;
 }
 
 function isOnlineStore(location: string): boolean {
@@ -21,6 +22,7 @@ export default function InfoSection({
     place_url,
     location,
     isLoading,
+    website,
 }: InfoSectionProps) {
     return (
         <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-5 flex flex-col gap-4">
@@ -53,8 +55,52 @@ export default function InfoSection({
 
                     <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
 
+                    {isOnlineStore(location) ? (
+                        <InfoRow
+                            icon="language"
+                            iconColor="text-blue-600"
+                            iconBg="bg-blue-50"
+                            label="웹사이트"
+                            value={
+                                website ? (
+                                    <a
+                                        href={website}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-indigo-600 font-medium hover:text-indigo-800 hover:underline break-all"
+                                    >
+                                        {website}
+                                    </a>
+                                ) : (
+                                    <span className="text-gray-600">온라인 전용 가게입니다</span>
+                                )
+                            }
+                        />
+                    ) : (
+                        <InfoRow
+                            icon="link"
+                            iconColor="text-blue-600"
+                            iconBg="bg-blue-50"
+                            label="카카오맵"
+                            value={
+                                place_url ? (
+                                    <a
+                                        href={place_url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-indigo-600 font-medium hover:text-indigo-800 hover:underline break-all"
+                                    >
+                                        {place_url}
+                                    </a>
+                                ) : (
+                                    '카카오맵 정보 없음'
+                                )
+                            }
+                        />
+                    )}
+
                     {/* 카카오맵 URL */}
-                    <InfoRow
+                    {/* <InfoRow
                         icon="link"
                         iconColor="text-blue-600"
                         iconBg="bg-blue-50"
@@ -75,7 +121,30 @@ export default function InfoSection({
                                 '카카오맵 정보 없음'
                             )
                         }
-                    />
+                    /> */}
+
+                    {/* 웹사이트 */}
+                    {/* {website && (
+                        <>
+                            <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
+                            <InfoRow
+                                icon="language"
+                                iconColor="text-green-600"
+                                iconBg="bg-green-50"
+                                label="웹사이트"
+                                value={
+                                    <a
+                                        href={website}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-indigo-600 font-medium hover:text-indigo-800 hover:underline break-all"
+                                    >
+                                        {website}
+                                    </a>
+                                }
+                            />
+                        </>
+                    )} */}
                 </>
             )}
         </div>

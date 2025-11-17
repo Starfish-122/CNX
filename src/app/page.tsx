@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Tab } from '@/components/molecules';
+import { Tab, SearchBar } from '@/components/molecules';
 import { KakaoMap, PlaceList } from '@/components/organisms';
 import { useMapState } from '@/hooks';
 import { type LocationKey, TAB_CONFIGS } from '@/utils/constants';
@@ -24,7 +24,12 @@ export default function HomePage() {
     const [ratingFilter, setRatingFilter] = useState<number>(0);
 
     // 지도 상태 관리 훅 사용
-    const { center, bounds, selectedLocation, setLocationByKey } = useMapState('한강로길');
+    const { center, bounds, selectedLocation, setLocationByKey, resetLocation } = useMapState('한강로길');
+
+    // 초기 진입 시 '전체' 탭 활성화 (사무실 위치로 지도 중심 설정)
+    useEffect(() => {
+        resetLocation(true);
+    }, [resetLocation]);
 
     // Notion 데이터 로드
     useEffect(() => {
@@ -62,8 +67,11 @@ export default function HomePage() {
         setSortByDistance(false);
         console.log('[HomePage] 탭 전환 - 필터 초기화');
 
-        // '전체' 탭이 아닐 때만 지도 위치 변경
-        if (tab.label !== '전체' && tab.center) {
+        // '전체' 탭 클릭 시 모든 매장 활성화 및 사무실 위치로 중심 이동
+        if (tab.label === '전체') {
+            resetLocation(true); // true: COMPANY_CENTER 사용
+        } else if (tab.center) {
+            // 다른 탭 클릭 시 해당 지역으로 이동
             setLocationByKey(tab.label as LocationKey);
         }
     };
@@ -128,7 +136,9 @@ export default function HomePage() {
                 카드
             </h2> */}
 
-            <div className="map">
+            <div className="map relative">
+
+                <SearchBar />
                 <div className="relative">
                     {isLoading ? (
                         <div className="w-full h-[60vh] flex items-center justify-center bg-gray-50 rounded-lg">

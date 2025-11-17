@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo } from 'react';
-import { LOCATION_POLYGONS, type LocationKey } from '@/utils/constants';
+import { LOCATION_POLYGONS, COMPANY_CENTER, type LocationKey } from '@/utils/constants';
 import { getPolygonCenter, getPolygonBounds } from '@/utils/helpers';
 import type { Coordinates } from '@/utils/constants';
 
@@ -14,7 +14,7 @@ interface MapState {
 
 interface UseMapStateReturn extends MapState {
     setLocationByKey: (location: LocationKey) => void;
-    resetLocation: () => void;
+    resetLocation: (useCompanyCenter?: boolean) => void;
 }
 
 /**
@@ -64,10 +64,10 @@ export function useMapState(initialLocation: LocationKey = '한강로길'): UseM
         [initialCenter]
     );
 
-    const resetLocation = useCallback(() => {
+    const resetLocation = useCallback((useCompanyCenter = false) => {
         setState({
-            center: initialCenter,
-            bounds: initialBounds,
+            center: useCompanyCenter ? COMPANY_CENTER : initialCenter, // '전체' 탭일 때만 사무실 위치 사용
+            bounds: useCompanyCenter ? null : initialBounds, // '전체' 탭일 때는 bounds 없이 줌 아웃 가능하도록
             selectedLocation: null,
         });
     }, [initialCenter, initialBounds]);
