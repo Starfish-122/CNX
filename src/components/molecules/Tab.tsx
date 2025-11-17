@@ -54,7 +54,7 @@ export default function Tab({ selectedTab, onTabChange }: TabProps) {
     return (
         <div className="container mx-auto flex justify-center align-middle gap-2.5 absolute bottom-0 left-1/2 -translate-x-1/2 bg-white z-10">
             <div className="tab w-full ">
-                <div className="grid grid-cols-4 md:grid-cols-9 w-full">
+                <div className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-9 w-full">
                     {TABS.map((tab) => (
                         <button
                             key={tab.value}

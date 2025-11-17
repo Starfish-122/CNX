@@ -186,7 +186,7 @@ export default function HomePage() {
             )}
 
             <PlaceList
-                className="mt-12 mb-24"
+                className="mt-12 mb-24 px-4 lg:px-0"
                 sortByDistance={sortByDistance}
                 sortByRating={sortByRating}
                 selectedLocation={filterLocation}

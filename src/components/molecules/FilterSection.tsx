@@ -37,12 +37,12 @@ export default function FilterSection<T>({
     const colorClasses = {
         blue: {
             class: 'filter__distance',
-            active: 'filter__button--distance',
+            active: 'filter__button--active',
             reset: 'filter__button--reset',
         },
         yellow: {
             class: 'filter__rating',
-            active: 'filter__button--rating',
+            active: 'filter__button--active',
             reset: 'filter__button--reset',
         },
     };
@@ -50,7 +50,7 @@ export default function FilterSection<T>({
     return (
         <div className={`filter-item col-span-2 ${colorClasses[activeColor].class}`}>
             {/* 헤더: 라벨 + 초기화 버튼 */}
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center justify-start gap-6 lg:justify-between mb-3 h-8">
                 <label className="flex items-center gap-2 text-sm font-semibold text-gray-700">
                     {label}
                 </label>

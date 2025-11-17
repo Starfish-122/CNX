@@ -115,87 +115,87 @@ export default function Filter({
     };
 
     return (
-        <div className="filter container mx-auto mt-8 mb-6">
-            <button
-                type="button"
-                onClick={handleToggleFilterBox}
-                className="filter__title text-lg font-bold text-gray-800 flex items-center gap-2"
-                aria-expanded={isOpen}
-            >
-                필터 보기
-                <Icon name={isOpen ? 'keyboard_arrow_up' : 'keyboard_arrow_down'} />
-            </button>
+        <div className="filter container mx-auto mt-8 mb-6 p-4 lg:p-0">
+            <div className="filter__wrap">
+                <button
+                    type="button"
+                    onClick={handleToggleFilterBox}
+                    className="filter__title w-full flex items-center gap-2"
+                    aria-expanded={isOpen}
+                >
+                    🛠️ 필터 보기
+                    <Icon name={isOpen ? 'keyboard_arrow_up' : 'keyboard_arrow_down'} />
+                </button>
 
-            {isOpen && (
-                <div className="filter__box">
-                    <div className="grid grid-cols-1 md:flex gap-6 mb-6">
-                        <FilterSection
-                            label="거리 순"
-                            options={DISTANCE_OPTIONS}
-                            selectedValue={tempDistanceFilter}
-                            onValueChange={handleDistanceChange}
-                            onReset={handleResetDistance}
-                            showReset={tempDistanceFilter !== null}
-                            activeColor="blue"
-                            hasNullOption
-                            nullLabel="전체"
-                        />
+                {isOpen && (
+                    <div className="filter__box">
+                        <div className="grid grid-cols-1 lg:flex lg:justify-between gap-y-6 gap-x-0 lg:gap-6">
+                            <FilterSection
+                                label="거리 순"
+                                options={DISTANCE_OPTIONS}
+                                selectedValue={tempDistanceFilter}
+                                onValueChange={handleDistanceChange}
+                                onReset={handleResetDistance}
+                                showReset={tempDistanceFilter !== null}
+                                activeColor="blue"
+                                hasNullOption
+                                nullLabel="전체"
+                            />
 
-                        <FilterSection
-                            label="평점 순"
-                            options={RATING_OPTIONS}
-                            selectedValue={tempRatingFilter}
-                            onValueChange={handleRatingChange}
-                            onReset={handleResetRating}
-                            showReset={tempRatingFilter > 0}
-                            activeColor="yellow"
-                        />
+                            <FilterSection
+                                label="평점 순"
+                                options={RATING_OPTIONS}
+                                selectedValue={tempRatingFilter}
+                                onValueChange={handleRatingChange}
+                                onReset={handleResetRating}
+                                showReset={tempRatingFilter > 0}
+                                activeColor="yellow"
+                            />
 
-                        <div className="flex flex-col gap-4 justify-center items-end">
-                            {(distanceFilter !== null || ratingFilter > 0) && (
+                            <div className="flex flex-col gap-4 justify-center items-end ">
                                 <button
-                                    onClick={handleResetAll}
-                                    className="text-sm text-red-600 border border-red-700 hover:text-white hover:bg-red-700 font-medium px-4 py-2 rounded-lg"
+                                    type="button"
+                                    onClick={handleApplyFilter}
+                                    disabled={!hasChanges}
+                                    className={`px-8 py-2 w-full h-full rounded-lg font-semibold transition-all ${
+                                        hasChanges
+                                            ? 'bg-blue-500 text-white hover:bg-blue-600 shadow-md hover:shadow-lg'
+                                            : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                                    }`}
                                 >
-                                    전체 초기화
+                                    {hasChanges ? '검색 시작' : '검색 완료'}
                                 </button>
-                            )}
-
-                            <button
-                                type="button"
-                                onClick={handleApplyFilter}
-                                disabled={!hasChanges}
-                                className={`px-8 py-3 rounded-lg font-semibold transition-all ${
-                                    hasChanges
-                                        ? 'bg-blue-500 text-white hover:bg-blue-600 shadow-md hover:shadow-lg'
-                                        : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                                }`}
-                            >
-                                {hasChanges ? '검색 시작' : '검색 완료'}
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* 현재 적용된 필터 표시 */}
-                    {(distanceFilter !== null || ratingFilter > 0) && (
-                        <div className="mt-4 pt-4 border-t border-gray-200">
-                            {/* <p className="text-sm text-gray-600 mb-2">현재 적용된 필터:</p> */}
-                            <div className="flex flex-wrap gap-2">
-                                {distanceFilter !== null && (
-                                    <span className="px-3 py-1 bg-blue-100 text-blue-700 text-xs rounded-full font-medium">
-                                        {getDistanceLabel(distanceFilter)} 이내
-                                    </span>
-                                )}
-                                {ratingFilter > 0 && (
-                                    <span className="px-3 py-1 bg-yellow-100 text-yellow-700 text-xs rounded-full font-medium">
-                                        {getRatingFilterLabel(ratingFilter)}
-                                    </span>
-                                )}
                             </div>
                         </div>
-                    )}
-                </div>
-            )}
+
+                        {/* 현재 적용된 필터 표시 */}
+                        {(distanceFilter !== null || ratingFilter > 0) && (
+                            <div className="pt-4 mt-6 border-t border-gray-200">
+                                <div className="flex flex-wrap items-center gap-2">
+                                    {(distanceFilter !== null || ratingFilter > 0) && (
+                                        <button
+                                            onClick={handleResetAll}
+                                            className="text-xs text-red-600 border border-red-700 hover:text-white hover:bg-red-700 font-medium px-4 py-2 rounded-lg"
+                                        >
+                                            전체 초기화
+                                        </button>
+                                    )}
+                                    {distanceFilter !== null && (
+                                        <span className="px-3 py-1 bg-blue-100 text-blue-700 text-xs rounded-full font-medium">
+                                            {getDistanceLabel(distanceFilter)} 이내
+                                        </span>
+                                    )}
+                                    {ratingFilter > 0 && (
+                                        <span className="px-3 py-1 bg-yellow-100 text-yellow-700 text-xs rounded-full font-medium">
+                                            {getRatingFilterLabel(ratingFilter)}
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                )}
+            </div>
         </div>
     );
 }
