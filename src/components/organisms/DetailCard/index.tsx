@@ -47,7 +47,7 @@ export default function DetailCard({
     const rating = data?.score || propRating || 0;
     const location = data?.location || '';
     const website = data?.website || '';
-    
+
     // 태그 생성
     const tags: PlaceTag[] = propTags || [];
     if (data) {
@@ -164,8 +164,15 @@ export default function DetailCard({
     };
 
     const handleShare = async () => {
-        const url = data?.url || window.location.href;
-        const success = await copyToClipboard(url);
+        // 장소명 기반 URL 생성
+        if (!name) return;
+
+        const shareUrl =
+            typeof window !== 'undefined'
+                ? `${window.location.origin}/detail/${encodeURIComponent(name)}`
+                : '';
+
+        const success = await copyToClipboard(shareUrl);
         if (success) {
             setAlertMessage({
                 type: 'success',
@@ -180,7 +187,7 @@ export default function DetailCard({
     };
 
     return (
-        <div className={clsx('relative bg-white h-full overflow-hidden shadow-2xl', className)}>
+        <div className={clsx('relative bg-white h-full overflow-hidden ', className)}>
             {/* 헤더 */}
             <DetailHeader
                 image={image}
@@ -224,9 +231,9 @@ export default function DetailCard({
                         <Comments placeName={name} />
                     </div>
                 )}
-                {
-                    copyright && <p className="text-xs text-gray-500 text-right">사진출처 : {copyright}</p>
-                }
+                {copyright && (
+                    <p className="text-xs text-gray-500 text-right">사진출처 : {copyright}</p>
+                )}
             </div>
 
             {/* 알럿 메시지 */}

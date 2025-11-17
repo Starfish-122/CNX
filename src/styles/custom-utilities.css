@@ -246,3 +246,23 @@
         font-size: var(--font-size-sm);
     }
 }
+
+@utility modal {
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    animation: fadeIn 0.3s ease-out;
+
+    .modal__layout {
+        position: relative;
+        top: 0;
+        right: 0;
+        width: 100%;
+        max-width: 800px;
+        height: 100%;
+        overflow-y: auto;
+        background-color: var(--color-white);
+        border-radius: var(--radius-lg);
+    }
+}
