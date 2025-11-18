@@ -13,7 +13,6 @@ import { getLikeCount, getCommentCount } from '@/utils/services/firebase';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import styles from './RecommandList.module.scss';
 
 // Tag 타입 정의
 type Tag = {
@@ -95,9 +94,10 @@ export default function PlaceList({
               추천 맛집
             </Title>
             
-            <div className="relative">{/* 커스텀 네비게이션 버튼 */}
+            <div className="relative">
+                {/* 커스텀 네비게이션 버튼 */}
                 <button
-                    className={`swiper-button-prev-custom ${styles.navigationButton} absolute -top-10 right-12 z-10 w-10 h-10 -translate-y-1/2 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-100 transition-colors`}
+                    className="swiper-button-prev-custom absolute -top-10 right-12 z-10 w-10 h-10 -translate-y-1/2 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-100 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                     aria-label="이전 페이지"
                     tabIndex={0}
                 >
@@ -115,7 +115,7 @@ export default function PlaceList({
                     </svg>
                 </button>
                 <button
-                    className={`swiper-button-next-custom ${styles.navigationButton} absolute -top-10 right-0 z-10 w-10 h-10 -translate-y-1/2 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-100 transition-colors`}
+                    className="swiper-button-next-custom absolute -top-10 right-0 z-10 w-10 h-10 -translate-y-1/2 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-100 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                     aria-label="다음 페이지"
                     tabIndex={0}
                 >
@@ -162,7 +162,8 @@ export default function PlaceList({
                             spaceBetween: 24,
                         },
                     }}
-                    className={`${styles.recommandSwiper}`}
+                    className="recommand-swiper"
+                    style={{ alignItems: 'stretch' }}
                 >
                     {topLikedPlaces.map((item) => {
                         const tags: Tag[] = [];
