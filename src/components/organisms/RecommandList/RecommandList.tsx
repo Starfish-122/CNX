@@ -89,7 +89,7 @@ export default function PlaceList({
     }, []);
 
     return (
-        <div className={`place-list container mx-auto my-12 ${className || ''}`}>
+        <div className={`place-list container mx-auto my-12 px-4 ${className || ''}`}>
             <Title element="h2" className="mb-6">
               추천 맛집
             </Title>
@@ -135,7 +135,6 @@ export default function PlaceList({
                 <Swiper
                     modules={[Navigation, Pagination]}
                     spaceBetween={24}
-                    slidesPerView={5}
                     navigation={{
                         nextEl: '.swiper-button-next-custom',
                         prevEl: '.swiper-button-prev-custom',
@@ -158,7 +157,7 @@ export default function PlaceList({
                             spaceBetween: 24,
                         },
                         1536: {
-                            slidesPerView: 5,
+                            slidesPerView: 4,
                             spaceBetween: 24,
                         },
                     }}

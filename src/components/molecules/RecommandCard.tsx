@@ -25,10 +25,10 @@ interface RecommandCardProps {
 export default function RecommandCard({ image, name, description, tags, rating, likeCount = 0, commentCount = 0 }: RecommandCardProps) {
     return (
         <div className="place-list__card border-1 border-gray-100 rounded-xl overflow-hidden shadow-lg shadow-gray-100 mb-4">
-            <Link href={`/detail/${encodeURIComponent(name || '')}`} className="flex flex-col gap-3">
-                <div className="relative w-full h-42 overflow-hidden">
-                    <div className="absolute top-2 right-2 z-10 bg-white rounded-full p-1 flex items-center justify-center font-medium text-sm w-7 h-7">
-                        <Icon name="star" size="xs" className="text-black -ml-0.5 mt-0.5" filled={true} />
+            <Link href={`/detail/${encodeURIComponent(name || '')}`} className="flex flex-col gap-4">
+                <div className="relative w-full h-72 overflow-hidden">
+                    <div className="absolute top-2 right-2 z-10 bg-white rounded-full p-1 flex items-center justify-center font-medium text-xs w-7.5 h-7.5">
+                        <Icon name="star" size="sm" className="text-black -ml-0.5" filled={true} />
                         {rating?.toFixed(0)}
                     </div>
                     <Image
@@ -39,11 +39,11 @@ export default function RecommandCard({ image, name, description, tags, rating, 
                     />
                 </div>
                 <div>
-                  <div className="flex flex-col gap-1 pb-5 px-4">
-                    <Text className="font-light text-xs text-gray-500 dark:text-gray-400 text-ellipsis overflow-hidden line-clamp-2">
+                  <div className="flex flex-col gap-1.5 pb-6 px-4">
+                    <Text className="font-light text-sm text-gray-500 dark:text-gray-400 text-ellipsis overflow-hidden line-clamp-2">
                         {description}
                     </Text>
-                    <Title element="h3" className="text-lg mb-2 text-ellipsis overflow-hidden line-clamp-2">
+                    <Title element="h3" className="text-xl mb-2 text-ellipsis overflow-hidden line-clamp-2">
                         {name}
                     </Title>
                     {/* {rating !== undefined && <StarRating value={rating} max={5} readOnly size="md" />} */}
