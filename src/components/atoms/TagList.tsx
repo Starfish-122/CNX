@@ -11,7 +11,7 @@ type TagListProps = {
   className?: string;
 };
 
-const GAP_MAP = { sm: 'gap-2', md: 'gap-3', lg: 'gap-4' };
+const GAP_MAP = { sm: 'gap-1.5', md: 'gap-3', lg: 'gap-4' };
 
 export default function TagList({
   children,

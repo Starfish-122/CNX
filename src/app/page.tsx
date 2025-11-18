@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Tab, SearchBar } from '@/components/molecules';
-import { KakaoMap, PlaceList } from '@/components/organisms';
+import { KakaoMap, PlaceList, RecommandList } from '@/components/organisms';
 import { useMapState } from '@/hooks';
 import { type LocationKey, TAB_CONFIGS } from '@/utils/constants';
 import type { NotionPlace } from '@/types';
@@ -137,7 +137,7 @@ export default function HomePage() {
             </h2> */}
 
             <div className="map relative">
-
+                <RecommandList />
                 <SearchBar />
                 <div className="relative">
                     {isLoading ? (

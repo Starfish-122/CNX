@@ -4,4 +4,4 @@
  */
 
 export { db, app } from './config';
-export { getLikeCount, checkUserLiked, addLike, removeLike, toggleLike } from './likes';
+export { getLikeCount, checkUserLiked, addLike, removeLike, toggleLike, getCommentCount } from './likes';

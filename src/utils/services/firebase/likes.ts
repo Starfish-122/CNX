@@ -257,3 +257,33 @@ export const toggleLike = async (
     }
 };
 
+/**
+ * 장소의 댓글 개수 가져오기
+ */
+export const getCommentCount = async (placeName: string): Promise<number> => {
+    if (!db) {
+        console.warn('Firebase 미연결 - 댓글 카운트 0 반환');
+        return 0;
+    }
+
+    try {
+        const { collection: firestoreCollection, getDocs, query } = await import('firebase/firestore');
+        const commentsRef = firestoreCollection(db, 'places', placeName, 'comments');
+        const q = query(commentsRef);
+        const querySnapshot = await getDocs(q);
+        
+        return querySnapshot.size;
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            if (error.message.includes('offline')) {
+                console.warn('Firebase 오프라인 상태 - 댓글 카운트 0 반환');
+            } else if (error.message.includes('permission')) {
+                console.error('❌ Firebase 권한 오류: Firestore 보안 규칙을 확인해주세요.');
+            } else {
+                console.error('댓글 카운트 조회 실패:', error);
+            }
+        }
+        return 0;
+    }
+};
+

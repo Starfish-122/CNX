@@ -1,6 +1,7 @@
 // Card Components
 export { default as Card } from './Card';
 export { default as PlaceCard } from './PlaceCard';
+export { default as RecommandCard } from './RecommandCard';
 export { default as ExampleCard } from './ExampleCard';
 
 // Display Components
