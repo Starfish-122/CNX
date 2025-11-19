@@ -2,12 +2,11 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Icon } from '@/components/atoms';
 
 export default function Header() {
     return (
         <header className="border-b border-gray-200 w-full py-4 font-sans">
-            <div className="container mx-auto px-4 flex justify-between items-center">
+            <div className="container mx-auto px-4 flex justify-between items-center relative">
                 <Link href="/">
                     <Image
                         className="dark:invert"
@@ -38,9 +37,6 @@ export default function Header() {
                         </li> */}
                     </ul>
                 </nav>
-                <button className="p-3 hover:bg-gray-100 rounded-md">
-                    <Icon name="search" text="검색하기" />
-                </button>
             </div>
         </header>
     );

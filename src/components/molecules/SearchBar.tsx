@@ -1,41 +1,142 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, KeyboardEvent } from 'react';
+import clsx from 'clsx';
 import { Icon, Input } from '@/components/atoms';
 
-export default function SearchBar() {
-  const [isOpen, setIsOpen] = useState(false);
+interface SearchBarProps {
+  tags?: string[];
+  defaultSelectedTags?: string[];
+  onSearch?: (params: { searchTerm: string; tags: string[] }) => void;
+}
+
+export default function SearchBar({
+  tags = [],
+  defaultSelectedTags = [],
+  onSearch,
+}: SearchBarProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedTags, setSelectedTags] = useState<string[]>(defaultSelectedTags);
 
-  useEffect(() => {
-    if (isOpen && inputRef.current) {
-      inputRef.current.focus();
+  // 🔹 공통: 현재 상태를 부모(HomePage)에 알리는 함수
+  const emitSearch = (nextSearchTerm?: string, nextTags?: string[]) => {
+    const keyword = (nextSearchTerm ?? searchTerm).trim();
+    const tagsToUse = nextTags ?? selectedTags;
+    onSearch?.({ searchTerm: keyword, tags: tagsToUse });
+  };
+
+  // 🔹 돋보기 버튼 클릭
+  const handleSearchClick = () => {
+    setSelectedTags([]);
+    emitSearch(undefined, []);
+  };
+
+  // 🔹 인풋에서 Enter 입력
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      setSelectedTags([]);
+      emitSearch(undefined, []);
     }
-  }, [isOpen]);
+  };
 
-  const handleToggle = () => {
-    setIsOpen(!isOpen);
+  // 🔹 인풋 타이핑
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    // 필요하면 여기서 emitSearch(value); 로 실시간 검색도 가능
+  };
+
+  // 🔹 X 버튼 (리셋)
+  const handleReset = () => {
+    setSearchTerm('');
+    setSelectedTags([]);
+    emitSearch('', []); // 검색어/태그 모두 비운 상태로 부모에 알리기
+    inputRef.current?.focus();
+  };
+
+  // 🔹 태그 버튼 클릭
+  const handleTagClick = (tag: string) => {
+    const isAlreadyOnlySelected = selectedTags.length === 1 && selectedTags[0] === tag;
+    const next = isAlreadyOnlySelected ? [] : [tag];
+
+    setSelectedTags(next);
+    emitSearch(searchTerm, next);
   };
 
   return (
-    <div className="search-bar flex items-center gap-2 absolute">
-      {/* absolute top-1/2 transform -translate-y-1/2 right-0 */}
-      {isOpen && (
+    <div className={clsx(
+      'pl-10 pr-10 absolute top-10 left-1/2 -translate-x-1/2 z-50 search-bar flex flex-col items-center gap-4 w-full max-w-full',
+      'md:pl-0 md:pr-0 md:top-6 md:w-96 md:max-w-md',
+    )}>
+        <div
+          className={clsx(
+            'pt-2 pb-2 pl-6 pr-6',
+            'flex items-center gap-2',
+            'bg-white dark:bg-gray-800 backdrop-blur-md',
+            'rounded-full shadow-xl',
+            'transition-all duration-300',
+            searchTerm
+              ? 'w-full max-w-full md:w-96 md:max-w-md'
+              : 'w-full max-w-full md:w-80 md:max-w-md'
+          )}
+        >
         <Input
           ref={inputRef}
           type="text"
-          placeholder="검색어를 입력하세요"
-          className="w-64 transition-all search-bar__input"
-          onBlur={() => setIsOpen(false)}
+          placeholder="맛집을 검색해보세요."
+          value={searchTerm}
+          size="full"
+          showResetButton
+          className="outline-none border-none"
+          onChange={handleInputChange}
+          onReset={handleReset}
+          onKeyDown={handleKeyDown}
         />
-      )}
-      <button 
-        onClick={handleToggle}
-        className="p-3 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors search-bar__button"
-      >
-        <Icon name="search" text="검색하기" />
-      </button>
+
+        {searchTerm && (
+          <button
+            type="button"
+            onClick={handleSearchClick}
+            className="
+              p-2
+              rounded-full
+              bg-gray-400 dark:text-gray-500
+              hover:bg-gray-600
+              active:bg-gray-700
+              transition-all duration-200
+              shadow-md hover:shadow-lg
+              flex items-center justify-center
+            "
+            aria-label="검색하기"
+          >
+            <Icon name="search" color="text-white" size="md" />
+          </button>
+        )}
+      </div>
+
+      {/* 🔹 TagList 잠깐 빼고, 일반 div + button으로 단순화 */}
+      <div className="flex flex-wrap justify-center gap-2">
+        {tags.map(tag => {
+          const isSelected = selectedTags.includes(tag);
+          return (
+            <button
+              key={tag}
+              type="button"
+              onClick={() => handleTagClick(tag)}
+              className={clsx(
+                'px-3 py-1 rounded-full text-sm border transition',
+                isSelected
+                  ? 'bg-blue-600 text-white border-blue-600'
+                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
+              )}
+            >
+              {tag}
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }
-

@@ -29,6 +29,16 @@ const matchesRatingFilter = (score: number | undefined | null, ratingFilter: num
     return score >= ratingFilter;
 };
 
+const matchesTagFilter = (
+    item: NotionItem,
+    selectedTags: string[]
+): boolean => {
+    if (selectedTags.length === 0) return true;
+    const itemTags: string[] = (item as any).status || [];
+    if (!itemTags.length) return false;
+    return selectedTags.every(tag => itemTags.includes(tag));
+}
+
 interface NotionItemWithDistance extends NotionPlace {
     distance?: number;
 }
@@ -40,6 +50,8 @@ interface PlaceListProps {
     selectedLocation?: LocationKey | null;
     distanceFilter?: DistanceFilterType;
     ratingFilter?: number;
+    searchTerm?: string;
+    selectedTags?: string[];
 }
 
 export default function PlaceList({
@@ -49,6 +61,8 @@ export default function PlaceList({
     selectedLocation = null,
     distanceFilter = null,
     ratingFilter = 0,
+    searchTerm = '',
+    selectedTags = [],
 }: PlaceListProps): React.JSX.Element {
     const [notionData, setNotionData] = useState<NotionItemWithDistance[]>([]);
     const [loading, setLoading] = useState(true);
@@ -98,12 +112,25 @@ export default function PlaceList({
 
     // 평점 필터 적용
     const filteredData = useMemo(() => {
-        if (ratingFilter === 0) {
-            return filteredByDistance;
+        let base = filteredByDistance;
+
+        if (ratingFilter !== 0) {
+            base = base.filter((item) => matchesRatingFilter(item.score, ratingFilter));
         }
 
-        return filteredByDistance.filter((item) => matchesRatingFilter(item.score, ratingFilter));
-    }, [filteredByDistance, ratingFilter]);
+        if (searchTerm.trim()) {
+            const keyword = searchTerm.trim().toLowerCase();
+            base = base.filter((item) =>
+                (item.name || '').toLowerCase().includes(keyword)
+            );
+        }
+
+        if (selectedTags.length > 0) {
+            base = base.filter((item) => matchesTagFilter(item, selectedTags));
+        }
+
+        return base;
+    }, [filteredByDistance, ratingFilter, searchTerm, selectedTags]);
 
     // 정렬 함수들
     const sortByDistanceFilter = (
@@ -215,7 +242,7 @@ export default function PlaceList({
     return (
         <div className={`place-list container mx-auto ${className}`}>
             <Title element="h2" className="mb-6">
-                {selectedLocation ? `${selectedLocation} 맛집 목록` : '맛집 목록'}{' '}
+                {selectedLocation ? `${selectedLocation} 리스트` : '전체 리스트'}{' '}
                 {!loading && ` (${displayCount}개)`}
             </Title>
             {loading ? (

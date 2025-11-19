@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Tab, SearchBar } from '@/components/molecules';
 import { KakaoMap, PlaceList, RecommandList } from '@/components/organisms';
 import { useMapState } from '@/hooks';
@@ -25,6 +25,9 @@ export default function HomePage() {
 
     // 지도 상태 관리 훅 사용
     const { center, bounds, selectedLocation, setLocationByKey, resetLocation } = useMapState('한강로길');
+
+    const [searchTerm, setSearchTerm] = useState<string>('');
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
     // 초기 진입 시 '전체' 탭 활성화 (사무실 위치로 지도 중심 설정)
     useEffect(() => {
@@ -99,6 +102,10 @@ export default function HomePage() {
             setDistanceFilter(null);
             setRatingFilter(0);
             setSortByDistance(false);
+
+            setSearchTerm('');
+            setSelectedTags([]);
+
             console.log('[HomePage] 구역 선택 - 필터 초기화');
         }
     };
@@ -123,12 +130,87 @@ export default function HomePage() {
         }
     };
 
+    const handleSearch = ({ searchTerm, tags }: { searchTerm: string; tags: string[] }) => {
+        const keyword = (searchTerm ?? '').trim();
+        const tagList = tags ?? [];
+        
+        setSearchTerm(keyword);
+        setSelectedTags(tagList);
+
+        if (tagList.length > 0) {
+            if (selectedTab !== 'all') {
+                setSelectedTab('all');
+                resetLocation(true);
+                setDistanceFilter(null);
+                setRatingFilter(0);
+                setSortByDistance(false);
+            }
+            return;
+        }
+    
+        if (!keyword && tagList.length === 0) {
+            setSelectedTab('all');
+            resetLocation(true);
+            setDistanceFilter(null);
+            setRatingFilter(0);
+            setSortByDistance(false);
+        }
+    };
+
     // selectedTab에 해당하는 LocationKey 찾기 (PlaceList 필터링용)
     // 'all'일 때는 null (전체 표시)
     const filterLocation =
         selectedTab === 'all'
             ? null
             : TAB_CONFIGS.find((config) => config.value === selectedTab)?.label || null;
+
+    const TAGS = ['카페','한식','일식','양식','중식','기타','분식','헬스','미용','주점','고기'];
+
+    const filteredPlacesForMap = useMemo(() => {
+        let base = places;
+    
+        // 1) 탭(지역) 필터
+        if (filterLocation) {
+            base = base.filter((item) => {
+                // '인터넷'과 '온라인'은 동일하게 처리
+                if (filterLocation === '온라인') {
+                    return item.location === '인터넷' || item.location === '온라인';
+                }
+    
+                // '아모레 / LS'는 다양한 형식 허용 (PlaceList와 동일 로직)
+                if (filterLocation === '아모레 / LS') {
+                    const location = item.location || '';
+                    return (
+                        location === '아모레 / LS' ||
+                        location === '아모레/LS' ||
+                        (location.includes('아모레') && location.includes('LS'))
+                    );
+                }
+    
+                return item.location === filterLocation;
+            });
+        }
+    
+        // 2) 검색어 필터 (이름 기준)
+        if (searchTerm.trim()) {
+            const keyword = searchTerm.trim().toLowerCase();
+            base = base.filter((item) =>
+                (item.name || '').toLowerCase().includes(keyword)
+            );
+        }
+    
+        // 3) 태그 필터 (지금은 status를 예시로 사용 중)
+        if (selectedTags.length > 0) {
+            base = base.filter((item: any) => {
+                // TODO: 실제 태그 필드로 바꾸면 더 정확해짐 (ex. item.category, item.cuisine 등)
+                const itemTags: string[] = item.status ? [item.status] : [];
+                if (!itemTags.length) return false;
+                return selectedTags.every((tag) => itemTags.includes(tag));
+            });
+        }
+    
+        return base;
+    }, [places, filterLocation, searchTerm, selectedTags]);
 
     return (
         <>
@@ -138,8 +220,8 @@ export default function HomePage() {
 
             <div className="map relative">
                 <RecommandList />
-                <SearchBar />
                 <div className="relative">
+                    <SearchBar tags={TAGS} onSearch={handleSearch} />
                     {isLoading ? (
                         <div className="w-full h-[60vh] flex items-center justify-center bg-gray-50 rounded-lg">
                             <div className="text-center">
@@ -162,7 +244,7 @@ export default function HomePage() {
                     ) : (
                         <>
                             <KakaoMap
-                                places={places}
+                                places={filteredPlacesForMap}
                                 center={center}
                                 bounds={bounds}
                                 selectedLocation={selectedLocation}
@@ -192,6 +274,8 @@ export default function HomePage() {
                 selectedLocation={filterLocation}
                 distanceFilter={distanceFilter}
                 ratingFilter={ratingFilter}
+                searchTerm={searchTerm}
+                selectedTags={selectedTags}
             />
         </>
     );

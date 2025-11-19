@@ -36,8 +36,10 @@ export default function DetailHeader({
     return (
         <div className="relative h-72 w-full overflow-hidden">
             <Image src={image} alt={name} fill className="object-cover" priority />
-            {/* 그라데이션 오버레이 */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+            {/* 대각선 스트라이프 딤 오버레이 */}
+            <div
+                className="absolute inset-0 z-0 pointer-events-none bg-[repeating-linear-gradient(135deg,_rgba(0,0,0,0.3)_0px,_rgba(0,0,0,0.3)_1px,_transparent_1px,_transparent_3px)]"
+            />
 
             {/* X 버튼 */}
             {onClose && (
