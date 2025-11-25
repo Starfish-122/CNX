@@ -43,10 +43,8 @@ export default function ActionButton({
             onClick={isButton ? onClick : undefined}
             className={twMerge(
                 clsx(
-                    'inline-flex items-center gap-1.5 backdrop-blur-sm px-3 py-2 rounded-full text-white text-sm transition-colors',
-                    isActive ? 'bg-red-500/80 hover:bg-red-600/80' : 'bg-white/20',
-                    isButton && !isActive && 'hover:bg-white/30',
-                    isButton && 'cursor-pointer',
+                    'inline-flex items-center gap-1.5 bg-white/20 backdrop-blur-sm px-3 py-2 rounded-full text-white text-sm',
+                    isButton && 'hover:bg-white/30 transition-colors cursor-pointer',
                     className
                 )
             )}
@@ -55,6 +53,7 @@ export default function ActionButton({
                 <Icon
                     name={icon}
                     size={iconSize}
+                    filled={isActive}
                     className={clsx('transition-colors', isActive ? 'text-white' : 'text-white')}
                 />
             )}
