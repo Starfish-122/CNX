@@ -23,6 +23,8 @@ type StarRatingProps = {
   ariaLabel?: string;
   /** 반 개 단위 선택 여부 */
   allowHalf?: boolean;
+  /** 테마 */
+  theme?: 'light' | 'dark';
 };
 
 const sizes = {
@@ -39,6 +41,7 @@ export default function StarRating({
   size = 'md',
   onChange,
   className,
+  theme = 'light',
   ariaLabel = '별점',
   allowHalf = true,
 }: StarRatingProps) {
@@ -119,8 +122,8 @@ export default function StarRating({
           'block',
           interactive && 'cursor-pointer'
         );
-        const emptyColor = 'text-indigo-900 dark:text-gray-100';
-        const fillColor = 'text-indigo-900 dark:text-gray-100';
+        const emptyColor = theme === 'light' ? 'text-indigo-900 dark:text-gray-100' : 'text-yellow-300';
+        const fillColor = theme === 'light' ? 'text-indigo-900 dark:text-gray-100' : 'text-yellow-300';
 
         const Star = (
           <span

@@ -77,7 +77,7 @@ export default function DetailHeader({
                 <div className="flex gap-2 items-center flex-wrap">
                     {/* 평점 */}
                     <ActionButton variant="info">
-                        <StarRating value={rating} size="sm" readOnly />
+                        <StarRating value={rating} size="sm" readOnly theme="dark" />
                         <span className="font-medium">{rating.toFixed(1)}</span>
                     </ActionButton>
 
