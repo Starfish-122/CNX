@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { StarRating } from '@/components/molecules';
 import { Title, Text, CategoryTag, TagList, type TagCategory } from '@/components/atoms';
 import {
@@ -35,6 +36,14 @@ interface PlaceCardProps {
 }
 
 export default function PlaceCard({ name, description, tags, rating, distance, likeCount, commentCount }: PlaceCardProps) {
+    const router = useRouter();
+
+    const handleCommentClick = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        router.push(`/detail/${encodeURIComponent(name || '')}?tab=review`);
+    };
+
     return (
         <div className="place-list__card px-6 py-6 border-1 border-gray-100 rounded-lg">
             <Link
@@ -89,9 +98,14 @@ export default function PlaceCard({ name, description, tags, rating, distance, l
                     <Text className="font-light text-sm text-gray-500 dark:text-gray-400">
                         ❤️ {likeCount}
                     </Text>
-                    <Text className="font-light text-sm text-gray-500 dark:text-gray-400">
-                        💬 {commentCount}
-                    </Text>
+                    <span
+                        onClick={handleCommentClick}
+                        className="cursor-pointer transition-colors"
+                    >
+                        <Text className="font-light text-sm text-gray-500 dark:text-gray-400">
+                            💬 {commentCount}
+                        </Text>
+                    </span>
                 </div>
             </Link>
         </div>

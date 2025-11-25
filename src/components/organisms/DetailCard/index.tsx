@@ -24,7 +24,17 @@ export default function DetailCard({
     className,
     onClose,
 }: DetailCardProps) {
-    const [activeTab, setActiveTab] = useState<TabType>('info');
+    // URL 쿼리 파라미터에서 초기 탭 설정
+    const [activeTab, setActiveTab] = useState<TabType>(() => {
+        if (typeof window !== 'undefined') {
+            const params = new URLSearchParams(window.location.search);
+            const tabParam = params.get('tab');
+            if (tabParam === 'review' || tabParam === 'menu' || tabParam === 'info') {
+                return tabParam as TabType;
+            }
+        }
+        return 'info';
+    });
     const [showAlert, setShowAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState<{
         type: 'success' | 'error';

@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { StarRating } from '@/components/molecules';
 import { Title, Text, CategoryTag, TagList, type TagCategory, Icon } from '@/components/atoms';
 
@@ -23,6 +24,14 @@ interface RecommandCardProps {
 }
 
 export default function RecommandCard({ image, name, description, tags, rating, likeCount = 0, commentCount = 0 }: RecommandCardProps) {
+    const router = useRouter();
+
+    const handleCommentClick = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        router.push(`/detail/${encodeURIComponent(name || '')}?tab=review`);
+    };
+
     return (
         <div className="place-list__card border-1 border-gray-200 rounded-xl overflow-hidden mb-4">
             <Link href={`/detail/${encodeURIComponent(name || '')}`} className="flex flex-col gap-4">
@@ -51,9 +60,14 @@ export default function RecommandCard({ image, name, description, tags, rating, 
                         <Text className="font-light text-sm text-gray-500 dark:text-gray-400">
                             ❤️ {likeCount}
                         </Text>
-                        <Text className="font-light text-sm text-gray-500 dark:text-gray-400">
-                            💬 {commentCount}
-                        </Text>
+                        <span
+                            onClick={handleCommentClick}
+                            className="cursor-pointer transition-colors"
+                        >
+                            <Text className="font-light text-sm text-gray-500 dark:text-gray-400">
+                                💬 {commentCount}
+                            </Text>
+                        </span>
                     </div>
                     {tags && tags.length > 0 && (
                         <TagList gap="sm" className="flex flex-wrap mt-2">
