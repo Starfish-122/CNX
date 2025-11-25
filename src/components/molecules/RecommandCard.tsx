@@ -24,7 +24,7 @@ interface RecommandCardProps {
 
 export default function RecommandCard({ image, name, description, tags, rating, likeCount = 0, commentCount = 0 }: RecommandCardProps) {
     return (
-        <div className="place-list__card border-1 border-gray-100 rounded-xl overflow-hidden shadow-lg shadow-gray-100 mb-4">
+        <div className="place-list__card border-1 border-gray-200 rounded-xl overflow-hidden mb-4">
             <Link href={`/detail/${encodeURIComponent(name || '')}`} className="flex flex-col gap-4">
                 <div className="relative w-full h-72 overflow-hidden">
                     <div className="absolute top-2 right-2 z-10 bg-white rounded-full p-1 flex items-center justify-center font-medium text-xs w-7.5 h-7.5">

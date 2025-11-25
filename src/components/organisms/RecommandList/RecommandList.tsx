@@ -139,6 +139,10 @@ export default function PlaceList({
                         nextEl: '.swiper-button-next-custom',
                         prevEl: '.swiper-button-prev-custom',
                     }}
+                    pagination={{
+                        type: 'progressbar',
+                        clickable: false,
+                    }}
                     breakpoints={{
                         320: {
                             slidesPerView: 1,
