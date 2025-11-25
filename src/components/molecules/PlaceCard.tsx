@@ -30,9 +30,11 @@ interface PlaceCardProps {
     distance?: number; // 회사로부터의 거리 (미터)
     image?: string;
     copyright?: string;
+    likeCount?: number;
+    commentCount?: number;
 }
 
-export default function PlaceCard({ name, description, tags, rating, distance }: PlaceCardProps) {
+export default function PlaceCard({ name, description, tags, rating, distance, likeCount, commentCount }: PlaceCardProps) {
     return (
         <div className="place-list__card px-6 py-6 border-1 border-gray-100 rounded-lg">
             <Link
@@ -82,7 +84,15 @@ export default function PlaceCard({ name, description, tags, rating, distance }:
                         {description}
                     </Text>
                 </div>
-                {rating !== undefined && <StarRating value={rating} max={5} readOnly size="md" />}
+                <div className="flex items-center gap-4">
+                    {rating !== undefined && <StarRating value={rating} max={5} readOnly size="md" />}
+                    <Text className="font-light text-sm text-gray-500 dark:text-gray-400">
+                        ❤️ {likeCount}
+                    </Text>
+                    <Text className="font-light text-sm text-gray-500 dark:text-gray-400">
+                        💬 {commentCount}
+                    </Text>
+                </div>
             </Link>
         </div>
     );

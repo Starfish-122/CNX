@@ -8,6 +8,7 @@ import { getDistanceBetween } from '@/utils/helpers';
 import { COMPANY_CENTER, type LocationKey } from '@/utils/constants';
 import type { NotionPlace } from '@/types';
 import { DISTANCE_FILTER_VALUES, type DistanceFilterType } from '@/components/molecules/Filter';
+import { getLikeCount, getCommentCount } from '@/utils/services/firebase';
 
 // Tag 타입 정의
 type Tag = {
@@ -30,7 +31,7 @@ const matchesRatingFilter = (score: number | undefined | null, ratingFilter: num
 };
 
 const matchesTagFilter = (
-    item: NotionItem,
+    item: NotionPlace,
     selectedTags: string[]
 ): boolean => {
     if (selectedTags.length === 0) return true;
@@ -41,6 +42,8 @@ const matchesTagFilter = (
 
 interface NotionItemWithDistance extends NotionPlace {
     distance?: number;
+    likeCount?: number;
+    commentCount?: number;
 }
 
 interface PlaceListProps {
@@ -205,25 +208,41 @@ export default function PlaceList({
                 const data = await response.json();
                 console.log('[MAP PAGE - NOTION DATA]', data);
                 if (data.ok) {
-                    // 먼저 노션 데이터만 표시 (거리 없이)
-                    setNotionData(data.items);
                     setTotalCount(data.items.length);
+
+                    // 1단계: 좋아요와 댓글 개수를 병렬로 빠르게 가져오기
+                    const itemsWithLikesAndComments = await Promise.all(
+                        data.items.map(async (item: NotionPlace) => {
+                            const [likeCount, commentCount] = await Promise.all([
+                                getLikeCount(item.name),
+                                getCommentCount(item.name),
+                            ]);
+                            return {
+                                ...item,
+                                likeCount,
+                                commentCount,
+                            };
+                        })
+                    );
+
+                    console.log('[PLACE LIST - ITEMS WITH LIKES AND COMMENTS]', itemsWithLikesAndComments);
+                    
+                    // 좋아요와 댓글 개수가 포함된 데이터를 먼저 표시
+                    setNotionData(itemsWithLikesAndComments);
                     setLoading(false);
 
                     // 백그라운드에서 좌표를 가져와서 거리 계산
                     // 순차적으로 처리하여 API 과부하 방지
-                    const itemsWithDistance: NotionItemWithDistance[] = [];
-                    for (const item of data.items) {
+                    const itemsWithAllData: NotionItemWithDistance[] = [];
+                    for (const item of itemsWithLikesAndComments) {
                         const coords = await findPlaceCoordinates(item);
-                        if (coords) {
-                            const distance = getDistanceBetween(COMPANY_CENTER, coords);
-                            itemsWithDistance.push({ ...item, distance });
-                        } else {
-                            itemsWithDistance.push(item);
-                        }
+                        const distance = coords ? getDistanceBetween(COMPANY_CENTER, coords) : undefined;
+                        itemsWithAllData.push({ ...item, distance });
                     }
-                    // 거리 계산 완료 후 한 번에 업데이트
-                    setNotionData(itemsWithDistance);
+                    
+                    // 거리 계산 완료 후 최종 업데이트
+                    console.log('[PLACE LIST - ITEMS WITH ALL DATA]', itemsWithAllData);
+                    setNotionData(itemsWithAllData);
                 } else {
                     console.error('[NOTION API ERROR]', data.error || data);
                     setLoading(false);
@@ -282,6 +301,8 @@ export default function PlaceList({
                                 tags={tags}
                                 rating={item.score ?? undefined}
                                 distance={item.distance}
+                                likeCount={item.likeCount ?? 0}
+                                commentCount={item.commentCount ?? 0}
                             />
                         );
                     })}
