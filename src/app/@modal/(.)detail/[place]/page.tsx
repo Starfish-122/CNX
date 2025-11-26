@@ -60,9 +60,14 @@ export default function PlaceDetailModal(): React.JSX.Element {
         }
     }, [loading, stopDetailLoading]);
 
+    const modalWrapperClassName = clsx(
+        'modal fixed inset-0 z-50 transition-opacity duration-300 ease-out',
+        isVisible ? 'opacity-100' : 'opacity-0'
+    );
+
     const panelClassName = clsx(
-        'modal__layout relative z-10 h-full  w-full bg-white ',
-        isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
+        'modal__layout relative z-10 h-full w-full bg-white',
+        isVisible && 'modal__layout--visible'
     );
 
     const renderPanelContent = () => {
@@ -92,7 +97,7 @@ export default function PlaceDetailModal(): React.JSX.Element {
     };
 
     return (
-        <div className="modal fixed inset-0 z-50">
+        <div className={modalWrapperClassName}>
             <div className="absolute inset-0" onClick={handleClose} aria-label="모달 닫기" />
 
             <div className="flex h-full w-full items-stretch justify-end">
