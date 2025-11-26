@@ -208,6 +208,7 @@ export default function DetailCard({
                 reviewCount={reviewCount}
                 likeCount={currentLikeCount}
                 isLiked={isLiked}
+                isBest={!!data?.best}
                 onClose={onClose}
                 onShare={handleShare}
                 onLike={handleLike}

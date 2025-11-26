@@ -82,6 +82,7 @@ export const pick = (p: NotionPage) => {
             : null;
 
     const statusFallbackMap: Record<string, string> = {
+        전체: '/images/etc.png',
         한식: '/images/korean.png',
         일식: '/images/japanese.png',
         중식: '/images/chinese.png',
@@ -98,6 +99,7 @@ export const pick = (p: NotionPage) => {
     const statusFallbackImage =
         status && statusFallbackMap[status] ? statusFallbackMap[status] : '/images/etc.png';
     const finalImage = imageFromRichText || imageFromFiles || statusFallbackImage;
+    const bestProperty = (p.properties as Record<string, { checkbox?: boolean }> | undefined)?.Best;
 
     return {
         id: p.id,
@@ -106,6 +108,7 @@ export const pick = (p: NotionPage) => {
             p.properties?.Name?.title?.[0]?.text?.content ??
             '',
         status: p.properties?.Status?.select?.name ?? '',
+        best: bestProperty?.checkbox ?? false,
         score:
             typeof p.properties?.['Score']?.number === 'number'
                 ? p.properties['Score'].number

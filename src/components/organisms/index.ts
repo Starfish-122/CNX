@@ -4,3 +4,4 @@ export { default as KakaoMap } from './KakaoMap';
 export { default as PlaceList } from './PlaceList';
 export { default as MailForm } from './MailForm';
 export { default as RecommandList } from './RecommandList';
+export { default as OnlineList } from './PlaceList/OnlineList';

@@ -19,6 +19,7 @@ interface KakaoMapProps {
         sw: Coordinates;
         ne: Coordinates;
     } | null;
+    polygonsOff?: boolean;
 }
 
 /**
@@ -32,6 +33,7 @@ export default function KakaoMap({
     selectedLocation = null,
     onLocationSelect,
     bounds = null,
+    polygonsOff = false,
 }: KakaoMapProps): React.JSX.Element {
     const mapId = 'kakao-map-container';
 
@@ -49,7 +51,7 @@ export default function KakaoMap({
     useMapMarkers({ map, places, selectedLocation });
 
     // 4. 폴리곤 관리
-    useMapPolygons({ map, selectedLocation, onLocationSelect });
+    useMapPolygons({ map, selectedLocation, onLocationSelect, polygonsOff });
 
     // 에러 처리
     if (error) {

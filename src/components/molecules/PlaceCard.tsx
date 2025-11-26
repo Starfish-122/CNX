@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { StarRating } from '@/components/molecules';
-import { Title, Text, CategoryTag, TagList, type TagCategory } from '@/components/atoms';
+import { Title, Text, CategoryTag, TagList, type TagCategory, Icon } from '@/components/atoms';
 import {
     formatDistance,
     estimateWalkingTime,
@@ -33,9 +33,19 @@ interface PlaceCardProps {
     copyright?: string;
     likeCount?: number;
     commentCount?: number;
+    isBest?: boolean;
 }
 
-export default function PlaceCard({ name, description, tags, rating, distance, likeCount, commentCount }: PlaceCardProps) {
+export default function PlaceCard({
+    name,
+    description,
+    tags,
+    rating,
+    distance,
+    likeCount = 0,
+    commentCount = 0,
+    isBest = false,
+}: PlaceCardProps) {
     const router = useRouter();
 
     const handleCommentClick = (e: React.MouseEvent) => {
@@ -45,7 +55,7 @@ export default function PlaceCard({ name, description, tags, rating, distance, l
     };
 
     return (
-        <div className="place-list__card px-6 py-6 border-1 border-gray-100 rounded-lg">
+        <div className="place-list__card px-6 py-6 border-1 border-gray-100 rounded-lg relative">
             <Link
                 href={`/detail/${encodeURIComponent(name || '')}`}
                 className="flex flex-col gap-4"
@@ -61,6 +71,11 @@ export default function PlaceCard({ name, description, tags, rating, distance, l
                             />
                         ))}
                     </TagList>
+                )}
+                {isBest && (
+                    <span className="best-badge">
+                        <Icon name="Crown" size="md" color="white"/>
+                    </span>
                 )}
                 <div>
                     <div className="flex items-center gap-2">

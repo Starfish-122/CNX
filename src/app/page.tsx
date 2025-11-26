@@ -1,12 +1,11 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { Tab, SearchBar } from '@/components/molecules';
-import { KakaoMap, PlaceList, RecommandList } from '@/components/organisms';
+import { SearchBar } from '@/components/molecules';
+import { KakaoMap, PlaceList, RecommandList, OnlineList } from '@/components/organisms';
 import { useMapState } from '@/hooks';
 import { type LocationKey, TAB_CONFIGS } from '@/utils/constants';
 import type { NotionPlace } from '@/types';
-import type { TabLocation } from '@/components/molecules/Tab';
 import Filter, { type DistanceFilterType } from '@/components/molecules/Filter';
 
 /**
@@ -28,6 +27,7 @@ export default function HomePage() {
 
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    const [searchResetSignal, setSearchResetSignal] = useState(0);
 
     // 초기 진입 시 '전체' 탭 활성화 (사무실 위치로 지도 중심 설정)
     useEffect(() => {
@@ -60,24 +60,24 @@ export default function HomePage() {
     }, []);
 
     // 탭 변경 핸들러
-    const handleTabChange = (tab: TabLocation) => {
-        console.log('[HomePage] 탭 변경:', tab.label);
-        setSelectedTab(tab.value);
+    // const handleTabChange = (tab: TabLocation) => {
+    //     console.log('[HomePage] 탭 변경:', tab.label);
+    //     setSelectedTab(tab.value);
 
-        // 탭 전환 시 필터 초기화
-        setDistanceFilter(null);
-        setRatingFilter(0);
-        setSortByDistance(false);
-        console.log('[HomePage] 탭 전환 - 필터 초기화');
+    //     // 탭 전환 시 필터 초기화
+    //     setDistanceFilter(null);
+    //     setRatingFilter(0);
+    //     setSortByDistance(false);
+    //     console.log('[HomePage] 탭 전환 - 필터 초기화');
 
-        // '전체' 탭 클릭 시 모든 매장 활성화 및 사무실 위치로 중심 이동
-        if (tab.label === '전체') {
-            resetLocation(true); // true: COMPANY_CENTER 사용
-        } else if (tab.center) {
-            // 다른 탭 클릭 시 해당 지역으로 이동
-            setLocationByKey(tab.label as LocationKey);
-        }
-    };
+    //     // '전체' 탭 클릭 시 모든 매장 활성화 및 사무실 위치로 중심 이동
+    //     if (tab.label === '전체') {
+    //         resetLocation(true); // true: COMPANY_CENTER 사용
+    //     } else if (tab.center) {
+    //         // 다른 탭 클릭 시 해당 지역으로 이동
+    //         setLocationByKey(tab.label as LocationKey);
+    //     }
+    // };
 
     // 폴리곤 클릭 핸들러
     const handleLocationSelect = (location: LocationKey | null) => {
@@ -105,6 +105,7 @@ export default function HomePage() {
 
             setSearchTerm('');
             setSelectedTags([]);
+            setSearchResetSignal((prev) => prev + 1);
 
             console.log('[HomePage] 구역 선택 - 필터 초기화');
         }
@@ -137,7 +138,7 @@ export default function HomePage() {
         setSearchTerm(keyword);
         setSelectedTags(tagList);
 
-        if (tagList.length > 0) {
+        const ensureAllTab = () => {
             if (selectedTab !== 'all') {
                 setSelectedTab('all');
                 resetLocation(true);
@@ -145,17 +146,31 @@ export default function HomePage() {
                 setRatingFilter(0);
                 setSortByDistance(false);
             }
+        };
+
+        if (tagList.length > 0) {
+            ensureAllTab();
+            return;
+        }
+
+        if (keyword) {
+            ensureAllTab();
             return;
         }
     
         if (!keyword && tagList.length === 0) {
-            setSelectedTab('all');
-            resetLocation(true);
-            setDistanceFilter(null);
-            setRatingFilter(0);
-            setSortByDistance(false);
+            ensureAllTab();
         }
     };
+
+    const TAGS = ['전체','추천','카페','한식','일식','양식','중식','기타','분식','헬스','미용','주점','고기'];
+    const isSearchActive = searchTerm.length > 0 || selectedTags.length > 0;
+
+    useEffect(() => {
+        if (isSearchActive && selectedLocation !== null) {
+            resetLocation(true);
+        }
+    }, [isSearchActive, selectedLocation, resetLocation]);
 
     // selectedTab에 해당하는 LocationKey 찾기 (PlaceList 필터링용)
     // 'all'일 때는 null (전체 표시)
@@ -163,22 +178,29 @@ export default function HomePage() {
         selectedTab === 'all'
             ? null
             : TAB_CONFIGS.find((config) => config.value === selectedTab)?.label || null;
+    const effectiveFilterLocation = isSearchActive ? null : filterLocation;
+    const effectiveMapLocation = isSearchActive ? null : selectedLocation;
 
-    const TAGS = ['카페','한식','일식','양식','중식','기타','분식','헬스','미용','주점','고기'];
+    const getSelectableTags = (item: NotionPlace): string[] => {
+        const tags: string[] = [];
+        if (item.status) tags.push(item.status);
+        if (item.best) tags.push(`추천`);
+        return tags;
+    };
 
     const filteredPlacesForMap = useMemo(() => {
         let base = places;
     
         // 1) 탭(지역) 필터
-        if (filterLocation) {
+        if (effectiveFilterLocation) {
             base = base.filter((item) => {
                 // '인터넷'과 '온라인'은 동일하게 처리
-                if (filterLocation === '온라인') {
+                if (effectiveFilterLocation === '온라인') {
                     return item.location === '인터넷' || item.location === '온라인';
                 }
     
                 // '아모레 / LS'는 다양한 형식 허용 (PlaceList와 동일 로직)
-                if (filterLocation === '아모레 / LS') {
+                if (effectiveFilterLocation === '아모레 / LS') {
                     const location = item.location || '';
                     return (
                         location === '아모레 / LS' ||
@@ -187,7 +209,7 @@ export default function HomePage() {
                     );
                 }
     
-                return item.location === filterLocation;
+                return item.location === effectiveFilterLocation;
             });
         }
     
@@ -201,16 +223,22 @@ export default function HomePage() {
     
         // 3) 태그 필터 (지금은 status를 예시로 사용 중)
         if (selectedTags.length > 0) {
-            base = base.filter((item: any) => {
-                // TODO: 실제 태그 필드로 바꾸면 더 정확해짐 (ex. item.category, item.cuisine 등)
-                const itemTags: string[] = item.status ? [item.status] : [];
-                if (!itemTags.length) return false;
+            base = base.filter((item: NotionPlace) => {
+                const itemTags = getSelectableTags(item);
+                if (itemTags.length === 0) return false;
                 return selectedTags.every((tag) => itemTags.includes(tag));
             });
         }
     
         return base;
-    }, [places, filterLocation, searchTerm, selectedTags]);
+    }, [places, effectiveFilterLocation, searchTerm, selectedTags]);
+
+    const onlinePlaces = useMemo(() => {
+        return places.filter((item) => {
+            const location = (item.location || '').trim();
+            return location === '온라인' || location === '인터넷';
+        });
+    }, [places]);
 
     return (
         <>
@@ -221,7 +249,13 @@ export default function HomePage() {
             <div className="map relative">
                 <RecommandList />
                 <div className="relative">
-                    <SearchBar tags={TAGS} onSearch={handleSearch} />
+                    <SearchBar tags={TAGS} onSearch={handleSearch} resetSignal={searchResetSignal} />
+                    {!isLoading && !error && onlinePlaces.length > 0 && (
+                        <OnlineList
+                            places={onlinePlaces}
+                            className="hidden lg:block absolute bottom-0 left-0 z-49 w-[360px]"
+                        />
+                    )}
                     {isLoading ? (
                         <div className="w-full h-[60vh] flex items-center justify-center bg-gray-50 rounded-lg">
                             <div className="text-center">
@@ -247,15 +281,22 @@ export default function HomePage() {
                                 places={filteredPlacesForMap}
                                 center={center}
                                 bounds={bounds}
-                                selectedLocation={selectedLocation}
+                                selectedLocation={effectiveMapLocation}
                                 onLocationSelect={handleLocationSelect}
+                                polygonsOff={isSearchActive}
                             />
-                            <Tab selectedTab={selectedTab} onTabChange={handleTabChange} />
+                            {!isLoading && !error && onlinePlaces.length > 0 && (
+                                <div className="mt-4 lg:hidden">
+                                    <OnlineList places={onlinePlaces} className="w-full" />
+                                </div>
+                            )}
+                            {/* <Tab selectedTab={selectedTab} onTabChange={handleTabChange} /> */}
+
+                            
                         </>
                     )}
                 </div>
             </div>
-
             {/* 온라인 탭이 아닐 때만 필터 표시 */}
             {selectedTab !== 'online' && (
                 <Filter
@@ -266,12 +307,11 @@ export default function HomePage() {
                     onFilterBoxToggle={handleFilterBoxToggle}
                 />
             )}
-
             <PlaceList
                 className="mt-12 mb-24 px-4 lg:px-0"
                 sortByDistance={sortByDistance}
                 sortByRating={sortByRating}
-                selectedLocation={filterLocation}
+                selectedLocation={effectiveFilterLocation}
                 distanceFilter={distanceFilter}
                 ratingFilter={ratingFilter}
                 searchTerm={searchTerm}

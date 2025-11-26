@@ -8,6 +8,7 @@ export interface NotionPlace {
     name: string;
     status: string;
     score: number | null;
+    best?: boolean | null;
     location: string;
     partySize: string;
     mood: string;

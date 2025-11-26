@@ -10,3 +10,6 @@ export * from './polygon';
 
 // 포맷팅
 export * from './format';
+
+// 평점 계산
+export * from './rating';

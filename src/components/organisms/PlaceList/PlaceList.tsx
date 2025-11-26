@@ -4,7 +4,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { PlaceCard, SkeletonCard } from '@/components/molecules';
 import { Title, type TagCategory } from '@/components/atoms';
 import { findPlaceCoordinates } from '@/utils/services/kakaoMap';
-import { getDistanceBetween } from '@/utils/helpers';
+import { getDistanceBetween, getEffectiveRating } from '@/utils/helpers';
 import { COMPANY_CENTER, type LocationKey } from '@/utils/constants';
 import type { NotionPlace } from '@/types';
 import { DISTANCE_FILTER_VALUES, type DistanceFilterType } from '@/components/molecules/Filter';
@@ -30,15 +30,23 @@ const matchesRatingFilter = (score: number | undefined | null, ratingFilter: num
     return score >= ratingFilter;
 };
 
-const matchesTagFilter = (
-    item: NotionPlace,
-    selectedTags: string[]
-): boolean => {
+const collectFilterTags = (item: NotionPlace): string[] => {
+    const tags: string[] = [];
+    if (item.status) {
+        tags.push(item.status);
+    }
+    if (item.best) {
+        tags.push('추천');
+    }
+    return tags;
+};
+
+const matchesTagFilter = (item: NotionPlace, selectedTags: string[]): boolean => {
     if (selectedTags.length === 0) return true;
-    const itemTags: string[] = (item as any).status || [];
+    const itemTags = collectFilterTags(item);
     if (!itemTags.length) return false;
-    return selectedTags.every(tag => itemTags.includes(tag));
-}
+    return selectedTags.every((tag) => itemTags.includes(tag));
+};
 
 interface NotionItemWithDistance extends NotionPlace {
     distance?: number;
@@ -118,7 +126,9 @@ export default function PlaceList({
         let base = filteredByDistance;
 
         if (ratingFilter !== 0) {
-            base = base.filter((item) => matchesRatingFilter(item.score, ratingFilter));
+            base = base.filter((item) =>
+                matchesRatingFilter(getEffectiveRating(item), ratingFilter)
+            );
         }
 
         if (searchTerm.trim()) {
@@ -149,8 +159,8 @@ export default function PlaceList({
             if (!aInRange && bInRange) return 1;
 
             // 2순위: 평점 높은 순
-            const aScore = a.score ?? 0;
-            const bScore = b.score ?? 0;
+            const aScore = getEffectiveRating(a) ?? 0;
+            const bScore = getEffectiveRating(b) ?? 0;
             if (bScore !== aScore) {
                 return bScore - aScore;
             }
@@ -175,9 +185,11 @@ export default function PlaceList({
 
     const sortByRatingOnly = (data: NotionItemWithDistance[]): NotionItemWithDistance[] => {
         return [...data].sort((a, b) => {
-            if (a.score === undefined || a.score === null) return 1;
-            if (b.score === undefined || b.score === null) return -1;
-            return b.score - a.score;
+            const aScore = getEffectiveRating(a);
+            const bScore = getEffectiveRating(b);
+            if (aScore === undefined || aScore === null) return 1;
+            if (bScore === undefined || bScore === null) return -1;
+            return bScore - aScore;
         });
     };
 
@@ -258,11 +270,22 @@ export default function PlaceList({
     // 필터링된 개수 계산
     const displayCount = loading ? totalCount : filteredData.length;
 
+    const titleLabel = (() => {
+        if (selectedTags.length > 0) {
+            return `${selectedTags.join(', ')} 리스트`;
+        }
+
+        if (selectedLocation) {
+            return `${selectedLocation} 리스트`;
+        }
+
+        return '전체 리스트';
+    })();
+
     return (
         <div className={`place-list container mx-auto ${className}`}>
             <Title element="h2" className="mb-6">
-                {selectedLocation ? `${selectedLocation} 리스트` : '전체 리스트'}{' '}
-                {!loading && ` (${displayCount}개)`}
+                {titleLabel} {!loading && ` (${displayCount}개)`}
             </Title>
             {loading ? (
                 <div className="w-full grid grid-cols-1 gap-6">
@@ -287,6 +310,9 @@ export default function PlaceList({
                         if (item.status) {
                             tags.push({ label: item.status, category: 'status' });
                         }
+                        if (item.best) {
+                            tags.push({ label: '추천', category: 'status' });
+                        }
                         if (item.partySize) {
                             tags.push({ label: item.partySize, category: 'mood' });
                         }
@@ -299,10 +325,11 @@ export default function PlaceList({
                                 name={item.name || '이름 없음'}
                                 description={item.summary || ''}
                                 tags={tags}
-                                rating={item.score ?? undefined}
+                                rating={getEffectiveRating(item) ?? undefined}
                                 distance={item.distance}
                                 likeCount={item.likeCount ?? 0}
                                 commentCount={item.commentCount ?? 0}
+                                isBest={!!item.best}
                             />
                         );
                     })}

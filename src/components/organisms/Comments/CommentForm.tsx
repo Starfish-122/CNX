@@ -34,6 +34,15 @@ export default function CommentForm({ placeName }: { placeName: string }) {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        // placeName 유효성 체크 (Firestore 컬렉션 경로는 짝수 segment가 되면 안 됨)
+        if (!placeName || placeName.includes('/')) {
+            setMessage({
+                type: 'error',
+                text: '유효하지 않은 장소 이름입니다. 관리자에게 문의해주세요.',
+            });
+            return;
+        }
+
         // Firebase 연결 확인
         if (!db) {
             setMessage({ type: 'error', text: 'Firebase 연결 오류: 환경변수를 확인해주세요.' });

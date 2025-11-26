@@ -21,9 +21,10 @@ interface RecommandCardProps {
     image?: string;
     likeCount?: number;
     commentCount?: number;
+    isBest?: boolean;
 }
 
-export default function RecommandCard({ image, name, description, tags, rating, likeCount = 0, commentCount = 0 }: RecommandCardProps) {
+export default function RecommandCard({ image, name, description, tags, rating, likeCount = 0, commentCount = 0, isBest = false }: RecommandCardProps) {
     const router = useRouter();
 
     const handleCommentClick = (e: React.MouseEvent) => {
@@ -48,7 +49,10 @@ export default function RecommandCard({ image, name, description, tags, rating, 
                     />
                 </div>
                 <div>
-                  <div className="flex flex-col gap-1.5 pb-6 px-4">
+                  <div className="flex flex-col gap-1.5 pb-6 px-4 relative">
+                    {isBest && <span className="best-badge" style={{ top: '-16px' }}>
+                        <Icon name="Crown" size="md" color="white"/>
+                    </span>}
                     <Text className="font-light text-sm text-gray-500 dark:text-gray-400 text-ellipsis overflow-hidden line-clamp-2">
                         {description}
                     </Text>

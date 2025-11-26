@@ -288,3 +288,16 @@
 .recommand-swiper {
     padding-bottom: 0.75rem !important;
 }
+
+.best-badge {
+    position: absolute;
+    top:0;
+    right: 1rem;
+    padding-top:7px;
+    width: 30px;
+    height:50px;
+    background: var(--color-pink-500);
+    color:white;
+    float:left;
+    clip-path: polygon( 0% 0%, 0% 100%, 50% 80%, 100% 100%, 100% 0%);
+}

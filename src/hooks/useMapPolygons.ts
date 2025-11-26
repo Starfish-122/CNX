@@ -13,13 +13,19 @@ interface UseMapPolygonsProps {
     map: any;
     selectedLocation: LocationKey | null;
     onLocationSelect?: (location: LocationKey | null) => void;
+    polygonsOff?: boolean;
 }
 
 /**
  * 지도 폴리곤 관리 훅
  * 폴리곤 생성, 스타일 업데이트, 클릭 이벤트 관리
  */
-export function useMapPolygons({ map, selectedLocation, onLocationSelect }: UseMapPolygonsProps) {
+export function useMapPolygons({
+    map,
+    selectedLocation,
+    onLocationSelect,
+    polygonsOff = false,
+}: UseMapPolygonsProps) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const polygonsRef = useRef<Map<LocationKey, any>>(new Map());
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -28,6 +34,17 @@ export function useMapPolygons({ map, selectedLocation, onLocationSelect }: UseM
     // 폴리곤 스타일 업데이트
     const updatePolygonStyles = useCallback(() => {
         if (polygonsRef.current.size === 0 || !map) return;
+
+        if (polygonsOff) {
+            polygonsRef.current.forEach((polygon) => {
+                polygon.setMap(map);
+                polygon.setOptions({
+                    ...POLYGON_STYLE_INACTIVE,
+                    zIndex: 5,
+                });
+            });
+            return;
+        }
 
         // 온라인 선택 시 모든 폴리곤 숨김
         if (selectedLocation === '온라인') {
@@ -53,7 +70,7 @@ export function useMapPolygons({ map, selectedLocation, onLocationSelect }: UseM
                 });
             }
         });
-    }, [map, selectedLocation]);
+    }, [map, selectedLocation, polygonsOff]);
 
     // 폴리곤 생성
     const createLocationPolygons = useCallback(() => {

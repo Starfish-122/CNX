@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, KeyboardEvent } from 'react';
+import { useState, useRef, useEffect, KeyboardEvent } from 'react';
 import clsx from 'clsx';
 import { Icon, Input } from '@/components/atoms';
 
@@ -8,12 +8,14 @@ interface SearchBarProps {
   tags?: string[];
   defaultSelectedTags?: string[];
   onSearch?: (params: { searchTerm: string; tags: string[] }) => void;
+  resetSignal?: number;
 }
 
 export default function SearchBar({
   tags = [],
   defaultSelectedTags = [],
   onSearch,
+  resetSignal,
 }: SearchBarProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -58,12 +60,24 @@ export default function SearchBar({
 
   // 🔹 태그 버튼 클릭
   const handleTagClick = (tag: string) => {
+    if (tag === '전체') {
+      setSelectedTags([]);
+      emitSearch(searchTerm, []);
+      return;
+    }
+
     const isAlreadyOnlySelected = selectedTags.length === 1 && selectedTags[0] === tag;
     const next = isAlreadyOnlySelected ? [] : [tag];
 
     setSelectedTags(next);
     emitSearch(searchTerm, next);
   };
+
+  useEffect(() => {
+    if (resetSignal === undefined) return;
+    setSearchTerm('');
+    setSelectedTags([]);
+  }, [resetSignal]);
 
   return (
     <div className={clsx(
@@ -116,23 +130,27 @@ export default function SearchBar({
         )}
       </div>
 
-      {/* 🔹 TagList 잠깐 빼고, 일반 div + button으로 단순화 */}
       <div className="flex flex-wrap justify-center gap-2">
         {tags.map(tag => {
-          const isSelected = selectedTags.includes(tag);
+          const isSelected =
+            tag === '전체' ? selectedTags.length === 0 : selectedTags.includes(tag);
+          const isBestTag = tag === '추천';
           return (
             <button
               key={tag}
               type="button"
               onClick={() => handleTagClick(tag)}
               className={clsx(
-                'px-3 py-1 rounded-full text-sm border transition',
+                'px-3 py-1 rounded-full text-sm border transition flex items-center gap-1',
                 isSelected
                   ? 'bg-blue-600 text-white border-blue-600'
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
+                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100',
+                isBestTag &&
+                  'text-white !bg-pink-500 !border-pink-500 hover:!bg-pink-600 hover:!border-pink-600'
               )}
             >
-              {tag}
+              {isBestTag && <Icon name="Crown" size="sm" color="text-white" />}
+              <span>{tag}</span>
             </button>
           );
         })}

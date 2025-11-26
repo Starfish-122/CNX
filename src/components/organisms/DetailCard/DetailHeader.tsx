@@ -15,6 +15,7 @@ interface DetailHeaderProps {
     reviewCount: number;
     likeCount: number;
     isLiked?: boolean;
+    isBest?: boolean;
     onClose?: () => void;
     onShare: () => void;
     onLike: () => void;
@@ -29,6 +30,7 @@ export default function DetailHeader({
     reviewCount,
     likeCount,
     isLiked = false,
+    isBest = false,
     onClose,
     onShare,
     onLike,
@@ -40,6 +42,12 @@ export default function DetailHeader({
             <div
                 className="absolute inset-0 z-0 pointer-events-none bg-[repeating-linear-gradient(135deg,_rgba(0,0,0,0.3)_0px,_rgba(0,0,0,0.3)_1px,_transparent_1px,_transparent_3px)]"
             />
+
+            {isBest && (
+                <span className="best-badge" style={{ right: '3rem'}}>
+                <Icon name="Crown" size="md" color="white"/>
+            </span>
+            )}
 
             {/* X 버튼 */}
             {onClose && (

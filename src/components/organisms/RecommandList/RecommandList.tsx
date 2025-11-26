@@ -196,6 +196,7 @@ export default function PlaceList({
                                     image={image}
                                     likeCount={item.likeCount ?? 0}
                                     commentCount={item.commentCount ?? 0}
+                                    isBest={!!item.best}
                                 />
                             </SwiperSlide>
                         );
