@@ -26,6 +26,7 @@
             "@/data/*": ["./src/data/*"],
             "@/hooks": ["./src/hooks"],
             "@/hooks/*": ["./src/hooks/*"],
+            "@/contexts/*": ["./src/contexts/*"],
             "@/styles/*": ["./src/styles/*"],
             "@/types": ["./src/types"],
             "@/types/*": ["./src/types/*"],

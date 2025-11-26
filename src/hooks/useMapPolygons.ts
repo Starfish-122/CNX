@@ -92,12 +92,16 @@ export function useMapPolygons({
             path.forEach((latLng) => bounds.extend(latLng));
 
             // bounds에 좌표가 제대로 추가되었는지 확인
-            const center = path.length > 0 
-                ? new window.kakao.maps.LatLng(
-                    (bounds.getSouthWest().getLat() + bounds.getNorthEast().getLat()) / 2,
-                    (bounds.getSouthWest().getLng() + bounds.getNorthEast().getLng()) / 2
-                )
-                : new window.kakao.maps.LatLng(LOCATION_CENTERS[locationKey as LocationKey].lat, LOCATION_CENTERS[locationKey as LocationKey].lng);
+            const center =
+                path.length > 0
+                    ? new window.kakao.maps.LatLng(
+                          (bounds.getSouthWest().getLat() + bounds.getNorthEast().getLat()) / 2,
+                          (bounds.getSouthWest().getLng() + bounds.getNorthEast().getLng()) / 2
+                      )
+                    : new window.kakao.maps.LatLng(
+                          LOCATION_CENTERS[locationKey as LocationKey].lat,
+                          LOCATION_CENTERS[locationKey as LocationKey].lng
+                      );
 
             // 지역명 오버레이 생성
             const content = `
@@ -110,7 +114,7 @@ export function useMapPolygons({
                 map: map,
                 position: center,
                 content: content,
-                zIndex: 20,
+                // zIndex: 20,
             });
 
             window.kakao.maps.event.addListener(polygon, 'click', () => {

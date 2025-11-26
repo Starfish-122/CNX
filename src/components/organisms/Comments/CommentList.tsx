@@ -138,7 +138,7 @@ export default function CommentList({ placeName }: { placeName: string }) {
             <strong className="block text-xl font-medium mb-4">
                 Comments <span className="text-blue-400 text-md">{comments.length}</span>
             </strong>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 max-h-[60vh] overflow-y-auto">
                 {comments.length === 0 ? (
                     <div className="text-center text-gray-500 p-4">
                         아직 댓글이 없습니다. 첫 댓글을 작성해보세요!

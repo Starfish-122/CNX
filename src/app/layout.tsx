@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Noto_Sans_KR } from 'next/font/google';
 import Header from '@/components/organisms/Header';
 import Footer from '@/components/organisms/Footer';
+import { DetailLoadingProvider } from '@/contexts/DetailLoadingContext';
 
 import '@/styles/globals.css';
 
@@ -48,10 +49,12 @@ export default function RootLayout({
                 suppressHydrationWarning
                 className={`${notoSansKR.className} antialiased flex flex-col min-h-screen`}
             >
-                <Header />
-                <main className="flex-grow">{children}</main>
-                <Footer />
-                {modal}
+                <DetailLoadingProvider>
+                    <Header />
+                    <main className="flex-grow">{children}</main>
+                    <Footer />
+                    {modal}
+                </DetailLoadingProvider>
             </body>
         </html>
     );

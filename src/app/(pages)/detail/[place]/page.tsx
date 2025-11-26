@@ -1,14 +1,23 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { DetailCard } from '@/components/organisms';
 import { LoadingState, ErrorState } from '@/components/atoms';
 import { usePlaceDetail } from '@/hooks/usePlaceDetail';
+import { useDetailLoading } from '@/contexts/DetailLoadingContext';
 
 export default function PlaceDetailPage(): React.JSX.Element {
     const params = useParams();
     const placeName = params.place as string;
     const { placeData, loading, error } = usePlaceDetail(placeName);
+    const { stopDetailLoading } = useDetailLoading();
+
+    useEffect(() => {
+        if (!loading) {
+            stopDetailLoading();
+        }
+    }, [loading, stopDetailLoading]);
 
     if (loading) {
         return <LoadingState />;

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { Icon } from '@/components/atoms';
-import { searchKakaoPlace, copyToClipboard } from '@/utils/services/kakaoMap';
+import { fetchKakaoPlaceBrief, copyToClipboard } from '@/utils/services/kakaoMap';
 import { getLikeCount, checkUserLiked, toggleLike } from '@/utils/services/firebase';
 import DetailHeader from './DetailHeader';
 import DetailTabs from './DetailTabs';
@@ -91,45 +91,57 @@ export default function DetailCard({
         fetchLikeData();
     }, [name]);
 
-    // 카카오맵에서 주소/전화번호/URL 가져오기
+    // 카카오 REST API를 통해 주소/전화번호/URL 가져오기
     useEffect(() => {
         const fetchPlaceInfo = async () => {
-            // 온라인 가게인지 확인
+            if (!name) return;
+
             const isOnlineStore = location === '인터넷' || location === '온라인';
+            const hasAddress = Boolean(data?.address);
+            const hasPhone = Boolean(data?.phone);
+            const hasMapUrl = Boolean(data?.kakaomap);
 
-            // Notion에 이미 정보가 있으면 사용
-            if (data?.address || data?.phone) {
-                setAddress(data.address || '');
-                setPhone(data.phone || '');
-                // 카카오맵 URL은 Notion에 있으면 사용
-                if (data?.kakaomap) {
-                    setPlaceUrl(data.kakaomap);
-                }
-                return;
+            if (hasAddress) {
+                setAddress(data?.address ?? '');
+            }
+            if (hasPhone) {
+                setPhone(data?.phone ?? '');
+            }
+            if (hasMapUrl) {
+                setPlaceUrl(data?.kakaomap ?? '');
             }
 
-            // 온라인 가게는 카카오맵 검색 스킵
             if (isOnlineStore) {
-                setAddress('온라인 전용');
-                console.log('온라인 가게 - 카카오맵 검색 스킵:', name);
+                if (!hasAddress) {
+                    setAddress('온라인 전용');
+                }
                 return;
             }
 
-            // 없으면 카카오맵 API로 검색
-            if (name && typeof window !== 'undefined') {
-                setIsLoading(true);
-                try {
-                    const result = await searchKakaoPlace(name);
-                    if (result) {
-                        setAddress(result.road_address_name || result.address_name);
-                        setPhone(result.phone);
-                        setPlaceUrl(result.place_url);
+            const needsLookup = !hasAddress || !hasPhone || !hasMapUrl;
+            if (!needsLookup) {
+                setIsLoading(false);
+                return;
+            }
+
+            setIsLoading(true);
+            try {
+                const result = await fetchKakaoPlaceBrief(name);
+                if (result) {
+                    if (!hasAddress) {
+                        setAddress(result.roadAddressName || result.addressName || '');
                     }
-                } catch (error) {
-                    console.error('장소 정보 검색 실패:', error);
-                } finally {
-                    setIsLoading(false);
+                    if (!hasPhone) {
+                        setPhone(result.phone || '');
+                    }
+                    if (!hasMapUrl) {
+                        setPlaceUrl(result.placeUrl || '');
+                    }
                 }
+            } catch (error) {
+                console.error('장소 정보 검색 실패:', error);
+            } finally {
+                setIsLoading(false);
             }
         };
 
@@ -197,7 +209,7 @@ export default function DetailCard({
     };
 
     return (
-        <div className={clsx('relative bg-white h-full overflow-hidden ', className)}>
+        <div className={clsx('relative bg-white h-full', className)}>
             {/* 헤더 */}
             <DetailHeader
                 image={image}

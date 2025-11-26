@@ -36,27 +36,21 @@ export default function DetailHeader({
     onLike,
 }: DetailHeaderProps) {
     return (
-        <div className="relative h-72 w-full overflow-hidden">
-            <Image src={image} alt={name} fill className="object-cover" priority />
-            {/* 대각선 스트라이프 딤 오버레이 */}
-            <div
-                className="absolute inset-0 z-0 pointer-events-none bg-[repeating-linear-gradient(135deg,_rgba(0,0,0,0.3)_0px,_rgba(0,0,0,0.3)_1px,_transparent_1px,_transparent_3px)]"
-            />
+        <div className="relative h-72 w-full ">
+            <div className="relative h-full w-full overflow-hidden">
+                <Image src={image} alt={name} fill className="object-cover" priority />
 
-            {isBest && (
-                <span className="best-badge" style={{ right: '3rem'}}>
-                <Icon name="Crown" size="md" color="white"/>
-            </span>
-            )}
+                {isBest && (
+                    <span className="best-badge" style={{ right: '3rem' }}>
+                        <Icon name="Crown" size="md" color="white" />
+                    </span>
+                )}
+            </div>
 
             {/* X 버튼 */}
             {onClose && (
-                <button
-                    onClick={onClose}
-                    className="absolute top-4 right-4 bg-white/90 rounded-full p-2 shadow-lg hover:bg-white transition-colors"
-                    aria-label="닫기"
-                >
-                    <Icon name="close" size="sm" className="text-gray-900" />
+                <button onClick={onClose} className="modal__close-button " aria-label="닫기">
+                    <Icon name="close" size="md" />
                 </button>
             )}
 

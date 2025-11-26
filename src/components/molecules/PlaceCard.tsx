@@ -12,6 +12,7 @@ import {
     formatWalkingTime,
     formatDrivingTime,
 } from '@/utils/helpers';
+import { useDetailLoading } from '@/contexts/DetailLoadingContext';
 
 type Tag = {
     label: string;
@@ -47,11 +48,17 @@ export default function PlaceCard({
     isBest = false,
 }: PlaceCardProps) {
     const router = useRouter();
+    const { startDetailLoading } = useDetailLoading();
 
     const handleCommentClick = (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
+        startDetailLoading();
         router.push(`/detail/${encodeURIComponent(name || '')}?tab=review`);
+    };
+
+    const handleCardClick = () => {
+        startDetailLoading();
     };
 
     return (
@@ -59,6 +66,7 @@ export default function PlaceCard({
             <Link
                 href={`/detail/${encodeURIComponent(name || '')}`}
                 className="flex flex-col gap-4"
+                onClick={handleCardClick}
             >
                 {tags && tags.length > 0 && (
                     <TagList gap="sm">
@@ -74,7 +82,7 @@ export default function PlaceCard({
                 )}
                 {isBest && (
                     <span className="best-badge">
-                        <Icon name="Crown" size="md" color="white"/>
+                        <Icon name="Crown" size="md" color="white" />
                     </span>
                 )}
                 <div>
@@ -109,14 +117,13 @@ export default function PlaceCard({
                     </Text>
                 </div>
                 <div className="flex items-center gap-4">
-                    {rating !== undefined && <StarRating value={rating} max={5} readOnly size="md" />}
+                    {rating !== undefined && (
+                        <StarRating value={rating} max={5} readOnly size="md" />
+                    )}
                     <Text className="font-light text-sm text-gray-500 dark:text-gray-400">
                         ❤️ {likeCount}
                     </Text>
-                    <span
-                        onClick={handleCommentClick}
-                        className="cursor-pointer transition-colors"
-                    >
+                    <span onClick={handleCommentClick} className="cursor-pointer transition-colors">
                         <Text className="font-light text-sm text-gray-500 dark:text-gray-400">
                             💬 {commentCount}
                         </Text>

@@ -42,3 +42,11 @@ export interface KakaoPlaceResult {
     category_group_code?: string;
     category_group_name?: string;
 }
+
+// ============ 카카오 REST 요약 정보 ============
+export interface KakaoPlaceBrief {
+    addressName: string;
+    roadAddressName: string;
+    phone: string;
+    placeUrl: string;
+}
