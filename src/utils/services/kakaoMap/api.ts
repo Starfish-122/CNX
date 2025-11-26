@@ -2,9 +2,27 @@
 import type { NotionPlace, KakaoPlaceResult } from '@/types';
 import type { Coordinates } from '@/utils/constants';
 
+type KakaoKeywordSearchStatus = 'OK' | 'ZERO_RESULT' | 'ERROR';
+
+type KakaoPagination = {
+    current: number;
+    last: number;
+    gotoPage: (page: number) => void;
+};
+
 type KakaoKeywordSearchResult = {
     place_url?: string;
     place_name?: string;
+    address_name?: string;
+    road_address_name?: string;
+    phone?: string;
+    x?: string;
+    y?: string;
+};
+
+type KakaoAddressSearchResult = {
+    address_name?: string;
+    road_address_name?: string;
     x?: string;
     y?: string;
 };
@@ -267,18 +285,25 @@ export async function addressToCoords(
     return new Promise((resolve) => {
         const geocoder = new window.kakao.maps.services.Geocoder();
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        geocoder.addressSearch(address, (result: any[], status: any) => {
-            if (status === window.kakao.maps.services.Status.OK && result.length > 0) {
-                resolve({
-                    lat: parseFloat(result[0].y),
-                    lng: parseFloat(result[0].x),
-                });
-            } else {
-                // console.warn(`주소를 찾을 수 없습니다: ${address}`);
-                resolve(null);
+        geocoder.addressSearch(
+            address,
+            (result: KakaoAddressSearchResult[], status: KakaoKeywordSearchStatus) => {
+                if (status === window.kakao.maps.services.Status.OK && result.length > 0) {
+                    const { x, y } = result[0];
+                    if (!x || !y) {
+                        resolve(null);
+                        return;
+                    }
+                    resolve({
+                        lat: parseFloat(y),
+                        lng: parseFloat(x),
+                    });
+                } else {
+                    // console.warn(`주소를 찾을 수 없습니다: ${address}`);
+                    resolve(null);
+                }
             }
-        });
+        );
     });
 }
 
@@ -300,24 +325,26 @@ export async function searchKakaoPlace(placeName: string): Promise<KakaoPlaceRes
     return new Promise((resolve) => {
         const ps = new window.kakao.maps.services.Places();
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        ps.keywordSearch(placeName, (data: any[], status: any) => {
-            if (status === window.kakao.maps.services.Status.OK && data.length > 0) {
-                const place = data[0];
-                resolve({
-                    place_name: place.place_name || '',
-                    address_name: place.address_name || '',
-                    road_address_name: place.road_address_name || '',
-                    phone: place.phone || '',
-                    place_url: place.place_url || '',
-                    x: place.x || '',
-                    y: place.y || '',
-                });
-            } else {
-                // console.warn(`장소를 찾을 수 없습니다: ${placeName}`);
-                resolve(null);
+        ps.keywordSearch(
+            placeName,
+            (data: KakaoKeywordSearchResult[], status: KakaoKeywordSearchStatus) => {
+                if (status === window.kakao.maps.services.Status.OK && data.length > 0) {
+                    const place = data[0];
+                    resolve({
+                        place_name: place.place_name || '',
+                        address_name: place.address_name || '',
+                        road_address_name: place.road_address_name || '',
+                        phone: place.phone || '',
+                        place_url: place.place_url || '',
+                        x: place.x || '',
+                        y: place.y || '',
+                    });
+                } else {
+                    // console.warn(`장소를 찾을 수 없습니다: ${placeName}`);
+                    resolve(null);
+                }
             }
-        });
+        );
     });
 }
 
@@ -380,10 +407,14 @@ export async function searchKakaoPlaceByUrl(place: NotionPlace): Promise<Coordin
         const ps = new window.kakao.maps.services.Places();
 
         // 1차 시도: 장소명만으로 검색
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ps.keywordSearch(
             placeName,
-            (data: any[], status: any) => {
+            (
+                data: KakaoKeywordSearchResult[],
+                status: KakaoKeywordSearchStatus,
+                _pagination: KakaoPagination
+            ) => {
+                void _pagination;
                 if (status === window.kakao.maps.services.Status.OK && data.length > 0) {
                     const result = tryMatchPlaceId(data, placeName);
                     if (result) {
@@ -396,10 +427,14 @@ export async function searchKakaoPlaceByUrl(place: NotionPlace): Promise<Coordin
                 if (location && location !== '인터넷' && location !== '온라인') {
                     // console.log(`🔄 [${placeName}] location 조합 재검색 시도: "${placeName} ${location}"`);
 
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     ps.keywordSearch(
                         `${placeName} ${location}`,
-                        (data2: any[], status2: any) => {
+                        (
+                            data2: KakaoKeywordSearchResult[],
+                            status2: KakaoKeywordSearchStatus,
+                            _pagination2: KakaoPagination
+                        ) => {
+                            void _pagination2;
                             if (
                                 status2 === window.kakao.maps.services.Status.OK &&
                                 data2.length > 0

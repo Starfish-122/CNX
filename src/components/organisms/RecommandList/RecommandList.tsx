@@ -3,7 +3,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
-import { RecommandCard, SkeletonCard } from '@/components/molecules';
+import { RecommandCard } from '@/components/molecules';
 import { Title, type TagCategory } from '@/components/atoms';
 import { type LocationKey } from '@/utils/constants';
 import type { NotionPlace } from '@/types';
