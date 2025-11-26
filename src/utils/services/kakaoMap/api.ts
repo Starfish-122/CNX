@@ -27,6 +27,22 @@ type KakaoAddressSearchResult = {
     y?: string;
 };
 
+function adaptPlaceResult(
+    place?: KakaoKeywordSearchResult,
+    fallbackUrl = ''
+): KakaoPlaceResult | null {
+    if (!place) return null;
+    return {
+        place_name: place.place_name || '',
+        address_name: place.address_name || '',
+        road_address_name: place.road_address_name || '',
+        phone: place.phone || '',
+        place_url: place.place_url || fallbackUrl,
+        x: place.x || '',
+        y: place.y || '',
+    };
+}
+
 /**
  * 카카오 SDK 로딩 상태 공유 (중복 로드를 차단)
  */
@@ -329,22 +345,85 @@ export async function searchKakaoPlace(placeName: string): Promise<KakaoPlaceRes
             placeName,
             (data: KakaoKeywordSearchResult[], status: KakaoKeywordSearchStatus) => {
                 if (status === window.kakao.maps.services.Status.OK && data.length > 0) {
-                    const place = data[0];
-                    resolve({
-                        place_name: place.place_name || '',
-                        address_name: place.address_name || '',
-                        road_address_name: place.road_address_name || '',
-                        phone: place.phone || '',
-                        place_url: place.place_url || '',
-                        x: place.x || '',
-                        y: place.y || '',
-                    });
+                    resolve(adaptPlaceResult(data[0]) ?? null);
                 } else {
                     // console.warn(`장소를 찾을 수 없습니다: ${placeName}`);
                     resolve(null);
                 }
             }
         );
+    });
+}
+
+/**
+ * 카카오맵 Places API를 사용하여 URL 기반 상세 정보를 검색합니다.
+ * @param placeName 장소명
+ * @param kakaoUrl 카카오맵 URL
+ */
+export async function searchKakaoPlaceDetail(
+    placeName: string,
+    kakaoUrl?: string | null
+): Promise<KakaoPlaceResult | null> {
+    if (typeof window === 'undefined' || (!placeName && !kakaoUrl)) return null;
+
+    const apiLoaded = await waitForKakaoAPI();
+    if (!apiLoaded) return null;
+
+    const hasUrl = Boolean(kakaoUrl);
+    const placeId = kakaoUrl ? extractKakaoPlaceId(kakaoUrl) : null;
+
+    return new Promise((resolve) => {
+        const ps = new window.kakao.maps.services.Places();
+
+        const tryResolve = (data: KakaoKeywordSearchResult[]): boolean => {
+            if (!data.length) return false;
+            if (placeId) {
+                const matched = data.find(
+                    (item) => extractKakaoPlaceId(item.place_url || '') === placeId
+                );
+                if (matched) {
+                    resolve(adaptPlaceResult(matched, kakaoUrl || '') ?? null);
+                    return true;
+                }
+            }
+
+            resolve(adaptPlaceResult(data[0], kakaoUrl || '') ?? null);
+            return true;
+        };
+
+        const searchWithKeyword = (keyword: string, fallback?: () => void) => {
+            ps.keywordSearch(
+                keyword,
+                (data: KakaoKeywordSearchResult[], status: KakaoKeywordSearchStatus) => {
+                    if (status === window.kakao.maps.services.Status.OK && tryResolve(data)) {
+                        return;
+                    }
+                    fallback?.();
+                }
+            );
+        };
+
+        const fallbackSearch = () => {
+            if (placeName) {
+                searchWithKeyword(`${placeName} 용산구`, () => {
+                    if (placeName) {
+                        searchWithKeyword(placeName, () => resolve(null));
+                    } else {
+                        resolve(null);
+                    }
+                });
+            } else {
+                resolve(null);
+            }
+        };
+
+        if (hasUrl && placeName) {
+            searchWithKeyword(placeName, fallbackSearch);
+        } else if (placeName) {
+            fallbackSearch();
+        } else {
+            resolve(null);
+        }
     });
 }
 

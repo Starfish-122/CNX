@@ -21,20 +21,12 @@ export default function Header() {
                     <ul className="flex gap-6">
                         <li>
                             <Link
-                                href="/guide"
+                                href="/user-guide"
                                 className="hover:text-blue-500 transition-colors text-lg"
                             >
-                                Guide
+                                User Guide
                             </Link>
                         </li>
-                        {/* <li>
-                            <Link
-                                href="/detail"
-                                className="hover:text-blue-500 transition-colors text-lg"
-                            >
-                                Detail
-                            </Link>
-                        </li> */}
                     </ul>
                 </nav>
             </div>

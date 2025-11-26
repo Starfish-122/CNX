@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { Icon } from '@/components/atoms';
-import { fetchKakaoPlaceBrief, copyToClipboard } from '@/utils/services/kakaoMap';
+import { searchKakaoPlaceDetail, copyToClipboard } from '@/utils/services/kakaoMap';
 import { getLikeCount, checkUserLiked, toggleLike } from '@/utils/services/firebase';
 import DetailHeader from './DetailHeader';
 import DetailTabs from './DetailTabs';
@@ -91,62 +91,46 @@ export default function DetailCard({
         fetchLikeData();
     }, [name]);
 
-    // 카카오 REST API를 통해 주소/전화번호/URL 가져오기
+    // 카카오 JS SDK를 통해 주소/전화번호/URL 가져오기
     useEffect(() => {
         const fetchPlaceInfo = async () => {
             if (!name) return;
 
             const isOnlineStore = location === '인터넷' || location === '온라인';
-            const hasAddress = Boolean(data?.address);
-            const hasPhone = Boolean(data?.phone);
-            const hasMapUrl = Boolean(data?.kakaomap);
-
-            if (hasAddress) {
-                setAddress(data?.address ?? '');
-            }
-            if (hasPhone) {
-                setPhone(data?.phone ?? '');
-            }
-            if (hasMapUrl) {
-                setPlaceUrl(data?.kakaomap ?? '');
-            }
+            const kakaoUrl = data?.kakaomap ?? '';
 
             if (isOnlineStore) {
-                if (!hasAddress) {
-                    setAddress('온라인 전용');
-                }
-                return;
-            }
-
-            const needsLookup = !hasAddress || !hasPhone || !hasMapUrl;
-            if (!needsLookup) {
+                setAddress('온라인 전용');
+                setPhone('');
+                setPlaceUrl(kakaoUrl);
                 setIsLoading(false);
                 return;
             }
 
             setIsLoading(true);
             try {
-                const result = await fetchKakaoPlaceBrief(name);
+                const result = await searchKakaoPlaceDetail(name, kakaoUrl || null);
                 if (result) {
-                    if (!hasAddress) {
-                        setAddress(result.roadAddressName || result.addressName || '');
-                    }
-                    if (!hasPhone) {
-                        setPhone(result.phone || '');
-                    }
-                    if (!hasMapUrl) {
-                        setPlaceUrl(result.placeUrl || '');
-                    }
+                    setAddress(result.road_address_name || result.address_name || '');
+                    setPhone(result.phone || '');
+                    setPlaceUrl(result.place_url || kakaoUrl);
+                } else {
+                    setAddress('');
+                    setPhone('');
+                    setPlaceUrl(kakaoUrl);
                 }
             } catch (error) {
                 console.error('장소 정보 검색 실패:', error);
+                setAddress('');
+                setPhone('');
+                setPlaceUrl(kakaoUrl);
             } finally {
                 setIsLoading(false);
             }
         };
 
         fetchPlaceInfo();
-    }, [name, data, location]);
+    }, [name, data?.kakaomap, location]);
 
     const handleLike = async () => {
         if (!name) return;
