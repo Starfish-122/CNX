@@ -41,7 +41,7 @@ export default function DetailHeader({
                 <Image src={image} alt={name} fill className="object-cover" priority />
 
                 {isBest && (
-                    <span className="best-badge" style={{ right: '3rem' }}>
+                    <span className="best-badge">
                         <Icon name="Crown" size="md" color="white" />
                     </span>
                 )}
