@@ -193,7 +193,7 @@ export default function DetailCard({
     };
 
     return (
-        <div className={clsx('relative bg-white h-full', className)}>
+        <div className={clsx('relative h-full', className)}>
             {/* 헤더 */}
             <DetailHeader
                 image={image}

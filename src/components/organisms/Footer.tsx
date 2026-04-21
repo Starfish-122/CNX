@@ -92,7 +92,11 @@ export default function Footer() {
                     'z-100'
                 )}
             >
-                <Icon name="arrow_upward_alt" size="lg" className="text-gray-100" />
+                <Icon
+                    name="arrow_upward_alt"
+                    size="lg"
+                    className="text-gray-100 dark:text-gray-950"
+                />
             </div>
         </footer>
     );

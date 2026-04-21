@@ -66,7 +66,7 @@ export default function PlaceDetailModal(): React.JSX.Element {
     );
 
     const panelClassName = clsx(
-        'modal__layout relative z-10 h-full w-full bg-white',
+        'modal__layout relative z-10 h-full w-full ',
         isVisible && 'modal__layout--visible'
     );
 

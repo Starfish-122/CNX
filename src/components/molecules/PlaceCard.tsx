@@ -62,7 +62,7 @@ export default function PlaceCard({
     };
 
     return (
-        <div className="place-list__card px-6 py-6 border-1 border-gray-100 rounded-lg relative">
+        <div className="place-list__card px-6 py-6 border-1 border-gray-600 rounded-lg relative">
             <Link
                 href={`/detail/${encodeURIComponent(name || '')}`}
                 className="flex flex-col gap-4"

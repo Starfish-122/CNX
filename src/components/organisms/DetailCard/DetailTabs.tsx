@@ -11,7 +11,7 @@ interface DetailTabsProps {
 
 export default function DetailTabs({ activeTab, onTabChange }: DetailTabsProps) {
     return (
-        <div className="detail-tabs bg-white rounded-2xl shadow-sm border border-gray-100 p-1 grid grid-cols-2 gap-1">
+        <div className="detail-tabs rounded-2xl p-1 grid grid-cols-2 gap-1">
             <button
                 onClick={() => onTabChange('info')}
                 className={clsx('detail-tabs__button', activeTab === 'info' && 'active')}
